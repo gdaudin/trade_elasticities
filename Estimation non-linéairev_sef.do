@@ -165,12 +165,11 @@ program nlnonlin
 
 	egen `blif' = total(`blik'), by(iso_d)
 
-	*replace `lnms_pays'=1-`blif' if iso_o_1==1
+	replace `lnms_pays'=1-`blif' if iso_o_1==1
 	***autre solution : ne pas traiter le pays 1 de manière spéciale, mais tout multiplier par le scalaire nécessaire pour que la somme soit 1 ?
-	
 	*24/04/2015 J'essaye
-	replace `blik'=`blik'/`blif'
-	replace `lnms_pays' = ln(`blik')
+	*replace `blik'=`blik'/`blif'
+	*replace `lnms_pays' = ln(`blik')
 	
 	
 end
