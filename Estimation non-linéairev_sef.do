@@ -157,11 +157,8 @@ program nlnonlin
 	*bys iso_d iso_o : keep if _n==1
 
 
+	replace  `lnms_pays' = ln(`sum') if iso_o_`i'!=0
 	
-		replace  `lnms_pays' = ln(`sum') if iso_o_`i'!=0
-	
-	
-
 	tempvar blik blif
 
 	generate `blik'=exp(`lnms_pays')
