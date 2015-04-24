@@ -157,9 +157,8 @@ program nlnonlin
 	*bys iso_d iso_o : keep if _n==1
 
 
-	foreach i of num 2 / `nbr_iso_o' {
+	
 		replace  `lnms_pays' = ln(`sum') if iso_o_`i'!=0
-	}
 	
 	
 
