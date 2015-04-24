@@ -22,7 +22,7 @@ set more off
 *on my laptop:
 *global dir "G:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *at OFCE:
-global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
+*global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *at ScPo:
 *global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *cd "$dir\SITC_Rev1_adv_query_2011"
@@ -134,11 +134,12 @@ program nlnonlin
 	foreach i of num 1 / `nbr_iso_o' {
 *		replace  `pour_index_prix_sect_pays' = `fe_iso_o'*(uv_presente)^(1-`sigma') if iso_o_`i'!=0
 		replace  `pour_index_prix_sect_pays' = (uv_presente)^(1-`sigma') if iso_o_`i'!=0
+		* Calcule $\kappa_l.p_{k,lj}^(1-\sigma)$ pour chaque «l» (sans les kappas)
 
 	}
 	
-	
 	egen double `blouk' = total(`pour_index_prix_sect_pays'), by (iso_d prod_unit)
+	*Fait la somme sur l des $\kappa_l.p_{k,lj}^(1-\sigma)$  (sans les kappas)
 /*
 	generate double `index_prix_sect_pays' = `blouk'^(1/(1-`sigma'))
 	generate double `prix_rel' = uv_presente/ `index_prix_sect_pays'
@@ -146,11 +147,12 @@ program nlnonlin
 
 */
 	generate double `sect_share_pond'= ms_secteur *(uv_presente)^(1-`sigma')/ `blouk'
+	*Calcule \[{{\omega _{k,j}}} \frac{{p_{k,ij}^{1 - \sigma }}}{{\sum\limits_{l \ne j} {{\kappa _l}} p_{k,lj}^{1 - \sigma }}}\] (sans les kappas)
 	*collapse (sum) `sum'=`sect_share_pond',by (iso_d iso_o* `lnms_pays' `fe_iso_o')
 	
 	
 	egen double `sum'=total(`sect_share_pond'),by (iso_d iso_o)
-
+	**Calcule \[{\sum\limits_{k = 1}^K {{\omega _{k,j}}} \frac{{p_{k,ij}^{1 - \sigma }}}{{\sum\limits_{l \ne j} {{\kappa _l}} p_{k,lj}^{1 - \sigma }}}}\] (sans les kappas)
 
 	*bys iso_d iso_o : keep if _n==1
 
