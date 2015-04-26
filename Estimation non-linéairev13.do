@@ -1,13 +1,13 @@
 *22/01/2013 Guillaume Daudin
 *v2 : 14/08/2013
 *v3 : 27/08/2014
-*	- j'enlève le calcul de prix du programme calc_ms_prix, que du coup j'appelle calc_ms
+*	- j'enl√®ve le calcul de prix du programme calc_ms_prix, que du coup j'appelle calc_ms
 *Je normalise les ef
 
-*Calcul de l'estimation non-linéaire
-*À partir de "Calcul ms et estimationsv2.do"
+*Calcul de l'estimation non-lin√©aire
+*√Ä partir de "Calcul ms et estimationsv2.do"
 
-*A FAIRE : vérifier s'il n'y a pas une erreur dans le calcul des prix relatifs (niveau 4, 3, 2...)
+*A FAIRE : v√©rifier s'il n'y a pas une erreur dans le calcul des prix relatifs (niveau 4, 3, 2...)
 *METTRE DES EFFETS FIXES EXPORTATEURS
 
 
@@ -48,7 +48,7 @@ args sample year
 
 display "`year'"
 
-/*On va chercher les données*/
+/*On va chercher les donn√©es*/
 use "$dir/Data/For Third Part/`sample'_`year'", clear
 drop if iso_o==iso_d
 drop if value_`year'==0
@@ -160,7 +160,7 @@ program nlnonlin
 	generate `blik'=exp(`lnms_pays')
 	egen `blif' = total(`blik'), by(iso_d)
 	replace `lnms_pays'=1-`blif' if iso_o_1==1
-	***autre solution : ne pas traiter le pays 1 de manière spéciale, mais tout multiplier par le scalaire nécessaire pour que la somme soit 1 ?
+	***autre solution : ne pas traiter le pays 1 de mani√®re sp√©ciale, mais tout multiplier par le scalaire n√©cessaire pour que la somme soit 1 ?
 	
 	
 	
@@ -200,7 +200,7 @@ program reg_nlin
 	*Par exportateur dans de commerce mondial
 	generate ms_tot = tot_export/tot_trade
 
-	*On enlève les tout petits exportateurs
+	*On enl√®ve les tout petits exportateurs
 	drop if ms_tot < (1/1000)
 	drop tot_import tot_trade
 	bys iso_d : egen tot_import=total(value)
@@ -236,7 +236,7 @@ program reg_nlin
 			capture su ms_tot if iso_o_`j'==1
 			local fe_init = r(mean)
 			local lnfe_init=ln((`fe_init'/`ms_iso_1')^exp(`startlnsigmaminus1'))
-*L'idée ici est de normaliser les effets fixes
+*L'id√©e ici est de normaliser les effets fixes
 			local initial_iso_o  `initial_iso_o' lnfe_iso_o_`j' `lnfe_init'			
 	}
 
