@@ -33,6 +33,8 @@ cd "$dir"
 
 ****************************************************************************************************************************************************************
 log using "log/`c(current_time)' `c(current_date)'"
+timer clear 1
+timer on 1
 
 
 
@@ -300,6 +302,11 @@ foreach year of num 2009(-5)1962 {
 
 *twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
 *twoway (line coef_sigma year, sort) (lfit coef_sigma year, sort)
+
+
+timer off 1
+timer list 1
+
 
 log close	
 
