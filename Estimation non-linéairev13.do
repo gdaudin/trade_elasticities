@@ -155,7 +155,7 @@ program nlnonlin
 	*bys iso_d iso_o : keep if _n==1
 
 
-	foreach i of num 2 / `nbr_iso_o' {
+	foreach i of num 1 / `nbr_iso_o' {
 		replace  `lnms_pays' = ln(`fe_iso_o'*`sum') if iso_o_`i'!=0
 	}
 	
@@ -164,9 +164,9 @@ program nlnonlin
 	tempvar blik blif
 	generate `blik'=exp(`lnms_pays')
 	egen `blif' = total(`blik'), by(iso_d)
-	replace `lnms_pays'=1-`blif' if iso_o_1==1
+	*replace `lnms_pays'=1-`blif' if iso_o_1==1
 	***autre solution : ne pas traiter le pays 1 de manière spéciale, mais tout multiplier par le scalaire nécessaire pour que la somme soit 1 ?
-	
+	replace `lnms_pays'=`lnms_pays'-ln(`blif')
 	
 	
 end
@@ -247,7 +247,7 @@ program reg_nlin
 	egen group_prod=group(prod_unit)
 	
 	
-	local startlnsigmaminus1 2
+	local startlnsigmaminus1 3
 	
 	
 	local liste_variables_iso_o
