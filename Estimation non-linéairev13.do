@@ -32,7 +32,7 @@ cd "$dir"
 
 
 ****************************************************************************************************************************************************************
-log using "log/`c(current_time)' `c(current_date)'"
+log using "logs/`c(current_time)' `c(current_date)'"
 timer clear 1
 timer on 1
 
@@ -190,6 +190,26 @@ program reg_nlin
 	drop if uv_presente < c_50_uv/100 | uv_presente > c_50_uv*100
 	
 	
+	***Pour faire un plus petit sample
+	*En ne gardant que 10% des produits et des pays
+	local limite 60
+	bys prod_unit : egen total_product = total(value_`year')
+	bys iso_d : egen total_iso_d = total(value_`year')
+	bys iso_o : egen total_iso_o = total(value_`year')
+	
+	egen threshold_product = pctile (total_product),p(`limite')
+	egen threshold_iso_d = pctile (total_iso_d),p(`limite')
+	egen threshold_iso_o = pctile (total_iso_o),p(`limite')
+	
+	
+	drop if total_iso_d <= threshold_iso_d
+	drop if total_iso_o <= threshold_iso_o
+	drop if total_product <= threshold_product
+	
+	codebook prod_unit iso_o iso_d
+	
+	drop total_product total_iso_d total_iso_o  threshold_product threshold_iso_d threshold_iso_o 
+	
 	
 	*****Calcul des ms
 	*Par pays expt chez un import
@@ -286,7 +306,7 @@ calc_ms prepar_full 1970
 reg_nlin 1970
 *reg_nlin 1990
 
-blouk
+*blouk
 
 *********************************Lancer les programmes
 
