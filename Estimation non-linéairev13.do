@@ -32,6 +32,9 @@ cd "$dir"
 
 
 ****************************************************************************************************************************************************************
+log using "log/`c(current_time)' `c(current_date)'"
+
+
 
 ****************************************
 *Calcul market share et prix
@@ -298,7 +301,7 @@ foreach year of num 2009(-5)1962 {
 *twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
 *twoway (line coef_sigma year, sort) (lfit coef_sigma year, sort)
 
-	
+log close	
 
 
 
