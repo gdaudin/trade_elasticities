@@ -113,13 +113,13 @@ program nlnonlin
 	
 	tempname lnsigmaminus1
 	scalar `lnsigmaminus1' = `at'[1,1]
-	local n=2
 	generate double `sigma' = exp(`lnsigmaminus1')+1
 	
 	tempvar fe_iso_o
 	generate double `fe_iso_o' =1 if iso_o_1==1
 *	generate double `fe_iso_o' =.
-		
+	
+	local n=2
 	foreach i of num 2 / `nbr_iso_o' {
 		tempname lnfe_iso_o_`i'
 		scalar `lnfe_iso_o_`i''=`at'[1,`n']
@@ -164,7 +164,7 @@ program nlnonlin
 	tempvar blik blif
 	generate `blik'=exp(`lnms_pays')
 	egen `blif' = total(`blik'), by(iso_d)
-	*replace `lnms_pays'=1-`blif' if iso_o_1==1
+*	replace `lnms_pays'=ln(1-`blif') if iso_o_1==1
 	***autre solution : ne pas traiter le pays 1 de manière spéciale, mais tout multiplier par le scalaire nécessaire pour que la somme soit 1 ?
 	replace `lnms_pays'=`lnms_pays'-ln(`blif')
 	
@@ -192,7 +192,7 @@ program reg_nlin
 	
 	***Pour faire un plus petit sample
 	*En ne gardant que 10% des produits et des pays
-	local limite 60
+	local limite 80
 	bys prod_unit : egen total_product = total(value_`year')
 	bys iso_d : egen total_iso_d = total(value_`year')
 	bys iso_o : egen total_iso_o = total(value_`year')
@@ -274,7 +274,7 @@ program reg_nlin
 	
 **ln(.5)=-0.7
 
-	
+	capture predict lnms_pays_predict
 	capture	generate rc=_rc
 	capture	generate converge=e(converge)
 	capture generate R2 = e(r2)
@@ -282,13 +282,13 @@ program reg_nlin
 	capture matrix ET=e(V)
 	local nbr_var = e(k)/2
 	
-	keep if _n==1
+*	keep if _n==1
 	
 	quietly generate sigma_est =X[1,1]
 	replace sigma_est = exp(sigma)+1
 	quietly generate ecart_type_lnsigmaminus1 =ET[1,1]^0.5
 	
-	keep year sigma_est ecart_type_lnsigmaminus1
+*	keep year sigma_est ecart_type_lnsigmaminus1
 	
 	
 	save "$dir/temp_`year'_result", replace
