@@ -290,6 +290,7 @@ blouk
 
 *********************************Lancer les programmes
 
+/*
 foreach year of num 2009(-5)1962 {
 	display "`year'"
 	display
@@ -298,7 +299,7 @@ foreach year of num 2009(-5)1962 {
 	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
 }
-	
+*/	
 
 *twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
 *twoway (line coef_sigma year, sort) (lfit coef_sigma year, sort)
