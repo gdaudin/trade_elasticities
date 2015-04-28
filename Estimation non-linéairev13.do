@@ -163,12 +163,12 @@ program nlnonlin
 	
 	
 
-	tempvar blik blif
-	generate `blik'=exp(`lnms_pays')
-	egen `blif' = total(`blik'), by(iso_d)
+*	tempvar blik blif
+*	generate `blik'=exp(`lnms_pays')
+*	egen `blif' = total(`blik'), by(iso_d)
 *	replace `lnms_pays'=ln(1-`blif') if iso_o_1==1
 	***autre solution : ne pas traiter le pays 1 de manière spéciale, mais tout multiplier par le scalaire nécessaire pour que la somme soit 1 ?
-	replace `lnms_pays'=`lnms_pays'-ln(`blif')
+*	replace `lnms_pays'=`lnms_pays'-ln(`blif')
 	
 	
 end
@@ -249,7 +249,7 @@ program reg_nlin
 	egen group_prod=group(prod_unit)
 	
 	
-	local startlnsigmaminus1 3
+	local startlnsigmaminus1 5
 	
 	
 	local liste_variables_iso_o
