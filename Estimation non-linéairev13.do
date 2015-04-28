@@ -101,7 +101,7 @@ program nlnonlin
 	version 12
 	su group_iso_o, meanonly	
 	local nbr_iso_o=r(max)
-	local nbr_var=`nbr_iso_o'+1
+	local nbr_var=`nbr_iso_o'+2
 	syntax varlist (min=`nbr_var' max=`nbr_var') if [iweight], at(name)
 	local lnms_pays : word 1 of `varlist'
 	local uv_presente : word 2 of `varlist'
@@ -116,13 +116,15 @@ program nlnonlin
 	generate double `sigma' = exp(`lnsigmaminus1')+1
 	
 	tempvar fe_iso_o
-	generate double `fe_iso_o' =1 if iso_o_1==1
-*	generate double `fe_iso_o' =.
+*	generate double `fe_iso_o' =1 if iso_o_1==1
+	generate double `fe_iso_o' =.
 	
 	local n=2
-	foreach i of num 2 / `nbr_iso_o' {
+	foreach i of num 1 / `nbr_iso_o' {
 		tempname lnfe_iso_o_`i'
 		scalar `lnfe_iso_o_`i''=`at'[1,`n']
+*		local blouk = `lnfe_iso_o_`i''
+*		display "`blouk'"
 		local n = `n'+1
 		replace `fe_iso_o'=exp(`lnfe_iso_o_`i'') if iso_o_`i'==1
 	}
@@ -255,20 +257,24 @@ program reg_nlin
 	local initial_iso_o
 	capture su ms_tot if iso_o_1==1
 	local ms_iso_1=r(mean)
-	forvalue j =  2/`nbr_iso_o' {
+	forvalue j =  1/`nbr_iso_o' {
 			local liste_variables_iso_o  `liste_variables_iso_o' iso_o_`j'
 			local liste_parametres_iso_o  `liste_parametres_iso_o' lnfe_iso_o_`j'
 			capture su ms_tot if iso_o_`j'==1
 			local fe_init = r(mean)
-			local lnfe_init=ln((`fe_init'/`ms_iso_1')^exp(`startlnsigmaminus1'))
-*L'idée ici est de normaliser les effets fixes
+*			local lnfe_init=ln((`fe_init'/`ms_iso_1')^exp(`startlnsigmaminus1'))
+*			L'idée ici est de normaliser les effets fixes
+*			Faisons plus simple
+			local lnfe_init = ln(`fe_init')
+			
 			local initial_iso_o  `initial_iso_o' lnfe_iso_o_`j' `lnfe_init'			
 	}
 
 	
-*display "`initial_iso_o'"
+display "`initial_iso_o'"
 	
 *	nl nonlin @ ms_pays prix_rel_5 ms_secteur_5 `liste_variables_iso_o', eps(1e-3) iterate(100) parameters(sigma `liste_parametres_iso_o' ) initial(sigma 1.5 `initial_iso_o')
+	display "nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
 	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
 	
 	
