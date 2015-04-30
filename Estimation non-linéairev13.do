@@ -193,8 +193,8 @@ program reg_nlin
 	
 	
 	***Pour faire un plus petit sample
-	*En ne gardant que 10% des produits et des pays
-	local limite 80
+	*En ne gardant que 10 ou 20% des produits et des pays
+/*	local limite 50
 	bys prod_unit : egen total_product = total(value_`year')
 	bys iso_d : egen total_iso_d = total(value_`year')
 	bys iso_o : egen total_iso_o = total(value_`year')
@@ -208,9 +208,11 @@ program reg_nlin
 	drop if total_iso_o <= threshold_iso_o
 	drop if total_product <= threshold_product
 	
+	drop total_product total_iso_d total_iso_o  threshold_product threshold_iso_d threshold_iso_o 
+	
 	codebook prod_unit iso_o iso_d
 	
-	drop total_product total_iso_d total_iso_o  threshold_product threshold_iso_d threshold_iso_o 
+*/
 	
 	
 	*****Calcul des ms
@@ -249,7 +251,7 @@ program reg_nlin
 	egen group_prod=group(prod_unit)
 	
 	
-	local startlnsigmaminus1 5
+	local startlnsigmaminus1 1
 	
 	
 	local liste_variables_iso_o
