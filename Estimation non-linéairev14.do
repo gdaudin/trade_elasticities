@@ -298,6 +298,10 @@ display "`initial_iso_o'"
 	replace sigma_est = exp(sigma)+1
 	quietly generate ecart_type_lnsigmaminus1 =ET[1,1]^0.5
 	
+	timer list 2
+	generate time=r(t2)
+	generate ordinateur="Lysandre"
+	
 *	keep year sigma_est ecart_type_lnsigmaminus1
 	
 	
@@ -323,7 +327,7 @@ end
 *********************************Lancer les programmes
 
 
-foreach year of num 2009(-1)1962 {
+foreach year of num 2000(-1)1962 {
 	display "`year'"
 	display
 	calc_ms prepar_full `year'
