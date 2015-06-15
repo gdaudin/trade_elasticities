@@ -298,6 +298,7 @@ display "`initial_iso_o'"
 	replace sigma_est = exp(sigma)+1
 	quietly generate ecart_type_lnsigmaminus1 =ET[1,1]^0.5
 	
+	timer off 2
 	timer list 2
 	generate time=r(t2)
 	generate ordinateur="Lysandre"
@@ -312,8 +313,7 @@ display "`initial_iso_o'"
 	}
 	save "$dir/temp_result", replace
 	
-timer off 2
-timer list 2
+
 	
 end
 
