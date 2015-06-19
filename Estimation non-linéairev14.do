@@ -32,7 +32,7 @@ cd "$dir"
 
 
 ****************************************************************************************************************************************************************
-log using "logs/`c(current_time)' `c(current_date)'"
+capture log using "logs/`c(current_time)' `c(current_date)'"
 timer clear 1
 timer on 1
 
@@ -308,9 +308,6 @@ display "`initial_iso_o'"
 	
 	save "$dir/temp_`year'_result", replace
 	keep if _n==1
-	if year != 2009 {
-		append using temp_result
-	}
 	save "$dir/temp_result", replace
 	
 
@@ -326,8 +323,8 @@ end
 
 *********************************Lancer les programmes
 
-
-foreach year of num 2000(-1)1962 {
+capture save "$dir/temp_result"
+foreach year of num 2013(-1)2007 {
 	display "`year'"
 	display
 	calc_ms prepar_full `year'
