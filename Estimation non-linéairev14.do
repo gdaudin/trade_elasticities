@@ -93,7 +93,7 @@ end
 ********************************************************************
 ********************************************************************
 
-calc_ms prepar_full 1970
+
 
 **********************************************************************
 
@@ -279,7 +279,10 @@ display "`initial_iso_o'"
 	
 *	nl nonlin @ ms_pays prix_rel_5 ms_secteur_5 `liste_variables_iso_o', eps(1e-3) iterate(100) parameters(sigma `liste_parametres_iso_o' ) initial(sigma 1.5 `initial_iso_o')
 	display "nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
-	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o', iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
+*	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o', iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
+	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
+	
+	
 	
 	
 **ln(.5)=-0.7
@@ -308,6 +311,7 @@ display "`initial_iso_o'"
 	
 	save "$dir/temp_`year'_result", replace
 	keep if _n==1
+	append using temp_result
 	save "$dir/temp_result", replace
 	
 
@@ -322,7 +326,9 @@ end
 *blouk
 
 *********************************Lancer les programmes
-
+clear
+set obs 1
+gen year=.
 capture save "$dir/temp_result"
 foreach year of num 2013(-1)2007 {
 	display "`year'"
