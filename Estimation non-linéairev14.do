@@ -311,7 +311,8 @@ display "`initial_iso_o'"
 	
 	save "$dir/temp_`year'_result", replace
 	keep if _n==1
-	append using temp_result
+	drop iso_o*
+	append using "$dir/temp_result"
 	save "$dir/temp_result", replace
 	
 
@@ -330,7 +331,7 @@ clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 2013(-1)2007 {
+foreach year of num 2010(-1)2007 {
 	display "`year'"
 	display
 	calc_ms prepar_full `year'
