@@ -1,6 +1,6 @@
 **This program was written in May 2013
 *adapted to follow revision in Nov 2013
-*this program computes sample of stable pairs (bal-superbal-square) in 1963-2009
+*this program computes sample of s%table pairs (bal-superbal-square) in 1963-2009
 *prepares all graphs for appendix 1 in paper on full-superbal sample coverage
 
 *****************************
@@ -10,32 +10,50 @@ clear all
 set matsize 800
 set more off
 **at laptop
-global dir "G:\LIZA_WORK"
+*global dir "G:\LIZA_WORK"
 **at OFCE
 *global dir "F:\LIZA_WORK"
-cd "$dir\GUILLAUME_DAUDIN\REVISION_nov_2013_data"
+*cd "$dir\GUILLAUME_DAUDIN\REVISION_nov_2013_data"
 **directory to save results: "$dir\GUILLAUME_DAUDIN\REVISION_nov_2013_data\filename.dta"
 ***previously results saved in "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\REVISION_SPRING_2013\part1"
+
+
+*GD
+global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+cd "$dir"
+
+
+
+
+
 
 **1**create superbalanced sample for some subset of years: 
 *pairs trading both ways in each year
 capture program drop superbal
 program superbal
 **redef_full_pair_tot_trade file has total trade by pair redefined to have SUN, DEU, CSH
-use "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\redef_full_pair_tot_trade", clear
+*use "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\redef_full_pair_tot_trade", clear
+use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
+
 *`1' is starting year for the superbalanced sample: 1963 or 1970
 *`2' is defined as a fct of `1' to drop unneeded years: 1962 or 1962-1969
+
+
+
+
+
+
 local 2=`1'-1
 local name tot_pair tot_uv
 foreach n of local name {
 	forvalues i=1962(1)`2' {
-		drop `n'`i'
+		drop if year==`i'
 	}
 } 
-drop id nb_years
+
 **define local 3 to store total nb of years for pair present in each year
-local 3=2009-`1'+1
-egen test_rep=rownonmiss(tot_pair*)
+local 3=2013-`1'+1
+bys iso_d iso_o : generate test_rep=_N
 gen id=.
 replace id=0 if test_rep<`3'
 replace id=1 if test_rep==`3'
@@ -43,17 +61,44 @@ tab id
 rename test_rep nb_years
 **There are 2712 stable pairs (trade in each year in 1963-2009) and 29112 unstable pairs 
 **The median pair is present in the sample for 15 years, IQR is 6-31 years, with mean at 19.1
-histogram nb_years, width(5) xtitle("Number of years") title("Pair presence in `1'-2009") 
-graph export nb_years_pair_presence_`1'_09.eps, replace
-**construct superbalanced sample defined from some year `1' until 2009**
+
+bys iso_o iso_d : keep if _n==1
+drop year tot_pair
+
+histogram nb_years, width(5) xtitle("Number of years") title("Pair presence in `1'-2013") fract 
+graph export nb_years_pair_presence_`1'_13.eps, replace
+
+
+*--------------------------------------------------------------------------------
+**construct superbalanced sample defined from some year `1' until 2013**
 **defined as the set of all pairs which trade both ways in each year of the sample
-drop nb_years
+
+
+local source o d
+local name RUS UKR UZB KAZ BLR AZE GEO TJK MDA KGZ LTU TKM ARM LVA EST
+local germany FRG DDR
+local center CZE SVK
+foreach s of local source {
+	foreach n of local name {
+		replace iso_`s'="SUN" if iso_`s'=="`n'"
+	}	
+	foreach g of local germany {
+		replace iso_`s'="DEU" if iso_`s'=="`g'"
+	}	
+	foreach c of local center {
+		replace iso_`s'="CSH" if iso_`s'=="`c'"
+	}	
+}
+
+collapse (max) id, by(iso_d iso_o)
+
+
 keep if id==1
 drop id
 preserve
 keep iso_o iso_d
-save list_stable_`1'_09, replace
-use list_stable_`1'_09, clear
+save list_stable_`1'_13, replace
+use list_stable_`1'_13, clear
 rename iso_o partner
 rename iso_d reporter
 *switch the two sides
@@ -63,13 +108,18 @@ save tmp_switch, replace
 restore
 joinby iso_d iso_o using tmp_switch, unmatched(none)
 **this leaves 1056 pairs which trade both ways in 63-09 out of 1332 potential pairs (37 reporters)
-save superbal_`1'_09, replace
+save superbal_`1'_13, replace
 erase tmp_switch.dta
-erase list_stable_`1'_09.dta
+erase list_stable_`1'_13.dta
 **create file for regressions:
-use superbal_`1'_09, clear
+use superbal_`1'_13, clear
 keep iso_o iso_d
 save superbal_list_`1', replace
+
+
+end
+
+
 **compare to 1962-2009 sample:
 **there are 37 reporters(partners): 5 new relatively 1962-2009
 **these additional reporters are: AUS, AUT, FIN, IRL, SLV 
@@ -87,24 +137,41 @@ save superbal_list_`1', replace
 *keep if _merge==1
 *keep iso_o iso_d
 **********************
-**create square sample corresponding to 1963-2009
-use superbal_`1'_09, clear
+
+
+capture program drop square
+program square
+
+**create square sample corresponding to 1963 (ou 1970)-2013
+
+
+use superbal_`1'_13, clear
 keep iso_o iso_d 
 fillin iso_o iso_d
 replace _fillin=0 if iso_o==iso_d
 *compute nb of times a given reporter has 0 trade with another country of the sample
 reshape wide _fillin, i(iso_d) j(iso_o) string
-local coun ARG AUS AUT BEL BRA CAN CHE CHL COL DEU DNK ESP FIN FRA GBR GRC HKG IRL ISL ISR ITA JPN KOR MEX MYS NLD PHL PRT PRY SGP SLV SWE THA TUN TUR USA VEN
-foreach c of local coun {
+
+quietly tabulate iso_d
+local i = r(r)
+local liste_pays
+forvalues n=1(1)`i' {
+	local iso_d = iso_d[`n']
+	local liste_pays "`liste_pays' `iso_d'"
+}
+
+display "`liste_pays'"
+
+foreach c of local liste_pays {
 	rename _fillin`c' `c'
 }
-egen som=rowtotal(ARG-VEN)
+egen som=rowtotal(`liste_pays')
 gsort som
 local liste ""
 global num=_N
 forvalues n=1(1)$num {
-	local iso_o = iso_d[`n']
-	local liste "`liste' `iso_o'"
+	local iso_d = iso_d[`n']
+	local liste "`liste' `iso_d'"
 }
 display "`liste'"
 order iso_d `liste'
@@ -191,8 +258,6 @@ keep iso_d id
 save sq_list_`1', replace
 erase sq_`1'.dta
 end
-superbal 1963
-superbal 1970
 **not done: check whether some alternative would give more countries in square sample (24)
 **NB: code for square not suitable when each variant has more than one excluded country: keep track of each variant
 **conclude: 22*21 is stable sample (identified with id=1; 23rd country has to be chosen: either ISR or MYS)
@@ -201,6 +266,9 @@ superbal 1970
 *superbal sample is stable while several square samples can be formed in same year
 *therefore: I will work with superbalanced not square in baseline 
 
+
+
+
 *************
 **use 1963 superbal sample to modify graphs in appendix of paper
 *compare total trade for full sample; superbalanced sample; square sample
@@ -208,15 +276,32 @@ superbal 1970
 *************
 capture program drop cover
 program cover
-use "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\redef_full_pair_tot_trade", clear
-reshape long tot_pair tot_uv, i(iso_d iso_o) j(year)
-drop tot_uv id nb_years
+use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
+
+local source o d
+local name RUS UKR UZB KAZ BLR AZE GEO TJK MDA KGZ LTU TKM ARM LVA EST
+local germany FRG DDR
+local center CZE SVK
+foreach s of local source {
+	foreach n of local name {
+		replace iso_`s'="SUN" if iso_`s'=="`n'"
+	}	
+	foreach g of local germany {
+		replace iso_`s'="DEU" if iso_`s'=="`g'"
+	}	
+	foreach c of local center {
+		replace iso_`s'="CSH" if iso_`s'=="`c'"
+	}	
+}
+
+
 preserve
 joinby iso_o iso_d using superbal_list_1963, unmatched(none)
 collapse (sum) tot_superbal=tot_pair, by(year)
 replace tot_superbal=tot_superbal*10^(-9)
 *initially trade measured in thsd usd, therefore scale is trillion
 save tmp_tot_superbal, replace
+
 restore
 preserve
 **use square list to keep square sample: either MYS or ISR 
@@ -228,6 +313,7 @@ fillin iso_o iso_d
 drop if iso_o==iso_d
 drop id _fillin
 save tmp_square, replace
+
 restore
 preserve
 joinby iso_o iso_d using tmp_square, unmatched(none)
@@ -237,6 +323,7 @@ erase tmp_square.dta
 joinby year using tmp_tot_superbal, unmatched(none)
 erase tmp_tot_superbal.dta
 save coverage, replace
+
 restore
 collapse (sum) tot_full=tot_pair, by(year)
 replace tot_full=tot_full*10^(-9)
@@ -253,6 +340,8 @@ twoway (connected cov_superbal_to_full year, ytitle("Share of total trade", axis
 */title("Trade coverage: stable pairs")/* 
 */legend(label(1 "Superbalanced sample") label(2 "Square sample") label(3 "Trade in full sample [right scale]"))
 graph export trade_coverage_1963.eps, replace
+
+/*
 **same exercise with superbal in 1970
 use "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\redef_full_pair_tot_trade", clear
 reshape long tot_pair tot_uv, i(iso_d iso_o) j(year)
@@ -272,8 +361,9 @@ twoway (connected cov_superbal_to_full year, ytitle("Share of total trade", axis
 */title("Trade coverage in superbalanced samples")/* 
 */legend(label(1 "Superbal 1963") label(2 "Superbal 1970") label(3 "Trade in full sample [right scale]"))
 graph export trade_coverage_63_70.eps, replace
+*/
 end
-cover
+
 
 ******************************
 **check using reciprocal trade
@@ -311,8 +401,6 @@ merge 1:1 year using coverage, update replace nogen norep
 save coverage, replace
 clear
 end
-recip 1963 63
-recip 1970 70
 
 *add data on annual reciprocal trade:
 *previously constructed file contains reciprocal trade by year
@@ -339,4 +427,25 @@ twoway (connected cov_recip63 year, ytitle("Coverage reciprocal trade") ylabel(.
 */legend(label(1 "Reciprocal 1963") label(2 "Reciprocal 1970") label(3 "Reciprocal annual"))
 graph export recip_coverage_63_70.eps, replace
 end
+
+
+
+
+
+
+
+
+superbal 1963
+
+*superbal 1970
+square 1963
+
+*square 1970 (ne marche pas ?)
+
+cover
+
+
+recip 1963 63
+recip 1970 70
+
 annual
