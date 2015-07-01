@@ -138,6 +138,8 @@ label var pairs_year "nb active pairs in year"
 save stats_active_pairs, replace
 erase nb_active_full.dta
 **graph reported in paper
+
+
 use stats_active_pairs, clear
 capture drop if year==1962
 gen double share_year=pairs_year/potential_year
@@ -153,7 +155,8 @@ graph twoway (spike nb_active year, lcolor(blue) lpattern(dot) ytitle("number pa
 graph twoway (spike nb_active year, lcolor(blue) lpattern(dot) ytitle("number pairs (in thousand)")) /*
 */ (line share_year year, lcolor(red) yaxis(2)) /*
 */ (line share_period year, lcolor(blue) cmissing(n) yaxis(2)), /*
-*/ legend(order (1 3 2) label(1 "active pairs") label(2 "share of potential pairs in year") label(3 "share of subperiod active"))
+*/ legend(order (1 3 2) label(1 "active pairs") label(2 "share of potential pairs in year") label(3 "share of subperiod active")) /*
+*/ yscale(axis(1) range (0 30)) ylabel(0(5)30, axis(1)) yscale(axis(1) range (0 1)) ylabel(0(0.2)1, axis(2))
 graph export part1_active_pairs.eps, as(eps) preview(on) replace
 clear
 end
