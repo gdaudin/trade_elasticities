@@ -43,13 +43,8 @@ clear
 
 foreach i of numlist 1962(1)2013 {
 	display "--cov_per_year--------`i'---------------------"
-	if `i' <= 1999 {
-		use "$dir/Data/COMTRADE_2011 (imports)/All-4D-`i'.dta", clear
-	}
-
-	if `i' >= 2000 {
-		use "$dir/Data/COMTRADE_2015/All-4D-`i'.dta", clear
-	}	
+	
+	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
 	
 	drop if iso_d=="WLD"
 	drop if iso_o=="WLD"
@@ -114,13 +109,8 @@ foreach i of numlist 1962(1)2013 {
 foreach i of numlist 1962(1)2013 {
 	*cd "$dir\SITC_Rev1_wits_bulk\wits_june_2011"
 	display "--cov_per_year_pair--------`i'---------------------"
-	if `i' <= 1999 {
-		use "$dir/Data/COMTRADE_2011 (imports)/All-4D-`i'.dta", clear
-	}
-
-	if `i' >= 2000 {
-		use "$dir/Data/COMTRADE_2015/All-4D-`i'.dta", clear
-	}	
+	
+	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
 	
 	drop if iso_d=="WLD"
 	drop if iso_o=="WLD"
