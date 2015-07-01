@@ -122,7 +122,7 @@ foreach i of numlist 1962(1)2013 {
 	replace share_uv=0 if tot_pair_uv==.
 	drop tot_pair_uv
 	by iso_o iso_d, sort: drop if _n!=1
-	drop qty_token product trade_value uv
+	drop qty_token product trade_value uv qty_unit quantity
 	capture append using cov_per_year_pair
 	save cov_per_year_pair, replace
 	clear
