@@ -277,7 +277,7 @@ timer on 2
 	
 display "`initial_iso_o'"
 gen weight=0
-bys iso_d iso_o	: replace weight = 1/_N^0.5
+bys iso_d iso_o	: replace weight = 1/_N
 *Cela de manière 
 	
 *	nl nonlin @ ms_pays prix_rel_5 ms_secteur_5 `liste_variables_iso_o', eps(1e-3) iterate(100) parameters(sigma `liste_parametres_iso_o' ) initial(sigma 1.5 `initial_iso_o')
