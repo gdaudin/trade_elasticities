@@ -1,3 +1,4 @@
+f*Version Juin 2015 pour Guillaume et intégrer jusqu'à 2013
 **This program was written in May 2013
 *adapted to follow revision in Nov 2013
 *this program computes sample of s%table pairs (bal-superbal-square) in 1963-2009
@@ -330,6 +331,8 @@ replace tot_full=tot_full*10^(-9)
 joinby year using coverage, unmatched(none)
 save coverage, replace
 **construct coverage comparison 
+
+
 use coverage, clear
 gen double cov_superbal_to_full=tot_superbal/tot_full
 gen double cov_square_to_full=tot_sq/tot_full
@@ -338,7 +341,9 @@ twoway (connected cov_superbal_to_full year, ytitle("Share of total trade", axis
 */ (connected cov_square_to_full year,  lcolor(red) lwidth(medium) msymbol(point) mcolor(red)) /*
 */(spike tot_full year, lcolor(blue) lpattern(shortdash) yaxis(2) ytitle("Trillions of USD", axis(2)) yscale(titlegap(medsmall) axis(2)) ylabel(0(2.5)15, angle(horizontal) grid glwidth(vthin) glcolor(bluishgray) axis(2))) , /*
 */title("Trade coverage: stable pairs")/* 
-*/legend(label(1 "Superbalanced sample") label(2 "Square sample") label(3 "Trade in full sample [right scale]"))
+*/legend(label(1 "Superbalanced sample") label(2 "Square sample") label(3 "Trade in full sample [right scale]")) /*
+*/ yscale(axis(2) range (0 15)) ylabel(0(3)15, axis(2)) yscale(axis(2) range (0 1)) ylabel(0(0.2)1, axis(1))
+
 graph export trade_coverage_1963.eps, replace
 
 /*

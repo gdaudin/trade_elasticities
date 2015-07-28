@@ -144,6 +144,7 @@ replace stable=1 if nb_years==r(r)
 keep iso_d year nb_year stable
 save list_year_reporter, replace
 
+
 **comparisonlist_reporterbis: keeps only the reporter identifier, and the number of years it is present in data
 use list_year_reporter, clear
 by iso_d, sort: drop if _n!=1
@@ -152,7 +153,33 @@ save list_reporter, replace
 clear
 **the stable reporters are: VEN, USA, TUR, TUN, THA, SWE, SGP, PRY, PRT, PHL, NLD, MEX, 
 *KOR, JPN, ITA, ISR, ISL, HKG, GRC, GBR, FRA, ESP, DNK, DEU, COL, CHL, CHE, CAN, BRA, ARG
-**Beware: this list of stable reporters is from full sample: should be redone after wits_cepii correspondence
+
+** pour liste partner
+use cov_per_year_pair, clear
+by iso_o year, sort: drop if _n!=1
+drop iso_d tot_pair share_uv
+by iso_o, sort: gen nb_years=_N
+gen stable=0
+quietly tabulate year
+replace stable=1 if nb_years==r(r)
+keep iso_o year nb_year stable
+save list_year_partner, replace
+
+
+**comparisonlist_partnersbis: keeps only the reporter identifier, and the number of years it is present in data
+use list_year_partner, clear
+by iso_o, sort: drop if _n!=1
+drop year
+save list_partner, replace
+clear
+**the stable reporters are: VEN, USA, TUR, TUN, THA, SWE, SGP, PRY, PRT, PHL, NLD, MEX, 
+*KOR, JPN, ITA, ISR, ISL, HKG, GRC, GBR, FRA, ESP, DNK, DEU, COL, CHL, CHE, CAN, BRA, ARG
+
+
+
+
+
+
 end 
 coverage_bulk
 
