@@ -308,12 +308,10 @@ bys iso_d iso_o	: replace weight = 1/_N
 	timer list 2
 	generate time=r(t2)
 	generate ordinateur="Lysandre"
-	
-*	keep year sigma_est ecart_type_lnsigmaminus1
-	
-	
+		
 	save "$dir/temp_`year'_result", replace
 	keep if _n==1
+	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1
 	drop iso_o*
 	append using "$dir/temp_result"
 	save "$dir/temp_result", replace
@@ -334,7 +332,7 @@ clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 2013(-1)1962 {
+foreach year of num 1962(2)1980 {
 	display "`year'"
 	display
 	calc_ms prepar_full `year'
