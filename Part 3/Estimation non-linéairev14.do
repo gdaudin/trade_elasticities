@@ -312,7 +312,7 @@ bys iso_d iso_o	: replace weight = value/_N
 		
 	save "$dir/temp_`year'_result", replace
 	keep if _n==1
-	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1
+	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year
 	append using "$dir/temp_result"
 	save "$dir/temp_result", replace
 	
