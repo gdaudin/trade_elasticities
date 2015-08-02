@@ -312,7 +312,7 @@ bys iso_d iso_o	: replace weight = value/_N
 		
 	save "$dir/temp_`year'_result", replace
 	keep if _n==1
-	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year
+	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur
 	append using "$dir/temp_result"
 	save "$dir/temp_result", replace
 	
@@ -332,7 +332,7 @@ clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 1962(2)1980 {
+foreach year of num 1963(2)2013 {
 	display "`year'"
 	display
 	calc_ms prepar_full `year'
