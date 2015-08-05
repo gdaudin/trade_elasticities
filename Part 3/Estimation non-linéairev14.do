@@ -277,7 +277,7 @@ timer on 2
 	
 display "`initial_iso_o'"
 gen weight=0
-bys iso_d iso_o	: replace weight = value/_N
+bys iso_d iso_o	: replace weight = 1/_N
 *Cela de manière 
 	
 *	nl nonlin @ ms_pays prix_rel_5 ms_secteur_5 `liste_variables_iso_o', eps(1e-3) iterate(100) parameters(sigma `liste_parametres_iso_o' ) initial(sigma 1.5 `initial_iso_o')
@@ -303,6 +303,8 @@ bys iso_d iso_o	: replace weight = value/_N
 	quietly generate sigma_est =X[1,1]
 	replace sigma_est = exp(sigma)+1
 	quietly generate ecart_type_lnsigmaminus1 =ET[1,1]^0.5
+	generate date = "`c(current_time)' `c(current_date)'"
+	
 	
 	timer off 2
 	timer list 2
@@ -312,7 +314,7 @@ bys iso_d iso_o	: replace weight = value/_N
 		
 	save "$dir/temp_`year'_result", replace
 	keep if _n==1
-	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur
+	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
 	append using "$dir/temp_result"
 	save "$dir/temp_result", replace
 	
@@ -332,7 +334,7 @@ clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 1963(2)2013 {
+foreach year of num 2008(2)2008 {
 	display "`year'"
 	display
 	calc_ms prepar_full `year'
