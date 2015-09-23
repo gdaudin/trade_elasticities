@@ -299,24 +299,9 @@ graph twoway (scatter coef_ln_`instr'_year1 se_ln_`instr'_year1 year if gap==2, 
 *important: price level flips sign from before to after 1990s...
 
 
-*TO DO:
-*!*redo estimation after dropping iso_o==USA (changes slightly point estimate on price levels) and without clustering by iso_o (precision of price level estimation)
-*!*redo estimation for balanced sample (pairs present in each year)
-
-*NEXT DO:
-*launch regressions with instrumenting via server (gdpo; i; k; effective ms; full ms) 
-*keep categories where at least 5 suppliers observed and destinations where at least 50 products observed
-*open questions: construct sectoral expdtre in destination on basis of restricted dataset?
-*open questions: construct exporter market share on the basis of restricted dataset (included categories)?
-
-
-*NEXT DO:
-*try alternative instrumenting strategy: sigma and exporter fe estimated from price regression (using expenditure on other markets)
-
-
-
 *NOTES:
-*!*market coverage can be investigated through changes in nbr exporters present in each product category!
-*!*sectoral dimension: estimate sectoral market equations using predicted uv and pooling all years:
-*aggregate to bilat elasticities; aggregate to world elasticity; decompose: composition (between sectors-pairs)/substitution (within sector-pair) 
+*?*redo estimation after dropping iso_o==USA (changes slightly point estimate on price levels) and without clustering by iso_o (precision of price level estimation)
+*?*redo estimation for balanced sample (pairs present in each year)
+*?*sectoral dimension: estimate sectoral sigmas and change in sectoral sigmas over time using predicted uv
+*?*then aggregate to bilat elasticities; aggregate to world elasticity; decompose: composition (between sectors-pairs)/substitution (within sector-pair) 
 *why? check whether substitution effects fudged by composition effects
