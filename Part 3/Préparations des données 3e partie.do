@@ -3,10 +3,10 @@
 *Fait à partir de full_part3_prepar_relprices.do
 *Removed everything after the save of prepar_full
 
-**This file constructs "prepar_full_`year'", "prepar_full_imp_`year' and "sectorprices_full_`year'" files for the full sample
-**these files are then used in aggregate trade elasticity estimations on the composite good (relative price in levels)
-**"prepar_full_imp_`year' stores uv per pair*product*qty_unit with imputed uv for lacking uv
-**"sectorprices_full_`year'" stores sectoral prices by destination*product_qty_unit
+*LA: Sept.10: This file follows "preparations des donnees.do" pour obtenir a la fin les fichiers "prepar_full_`year'.dta"
+*mais les noms de fichiers de donnees SITC 4 de 2015 s'appellent "sitcrev1_4dgt_`year'.txt" et non pas "cepii-4D-`year'.txt"
+
+**This file constructs "prepar_full_`year'" files for the full sample
 
 ****************************************
 *prepare data files*
@@ -16,55 +16,73 @@ set mem 500M
 set matsize 800
 set more off
 *on my laptop:
-*global dir "G:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*at OFCE:
-*global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
+global dir "/Users/liza/Documents/LIZA_WORK"
+cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
 *Guillaume
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+*global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
 *cd "$dir\SITC_Rev1_adv_query_2011"
 *GD
-cd "$dir"
+*cd "$dir"
 
 **first I pre-prepare data files keeping for each year the data I will need
 **I keep lacking quantity data in the preparatory files because I will need them later
 capture program drop prepar
 program prepar
-args year
-*eg prepar 1962
+args year ini fin
+*eg prepar 1962 62 90
+*eg prepare 1962 91 06
+*local year 1962
+*local ini 62
+*local fin 90
 
 *use All-4D-`1', clear
 *GD
 
-use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
-	
+*use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
+insheet using sitcrev1_4dgt_`year'.txt, clear	
+
 drop if iso_o=="All"
 drop if iso_d=="All"
+drop if product==.
+drop if trade_value==.
 
 **procedure for correspondence
 **to change all ERI-ETH variations to ETH only
-capture replace iso_d=ETH if iso_d=="ERI"
-capture replace iso_o=ETH if iso_o=="ERI"
+capture replace iso_d="ETH" if iso_d=="ERI"
+capture replace iso_o="ETH" if iso_o=="ERI"
 
 **to change all BEL-LUX variations to BEL only
-capture replace iso_d=BEL if iso_d=="LUX"
-capture replace iso_o=BEL if iso_o=="LUX"
+capture replace iso_d="BEL" if iso_d=="LUX"
+capture replace iso_o="BEL" if iso_o=="LUX"
+
+*Liza's corresp files: 62-90; 91-06
+joinby iso_d using "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_4digit_leafs/rolling/wits_cepii_corresp_d_`ini'_`fin'", unmatched(none)
+drop iso_d
+rename ccode_cepii iso_d
+joinby iso_o using "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_4digit_leafs/rolling/wits_cepii_corresp_o_`ini'_`fin'", unmatched(none)
+drop iso_o
+rename ccode_cepii iso_o
+
+*give same name (DEU) to Germany bef/aft 1991: needed so that price series for Germany uninterrupted
+capture replace iso_d="DEU" if iso_d=="FRG"
+capture replace iso_o="DEU" if iso_o=="FRG"
 
 **Preparing Germany (que chez Guillaume)
-replace iso_d= "DEU_avt91" if `year' <=1990 & iso_d=="DEU"
-replace iso_o= "DEU_avt91" if `year' <=1990 & iso_o=="DEU"
-replace iso_d= "DEU_apr91" if `year' >=1991 & iso_d=="DEU"
-replace iso_o= "DEU_apr91" if `year' >=1991 & iso_o=="DEU"
+*replace iso_d= "DEU_avt91" if `year' <=1990 & iso_d=="DEU"
+*replace iso_o= "DEU_avt91" if `year' <=1990 & iso_o=="DEU"
+*replace iso_d= "DEU_apr91" if `year' >=1991 & iso_d=="DEU"
+*replace iso_o= "DEU_apr91" if `year' >=1991 & iso_o=="DEU"
 
 **Remplacer
-rename iso_d iso
-joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
-rename cepii iso_d
-drop iso
+*rename iso_d iso
+*joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
+*rename cepii iso_d
+*drop iso
 
-rename iso_o iso
-joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
-rename cepii iso_o 
-drop iso
+*rename iso_o iso
+*joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
+*rename cepii iso_o 
+*drop iso
 
 
 assert qty_token!=.
@@ -119,21 +137,29 @@ by iso_d, sort: egen double tot_dest_full=total(value)
 
 local name uv value tot_pair_product tot_pair_full tot_dest_full
 foreach n of local name {
-	rename `n' `n'_`1'
+	rename `n' `n'_`year'
 }
 
-*save prepar_full_`1', replace
+save prepar_full_`year', replace
+erase "sitcrev1_4dgt_`year'.txt"
 *GD
-save "$dir/Data/For Third Part/prepar_full_`year'", replace
+*save "$dir/Data/For Third Part/prepar_full_`year'", replace
 clear
 end
 
 *prepar 1962 62 90
 *prepar 2009 91 06
 
-foreach i of numlist 1962(1)2013 {
-	prepar `i'
+foreach n of numlist 1962/1990 {
+	prepar `n' 62 90
 }
+foreach n of numlist 1991/2013 {
+	prepar `n' 91 06
+}
+*GD
+*foreach i of numlist 1962(1)2013 {
+*	prepar `i'
+*}
 
 ****************************************************************************************************
 
