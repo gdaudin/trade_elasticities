@@ -20,6 +20,7 @@ set more off
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+	cd "$dir"
 
 }
 
@@ -33,7 +34,7 @@ if "`c(hostname)'" =="ECONCES1" {
 
 
 
-cd "$dir"
+
 
 **first I pre-prepare data files keeping for each year the data I will need
 **I keep lacking quantity data in the preparatory files because I will need them later
