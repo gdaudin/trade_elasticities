@@ -10,8 +10,29 @@
 *set directory*
 ****************************************
 set more off
-global dir "/Users/liza/Documents/LIZA_WORK"
-cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+
+
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+	cd "$dir/Data/For Third Part/"
+
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
+
+
+
+
+
+
+
+
 
 ******************************************************
 *get PWT data into STATA: 
@@ -23,12 +44,24 @@ program pwtin
 *SER instead of SRB for Serbia
 *ZAR instead of COD for Democratic Republic of Congo
 **one country doesn't match: MNE (Montenegro)
-use13 "$dir/EKpaper_data/revision_data_2015/pwt81/pwt81.dta", clear
+
+if "`c(hostname)'" =="ECONCES1" {
+	use13 "$dir/EKpaper_data/revision_data_2015/pwt81/pwt81.dta", clear
+}
+
+
+if strmatch("`c(username)'","*daudin*")==1 {
+	use pwt81.dta, clear
+
+}
+
 replace countrycode="ROM" if countrycode=="ROU"
 replace countrycode="SER" if countrycode=="SRB"
 replace countrycode="ZAR" if countrycode=="COD"
 
 save pwt81,replace
+
+
 clear
 end
 pwtin
@@ -39,15 +72,40 @@ pwtin
 capture program drop prepwt
 program prepwt
 use pwt81, clear
-rename countrycode iso_o
-joinby iso_o using "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_4digit_leafs/rolling/wits_cepii_corresp_o_91_06", unmatched(none)
-drop iso_o
-rename ccode_cepii iso_o
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	rename countrycode iso_o
+	joinby iso_o using "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_4digit_leafs/rolling/wits_cepii_corresp_o_91_06", unmatched(none)
+	drop iso_o
+	rename ccode_cepii iso_o
+}
+
+
+if strmatch("`c(username)'","*daudin*")==1 {
+	rename countrycode iso
+	joinby iso using "../Comparaison Wits Cepii.dta", unmatched(none)
+	drop iso
+	rename cepii iso_o
+
+}
+
+
+
+
+
+
+
 *keep relevant variables: price level of domestic absorption; price level of domestic output, price level of investment, price level of capital stock
-keep iso_o year pl_da pl_gdpo pl_i pl_k
+keep iso_o year pl_gdpo
+*Avant il y avait aussi pl_i pl_k et pl_da mais je ne comprends pas la pertinence.
 drop if pl_gdpo==.
 drop if year<1962
 save tmp_pwt81, replace
+
+
+
+
 **first approach to constructing annual files for instrumenting unit values:
 *group data by 5-year period: start in 1967; finish in 2011
 use tmp_pwt81, clear
@@ -56,11 +114,11 @@ foreach n of numlist 1965/2011 {
 	local i=`n'-3
 	local j=`n'-1
 	keep if year>=`i' & year<=`n'
-	local vars da gdpo i k
+	local vars gdpo
 	foreach v of local vars {
 		rename pl_`v' `v'_
 	}
-	reshape wide da_ gdpo_ i_ k_, i(iso_o) j(year)
+	reshape wide  gdpo_ , i(iso_o) j(year)
 	foreach t of numlist `i'/`j' {
 		foreach v of local vars {
 			gen double rel_`v'_`t'=`v'_`n'/`v'_`t'
