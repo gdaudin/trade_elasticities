@@ -42,6 +42,9 @@ program prepar
 args year
 *eg prepar 1962
 
+
+use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
+
 assert qty_token!=.
 replace quantity=. if quantity<0 
 replace quantity=. if  quantity==0
