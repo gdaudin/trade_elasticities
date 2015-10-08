@@ -11,10 +11,20 @@
 *capture program drop advquery_in_stata
 *program advquery_in_stata
 set more off
-*global dir "/Users/liza/Documents/LIZA_WORK"
-*cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
-cd "$dir/Data/COMTRADE_2015_lite"
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	cd "$dir/Data/COMTRADE_2015_lite"
+
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
+}
+
 
 
 ********************************************************
@@ -56,26 +66,25 @@ drop if iso_d=="All"
 drop if iso_o=="All"
 capture replace iso_d= YUG if iso_d=="SER"
 capture replace iso_o= YUG if iso_o=="SER"
-capture replace iso_d= BEL if iso_d=="LUX"
-capture replace iso_o= BEL if iso_o=="LUX"
 capture replace iso_d=ETH if iso_d=="ERI"
 capture replace iso_o=ETH if iso_o=="ERI"
-if `1' <=1990 {
-	joinby iso_d using "$dir/Data/wits_cepii_corresp_d_62_90.dta", unmatched(none)
-}
-if `1' >=1991 {
-	joinby iso_d using "$dir/Data/wits_cepii_corresp_d_62_90.dta", unmatched(none)
-}
-drop iso_d
-rename ccode_cepii iso_d
-if `1' <=1990 {
-	joinby iso_o using "$dir/Data/wits_cepii_corresp_o_91_06.dta", unmatched(none)
-}
-if `1' >=1991 {
-	joinby iso_o using "$dir/Data/wits_cepii_corresp_o_91_06.dta", unmatched(none)
-}
-drop iso_o
-rename ccode_cepii iso_o
+*capture replace iso_d= BEL if iso_d=="LUX"
+*capture replace iso_o= BEL if iso_o=="LUX"
+*J'ai enlevé le traitement de la Belgique (et du Luxembourg). Ce sera pour plus tard.
+
+
+**Remplacer
+rename iso_d iso
+joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
+rename cepii iso_d
+drop iso
+
+rename iso_o iso
+joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
+rename cepii iso_o 
+drop iso
+
+
 drop if iso_o==iso_d
 collapse (sum) trade_value quantity, by(product qty_unit qty_token iso_o iso_d year)
 save cepii-4D-`1', replace
