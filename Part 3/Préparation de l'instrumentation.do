@@ -24,6 +24,18 @@ if "`c(hostname)'" =="ECONCES1" {
 
 
 
+*****Test pour les BLX, BEL, LUX, FRG et DEU
+foreach pays in  BLX BEL LUX FRG DEU {
+	foreach status in d o {
+		local `pays'_`status'
+		foreach year of numlist 1963(1)2013 {
+			use prepar_cepii_`year', clear
+			capture keep if iso_`status'== "`pays'"
+			if _N >=1 local `pays'_`status' = "``pays'_`status'' `year'"
+		}
+		display "`pays'_`status'" "``pays'_`status''"
+	}
+}
 
 
 
