@@ -64,25 +64,25 @@ program keepdatacepii
 use All-4D-`1', clear
 drop if iso_d=="All"
 drop if iso_o=="All"
-capture replace iso_d= YUG if iso_d=="SER"
-capture replace iso_o= YUG if iso_o=="SER"
-capture replace iso_d=ETH if iso_d=="ERI"
-capture replace iso_o=ETH if iso_o=="ERI"
+*capture replace iso_d= YUG if iso_d=="SER"
+*capture replace iso_o= YUG if iso_o=="SER"
+*capture replace iso_d= ETH if iso_d=="ERI"
+*capture replace iso_o= ETH if iso_o=="ERI"
 *capture replace iso_d= BEL if iso_d=="LUX"
 *capture replace iso_o= BEL if iso_o=="LUX"
-*J'ai enlevé le traitement de la Belgique (et du Luxembourg). Ce sera pour plus tard.
+*J'ai enlevé tous les traitements (Belgique, Serbie, Luxembourg, Allemagne...)
 
 
 **Remplacer
 rename iso_d iso
 joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
-rename cepii iso_d
-drop iso
+rename cepii cepii_d
+rename iso iso_d
 
 rename iso_o iso
 joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
-rename cepii iso_o 
-drop iso
+rename cepii cepii_o
+rename iso iso_o 
 
 
 drop if iso_o==iso_d
