@@ -97,8 +97,7 @@ if strmatch("`c(username)'","*daudin*")==1 {
 
 
 *keep relevant variables: price level of domestic absorption; price level of domestic output, price level of investment, price level of capital stock
-keep iso_o year pl_gdpo
-*Avant il y avait aussi pl_i pl_k et pl_da mais je ne comprends pas la pertinence.
+keep iso_o year pl_da pl_gdpo pl_i pl_k
 drop if pl_gdpo==.
 drop if year<1962
 save tmp_pwt81, replace
@@ -114,11 +113,11 @@ foreach n of numlist 1965/2011 {
 	local i=`n'-3
 	local j=`n'-1
 	keep if year>=`i' & year<=`n'
-	local vars gdpo
+	local vars da gdpo i k
 	foreach v of local vars {
 		rename pl_`v' `v'_
 	}
-	reshape wide  gdpo_ , i(iso_o) j(year)
+	reshape wide da_ gdpo_ i_ k_, i(iso_o) j(year)
 	foreach t of numlist `i'/`j' {
 		foreach v of local vars {
 			gen double rel_`v'_`t'=`v'_`n'/`v'_`t'
