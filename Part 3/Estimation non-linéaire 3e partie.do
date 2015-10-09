@@ -46,7 +46,7 @@ timer on 1
 capture program drop calc_ms
 program calc_ms
 args sample year
-*e.g. calc_ms prepar_full 1970
+*e.g. calc_ms prepar_cepii 1970
 
 
 *capture erase "$dir/ms"
@@ -337,7 +337,7 @@ capture save "$dir/temp_result"
 foreach year of num 2008(2)2008 {
 	display "`year'"
 	display
-	calc_ms prepar_full `year'
+	calc_ms prepar_cepii `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"

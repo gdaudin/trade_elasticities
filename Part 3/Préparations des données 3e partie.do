@@ -102,7 +102,7 @@ foreach n of local name {
 }
 
 
-save "$dir/Data/For Third Part/prepar_full_`year'", replace
+save "$dir/Data/For Third Part/prepar_cepii_`year'", replace
 clear
 end
 

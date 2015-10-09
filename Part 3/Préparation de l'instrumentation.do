@@ -8,8 +8,25 @@
 *set directory*
 ****************************************
 set more off
-global dir "/Users/liza/Documents/LIZA_WORK"
-cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+	cd "$dir/Data/For Third Part/"
+
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
+
+
+
+
+
+
 
 ***********************************************************
 *prepare annual unit value files: crop data; construct ms 
@@ -18,7 +35,9 @@ cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_
 capture program drop calc_ms
 program calc_ms
 args year
-use prepar_full_`year', clear
+use prepar_cepii_`year', clear
+
+
 drop if iso_o==iso_d
 drop if value_`year'==0
 tostring product, gen(sitc4) usedisplayformat
