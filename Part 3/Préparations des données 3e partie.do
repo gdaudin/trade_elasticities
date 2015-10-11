@@ -34,7 +34,7 @@ if "`c(hostname)'" =="ECONCES1" {
 
 
 *****Test pour les BLX, BEL, LUX, FRG et DEU
-foreach pays in  BLX BEL LUX FRG DEU {
+foreach pays in  BLX BEL LUX FRG DEU SER YUG {
 	foreach status in d o {
 		local `pays'_`status'
 		foreach year of numlist 1963(1)2013 {
