@@ -75,18 +75,22 @@ drop if iso_o=="All"
 
 **Remplacer
 rename iso_d iso
+rename iso = FRG if iso=="DEU" & year<=1990
 joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
+rename iso = DEU if iso=="FRG" & year<=1990
 rename cepii cepii_d
 rename iso iso_d
 
 rename iso_o iso
+rename iso = FRG if iso=="DEU" & year<=1990
 joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
+rename iso = DEU if iso=="FRG" & year<=1990
 rename cepii cepii_o
 rename iso iso_o 
 
 
 drop if iso_o==iso_d
-collapse (sum) trade_value quantity, by(product qty_unit qty_token iso_o iso_d year)
+*collapse (sum) trade_value quantity, by(product qty_unit qty_token iso_o iso_d year)
 save cepii-4D-`1', replace
 rm All-4D-`1'.dta
 clear
