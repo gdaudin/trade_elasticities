@@ -25,20 +25,34 @@ if "`c(hostname)'" =="ECONCES1" {
 
 
 *****Test pour les BLX, BEL, LUX, FRG, DEU, SER, YUG
-foreach pays in  BLX BEL LUX FRG DEU SER YUG {
+
+local pays_a_tester BLX BEL LUX FRG DEU SER YUG CSK ETF KN1 PCZ PMY PSE SER SVR SU
+
+foreach pays of local pays_a_tester  {
 	foreach status in d o {
 		local `pays'_`status'
-		foreach year of numlist 1963(1)2013 {
-			use prepar_cepii_`year', clear
-			capture keep if iso_`status'== "`pays'"
-			if _N >=1 local `pays'_`status' = "``pays'_`status'' `year'"
-		}
-		display "`pays'_`status'" "``pays'_`status''"
 	}
 }
 
 
+foreach year of numlist 1963(1)2013 {
+	use prepar_cepii_`year', clear
+	foreach pays of local pays_a_tester  {
+		foreach status in d o {
+			capture tabulate iso_`status' if iso_`status'== "`pays'"
+			if r(N) >=1 local `pays'_`status' = "``pays'_`status'' `year'"
+		}
+		
+	}
+}
 
+foreach pays of local pays_a_tester  {
+	foreach status in d o {
+		display "`pays'_`status'" "``pays'_`status''"
+	}
+}
+
+end
 
 ***********************************************************
 *prepare annual unit value files: crop data; construct ms 
