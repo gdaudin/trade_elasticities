@@ -26,8 +26,8 @@ if "`c(hostname)'" =="ECONCES1" {
 
 *****Test pour les BLX, BEL, LUX, FRG, DEU, SER, YUG
 
-local pays_a_tester BLX BEL LUX FRG DEU SER YUG
-*BEL LUX FRG DEU SER YUG CSK ETF KN1 PCZ PMY PSE SER SVR SU
+local pays_a_tester 
+*BLX BEL LUX FRG DEU SER YUG CSK ETF KN1 PCZ PMY PSE SER SVR SU
 
 foreach pays of local pays_a_tester  {
 	foreach status in d o {
@@ -122,9 +122,6 @@ save temp_`year', replace
 *erase prepar_cepii_`year'.dta
 clear
 end
-foreach n of numlist 1962/2013 {
-	calc_ms `n'
-}
 
 ***********************************************************
 *combine with lagged unit values and lagged price levels 
@@ -155,16 +152,11 @@ joinby iso_o year using tmp_pwt81_`year', unmatched(master)
 drop _merge
 save temp_mod_`year', replace
 erase tmp_pwt81_`year'.dta
+erase temp_`i'.dta
 clear
 end
-foreach n of numlist 1965/2011 {
-	prep_instr `n'
-}
 
-*erase tmp_`year'.dta files:
-foreach n of numlist 1962/2011 {
-	erase temp_`n'.dta
-}
+
 
 ***********************************************************
 *run different specifications: save coefs and std errors 
@@ -298,12 +290,6 @@ capture append using instr_coef_`instr'_combined
 save instr_coef_`instr'_combined, replace
 clear
 end
-local instr gdpo i k
-foreach i of local instr {
-	foreach n of numlist 1965/2011 {
-		coef_instr `n' `i'
-	}
-}
 
 *instrumenting: for early years, inclusion of product-unit and destination fixed effects adds marginal explanatory power
 *but matters for std errors: estimation more precise for gdpo-i-k without product-unit fixed effects (only matters for gdpo-i-k precision)
@@ -340,6 +326,7 @@ local instr k
 graph twoway (scatter coef_ln_`instr'_year1 se_ln_`instr'_year1 year if gap==2, msymbol(smcircle plus)) (scatter coef_ln_`instr'_year2 se_ln_`instr'_year2 year if gap==2, msymbol(smcircle plus)), legend(label(1 "coef 2 lag") label(2 "se 2 lag") label(3 "coef 3 lag") label(4 "se 4 lag")) 
 *combined: gdpo works for 2d and 3d lag in 1970-1988 (pos, sign) but then tends to flip sign (sometimes pos; sometimes neg)
 *combined: i, k: works for 2d and 3d lag until (roughly) 2000s, then flips sign
+end
 
 **bottom line: lagged uv strongly positively linked to current uv (cost or unobserved quality?)
 *doesn't alleviate pb of unobserved quality?
@@ -353,3 +340,32 @@ graph twoway (scatter coef_ln_`instr'_year1 se_ln_`instr'_year1 year if gap==2, 
 *?*sectoral dimension: estimate sectoral sigmas and change in sectoral sigmas over time using predicted uv
 *?*then aggregate to bilat elasticities; aggregate to world elasticity; decompose: composition (between sectors-pairs)/substitution (within sector-pair) 
 *why? check whether substitution effects fudged by composition effects
+
+
+
+
+
+foreach n of numlist 1962/2013 {
+	calc_ms `n'
+}
+
+foreach n of numlist 2004/2011 {
+	prep_instr `n'
+}
+
+foreach year of numlist 2009/2013 {
+	erase temp_`year'.dta
+}
+
+
+
+local instr gdpo i k
+foreach i of local instr {
+	foreach n of numlist 1965/2011 {
+		coef_instr `n' `i'
+	}
+}
+
+
+
+
