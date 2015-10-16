@@ -75,16 +75,16 @@ drop if iso_o=="All"
 
 **Remplacer
 rename iso_d iso
-rename iso = FRG if iso=="DEU" & year<=1990
+replace iso ="FRG" if iso=="DEU" & year<=1990
 joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
-rename iso = DEU if iso=="FRG" & year<=1990
+replace iso  = "DEU" if iso=="FRG" & year<=1990
 rename cepii cepii_d
 rename iso iso_d
 
 rename iso_o iso
-rename iso = FRG if iso=="DEU" & year<=1990
+replace iso = "FRG" if iso=="DEU" & year<=1990
 joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
-rename iso = DEU if iso=="FRG" & year<=1990
+replace iso = "DEU" if iso=="FRG" & year<=1990
 rename cepii cepii_o
 rename iso iso_o 
 
