@@ -26,7 +26,8 @@ if "`c(hostname)'" =="ECONCES1" {
 
 *****Test pour les BLX, BEL, LUX, FRG, DEU, SER, YUG
 
-local pays_a_tester BLX BEL LUX FRG DEU SER YUG CSK ETF KN1 PCZ PMY PSE SER SVR SU
+local pays_a_tester BLX 
+*BEL LUX FRG DEU SER YUG CSK ETF KN1 PCZ PMY PSE SER SVR SU
 
 foreach pays of local pays_a_tester  {
 	foreach status in d o {
@@ -52,7 +53,6 @@ foreach pays of local pays_a_tester  {
 	}
 }
 
-end
 
 ***********************************************************
 *prepare annual unit value files: crop data; construct ms 
@@ -116,7 +116,7 @@ drop tot_pair_product_`year' tot_pair_full_`year' tot_dest_full_`year' uv_`year'
 drop c_95* c_05* c_50*
 
 save temp_`year', replace
-erase prepar_full_`year'.dta
+erase prepar_cepii_`year'.dta
 clear
 end
 foreach n of numlist 1962/2013 {

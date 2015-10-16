@@ -33,10 +33,10 @@ if "`c(hostname)'" =="ECONCES1" {
 
 
 
-*****Test pour les BLX, BEL, LUX, FRG et DEU
+*****Test pour les noms de pays
 
 
-local pays_a_tester FRG
+local pays_a_tester
 *BLX BEL LUX FRG DEU SER YUG CSK ETF KN1 PCZ PMY PSE SER SVR SU
 
 foreach pays of local pays_a_tester  {
@@ -44,6 +44,8 @@ foreach pays of local pays_a_tester  {
 		local `pays'_`status'
 	}
 }
+
+
 
 
 foreach year of numlist 1963(1)2013 {
