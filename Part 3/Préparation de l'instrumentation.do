@@ -64,7 +64,8 @@ args year
 use prepar_cepii_`year', clear
 
 replace iso_o="BEL" if iso_o=="BLX"
-
+*En effet, BEL et LUX commencent en 1999 dans WITS : c'est toujours BLX avant
+*Par contre, toujours DEU
 
 drop if iso_o==iso_d
 drop if value_`year'==0
