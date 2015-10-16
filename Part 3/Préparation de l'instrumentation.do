@@ -99,7 +99,7 @@ drop if uv_`year'==.
 *third is about equal to tot_import
 drop tot_pair_product_`year' tot_pair_full_`year' tot_dest_full_`year' uv_`year'
 *drop variables I won't use that may mix up with info from other years:
-drop netw* c_95* c_05* c_50*
+drop c_95* c_05* c_50*
 
 save temp_`year', replace
 erase prepar_full_`year'.dta
