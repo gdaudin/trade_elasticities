@@ -1,4 +1,4 @@
-10/09/2015 LA
+*10/09/2015 LA
 *This file adapts "estimation non lineaire.do" to run instrumented nonlinear specification on basis of predicted unit values
 *using lagged unit values and changes in price levels
 **
@@ -27,12 +27,23 @@ clear all
 set mem 2g
 set matsize 800
 set more off
-*Liza laptop:
-global dir "/Users/liza/Documents/LIZA_WORK/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
 
-*GD
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
-cd "$dir"
+
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+	cd "$dir/Data/For Third Part/"
+
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
+
+
 
 
 ****************************************************************************************************************************************************************
@@ -227,7 +238,7 @@ drop _fillin tot_fillin
 
 **********************************************************************
 
-program 
+program nlnonlin
 *args year instr spec lag
 	version 12
 	su group_iso_o, meanonly	
@@ -454,8 +465,17 @@ bys iso_d iso_o	: replace weight = 1/_N
 	timer off 2
 	timer list 2
 	generate time=r(t2)
-*	generate ordinateur="Lysandre"
-	generate ordinateur="Leuven"
+	
+	
+if strmatch("`c(username)'","*daudin*")==1 {
+	generate ordinateur="Lysandre"
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	generate ordinateur = "Leuven"
+}
+
 
 	drop iso_o_*
 		
