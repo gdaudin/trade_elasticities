@@ -38,31 +38,31 @@ if "`c(hostname)'" =="ECONCES1" {
 *get PWT data into STATA: 
 ******************************************************
 capture program drop pwtin
-program pwtin
-*insheet PWT data: change codes for 3 countries:
-*ROM instead of ROU for Romania
-*SER instead of SRB for Serbia
-*ZAR instead of COD for Democratic Republic of Congo
-**one country doesn't match: MNE (Montenegro)
-
-if "`c(hostname)'" =="ECONCES1" {
-	use13 "$dir/EKpaper_data/revision_data_2015/pwt81/pwt81.dta", clear
-}
-
-
-if strmatch("`c(username)'","*daudin*")==1 {
-	use pwt81.dta, clear
-
-}
-
-replace countrycode="ROM" if countrycode=="ROU"
-replace countrycode="SER" if countrycode=="SRB"
-replace countrycode="ZAR" if countrycode=="COD"
-
-save pwt81,replace
-
-
-clear
+	program pwtin
+	*insheet PWT data: change codes for 3 countries:
+	*ROM instead of ROU for Romania
+	*SER instead of SRB for Serbia
+	*ZAR instead of COD for Democratic Republic of Congo
+	**one country doesn't match: MNE (Montenegro)
+	
+	if "`c(hostname)'" =="ECONCES1" {
+		use13 "$dir/EKpaper_data/revision_data_2015/pwt81/pwt81.dta", clear
+	}
+	
+	
+	if strmatch("`c(username)'","*daudin*")==1 {
+		use pwt81.dta, clear
+	
+	}
+	
+	replace countrycode="ROM" if countrycode=="ROU"
+	replace countrycode="SER" if countrycode=="SRB"
+	replace countrycode="ZAR" if countrycode=="COD"
+	
+	save pwt81,replace
+	
+	
+	clear
 end
 pwtin
 
@@ -71,68 +71,68 @@ pwtin
 *******************************************************************************
 capture program drop prepwt
 program prepwt
-use pwt81, clear
-
-
-if "`c(hostname)'" =="ECONCES1" {
-	rename countrycode iso_o
-	joinby iso_o using "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_4digit_leafs/rolling/wits_cepii_corresp_o_91_06", unmatched(none)
-	drop iso_o
-	rename ccode_cepii iso_o
-}
-
-
-if strmatch("`c(username)'","*daudin*")==1 {
-	rename countrycode iso
-	joinby iso using "../Comparaison Wits Cepii.dta", unmatched(none)
-	drop iso
-	rename cepii iso_o
-
-}
-
-
-
-
-
-
-
-*keep relevant variables: price level of domestic absorption; price level of domestic output, price level of investment, price level of capital stock
-keep iso_o year pl_da pl_gdpo pl_i pl_k
-drop if pl_gdpo==.
-drop if year<1962
-save tmp_pwt81, replace
-
-
-
-
-**first approach to constructing annual files for instrumenting unit values:
-*group data by 5-year period: start in 1967; finish in 2011
-use tmp_pwt81, clear
-foreach n of numlist 1965/2011 {
-	preserve
-	local i=`n'-3
-	local j=`n'-1
-	keep if year>=`i' & year<=`n'
-	local vars da gdpo i k
-	foreach v of local vars {
-		rename pl_`v' `v'_
+	use pwt81, clear
+	
+	
+	if "`c(hostname)'" =="ECONCES1" {
+		rename countrycode iso_o
+		joinby iso_o using "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_4digit_leafs/rolling/wits_cepii_corresp_o_91_06", unmatched(none)
+		drop iso_o
+		rename ccode_cepii iso_o
 	}
-	reshape wide da_ gdpo_ i_ k_, i(iso_o) j(year)
-	foreach t of numlist `i'/`j' {
+	
+	
+	if strmatch("`c(username)'","*daudin*")==1 {
+		rename countrycode iso
+		joinby iso using "../Comparaison Wits Cepii.dta", unmatched(none)
+		drop iso
+		rename cepii iso_o
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	*keep relevant variables: price level of domestic absorption; price level of domestic output, price level of investment, price level of capital stock
+	keep iso_o year pl_da pl_gdpo pl_i pl_k
+	drop if pl_gdpo==.
+	drop if year<1962
+	save tmp_pwt81, replace
+	
+	
+	
+	
+	**first approach to constructing annual files for instrumenting unit values:
+	*group data by 5-year period: start in 1967; finish in 2011
+	use tmp_pwt81, clear
+	foreach n of numlist 1965/2011 {
+		preserve
+		local i=`n'-3
+		local j=`n'-1
+		keep if year>=`i' & year<=`n'
+		local vars da gdpo i k
 		foreach v of local vars {
-			gen double rel_`v'_`t'=`v'_`n'/`v'_`t'
-			drop `v'_`t'
+			rename pl_`v' `v'_
 		}
-	}	
-	foreach v of local vars {
-		drop `v'_`n'
+		reshape wide da_ gdpo_ i_ k_, i(iso_o) j(year)
+		foreach t of numlist `i'/`j' {
+			foreach v of local vars {
+				gen double rel_`v'_`t'=`v'_`n'/`v'_`t'
+				drop `v'_`t'
+			}
+		}	
+		foreach v of local vars {
+			drop `v'_`n'
+		}
+		gen year=`n'
+		save tmp_pwt81_`n', replace
+		restore
 	}
-	gen year=`n'
-	save tmp_pwt81_`n', replace
-	restore
-}
-erase tmp_pwt81.dta
-clear
+	erase tmp_pwt81.dta
+	clear
 end
 prepwt
 *EX: tmp_pwt81_1965.dta contains price levels for 1965 rel. 1964-1962: gdp, da, i, k
