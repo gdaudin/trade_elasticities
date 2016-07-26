@@ -51,187 +51,16 @@ capture log using "logs/`c(current_time)' `c(current_date)'"
 timer clear 1
 timer on 1
 
-****************************************
-*NEW*Calcul predicted uv in cleaned sample
-****************************************
-**replicates data cleaning in prep_instr_2015_LA.do:
-*before instrumenting:
-*keeps sectors in which at least 5 suppliers observed in the dest
-*keeps destinations in which at least 50 products are observed
-
-*first step: construct set of relevant coefficients
-capture program drop instr_set
-program instr_set
-args instr spec lag
-*year is 1965-2011
-*instr is gdpo i k
-*spec is baseline/combined
-*lag is 2 or 3 for baseline; lag is 1 or 2 for combined
-*first step: get relevant coefficients
-if "`spec'"=="baseline" {
-	use instr_coef_`instr'_`spec', clear
-	keep if lag_nbr==`lag'
-	save tmp_`spec'_`lag', replace
-}
-if "`spec'"=="combined" {
-	use instr_coef_`instr'_`spec', clear
-	gen gap=year-lag_year1
-	keep if gap==`lag'
-	save tmp_`spec'_`lag', replace
-}
-clear
-end
-*example:
-*instr_set i baseline 2
-*instr_set i combined 2
-
-*second step: predict uv
-capture program drop instr_uv
-program instr_uv
-args year instr spec lag
-*local year 1967
-*local instr i
-*local spec combined 
-*local lag 2
-use temp_mod_`year', clear
-*clean data: restrict to dest-product groups where at least 5 suppliers observed \& to dest where at least 50 products observed
-bysort iso_d prod_unit: gen nb_obs=_N
-drop if nb_obs<5
-preserve
-bysort iso_d prod_unit: drop if _n!=1
-bysort iso_d: gen nb=_N
-by iso_d, sort: drop if _n!=1
-keep iso_d nb
-drop if nb<50
-save tmp, replace
-restore
-joinby iso_d using tmp, unmatched(none)
-erase tmp.dta
-gen double ln_uv=ln(uv_presente)
-*baseline specification: choose lag (1,2,3)
-if "`spec'"=="baseline" {
-	local i=`year'-`lag'
-	gen double ln_uv_`i'=ln(uv_presente_`i')
-	gen double ln_`instr'_`i'=ln(rel_`instr'_`i')
-}
-
-*combined specification: choose gap with first lagged year (1,2)
-if "`spec'"=="combined" {
-	local i=`year'-`lag'
-	local j=`i'-1
-	gen double ln_uv_`i'=ln(uv_presente_`i')
-	gen double ln_uv_`j'=ln(uv_presente_`j')
-	gen double ln_`instr'_`i'=ln(rel_`instr'_`i')
-	gen double ln_`instr'_`j'=ln(rel_`instr'_`j'/rel_`instr'_`i')	
-}
-*drop if iso_o=="USA"
-
-*add info on estimated coefs for relevant specification:
-joinby year using tmp_`spec'_`lag', unmatched(none)
-if "`spec'"=="baseline" {	
-	gen double ln_pred_uv=coef_ln_uv*ln_uv_`i' + coef_ln_`instr'*ln_`instr'_`i'
-}	
-if "`spec'"=="combined" {	
-	gen double ln_pred_uv = coef_ln_uv_year1*ln_uv_`i' + coef_ln_uv_year2*ln_uv_`j' + coef_ln_`instr'_year1*ln_`instr'_`i' + coef_ln_`instr'_year2*ln_`instr'_`j'
-}
-drop if ln_pred_uv==.
-keep year iso_o iso_d prod_unit product sitc4 qty_token qty_unit iso_d iso_o prod_unit ln_pred_uv ln_uv nb nb_obs ms_secteur ms_pays ms_tot lnms_pays tot_import tot_trade tot_import_secteur tot_export tot_import_export uv_presente value 
-gen double pred_uv=exp(ln_pred_uv)
-*crop data: keep products where at least 5 suppliers observed
-bysort iso_d prod_unit: gen nb_obs_fin=_N 
-drop if nb_obs_fin<5
-preserve
-bysort iso_d prod_unit: drop if _n!=1
-bysort iso_d: gen nb_fin=_N
-keep iso_d nb_fin
-bysort iso_d: drop if _n!=1
-drop if nb_fin<20
-save tmp, replace
-restore
-*crop data: keep destinations where at least 20 products observed
-joinby iso_d using tmp, unmatched(none)
-drop nb_obs nb
-erase tmp.dta
-
-*construct effective market share: for instrumented dataset
-bys iso_d: egen tot_import_fin=total(value)
-bys iso_d iso_o: egen tot_import_export_fin=total(value)
-gen double ms_pays_fin = tot_import_export_fin/tot_import_fin
-gen double lnms_pays_fin = ln(ms_pays_fin)
-
-*construct effective expenditure in destination per sector:
-bys iso_d prod_unit : egen tot_import_secteur_fin = total(value)
-gen double ms_secteur_fin = tot_import_secteur_fin/tot_import_fin
-save temp_`spec'_`instr'_`lag'_`year', replace
-clear
-end
-*example
-*instr_uv 1967 i baseline 2
-*instr_uv 1967 i combined 2
-**construct temp files for baseline and combined specification with 2-year lag
-*foreach n of numlist 1965/2011 {
-*	instr_uv `n' i baseline 2
-*	instr_uv `n' i combined 2
-*}
 
 
-****************************************
-*OLD*Calcul market share et prix
-****************************************
-*this part taken out in instrumented specification because implemented prior to instrumenting*
 
-*"prep_`type'_`year'.dta" files store for each sample 
-*capture program drop calc_ms
-*program calc_ms
-*args sample year
-*e.g. calc_ms prepar_full 1970
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
 
-
-*capture erase "$dir/ms"
-
-*display "`year'"
-
-/*On va chercher les données*/
-*use "$dir/Data/For Third Part/`sample'_`year'", clear
-*drop if iso_o==iso_d
-*drop if value_`year'==0
-
-*keep if iso_d=="USA"
-
-/*Pour pouvoir jouer avec plus tard*/
-*tostring product, gen(sitc4) usedisplayformat
-
-
-*generate prod_unit = sitc4+"_"+qty_unit
-
-
-*****Fillin : pas indispensable ici ?
-/*
-fillin prod_unit iso_o iso_d year
-replace value_`year'=0 if _fillin==1
-replace uv_`year'=. if _fillin==1
-bys iso_d iso_o : egen tot_fillin=total(_fillin)
-bys iso_d iso_o :drop if tot_fillin==_N
-drop _fillin tot_fillin
 */
-
-*bys iso_d iso_o : egen uv_presente = total(uv_`year')
-*generate uv_presente= uv_`year'
-*drop if uv_presente==0
-
-
-
-*save "$dir/temp_`year'", replace
-*end 
-
-
-********************************************************************
-********************************************************************
-********************************************************************
-********************************************************************
-********************************************************************
-
-
 **********************************************************************
 *This part modified: effective ms and sectoral expdtre; predicted uv 
 **********************************************************************
@@ -247,7 +76,7 @@ program nlnonlin
 	syntax varlist (min=`nbr_var' max=`nbr_var') if [iweight], at(name)
 *	local lnms_pays : word 1 of `varlist'
 *	local uv_presente : word 2 of `varlist'
-	local lnms_pays_fin: word 1 of `varlist'
+	local lnms_pays: word 1 of `varlist'
 	local pred_uv : word 2 of `varlist'
 
 
@@ -293,7 +122,7 @@ program nlnonlin
 
 */
 *	generate double `sect_share_pond'= ms_secteur *(uv_presente)^(1-`sigma')/ `blouk'
-	generate double `sect_share_pond'= ms_secteur_fin *(pred_uv)^(1-`sigma')/ `blouk'
+	generate double `sect_share_pond'= ms_secteur *(pred_uv)^(1-`sigma')/ `blouk'
 	
 	*collapse (sum) `sum'=`sect_share_pond',by (iso_d iso_o* `lnms_pays' `fe_iso_o')
 	
@@ -306,7 +135,7 @@ program nlnonlin
 
 	foreach i of num 1 / `nbr_iso_o' {
 *		replace  `lnms_pays' = ln(`fe_iso_o'*`sum') if iso_o_`i'!=0
-		replace `lnms_pays_fin' = ln(`fe_iso_o'*`sum') if iso_o_`i'!=0
+		replace `lnms_pays' = ln(`fe_iso_o'*`sum') if iso_o_`i'!=0
 	}
 	
 	
@@ -321,6 +150,17 @@ program nlnonlin
 	
 end
 
+
+
+
+
+
+
+
+
+
+
+
 *************************************************************************
 *modifie: adjusted to instrumented specification
 *************************************************************************
@@ -329,13 +169,16 @@ capture program drop reg_nlin
 program reg_nlin
 *	args year
 *exemple : reg_nlin 
-args year instr spec lag
-*exemple: reg_nlin 2009 i baseline 2
+args year instr /*spec*/ lag
+*exemple: reg_nlin 2009 gdpo /*baseline*/ 3
 timer clear 2
 timer on 2
  
 *	use "$dir/temp_`year'", clear
-	use temp_`spec'_`instr'_`lag'_`year', clear
+	use "$dir/Résultats/Troisième partie/first_stage_`year'.dta", clear
+	generate pred_uv=exp(ln_uv_instr_`instr'_`lag'lag)
+	
+
 	
 	***Pour restreindre
 	*keep if substr(prod_unit,1,1)=="0"
@@ -347,13 +190,13 @@ timer on 2
 *	drop if uv_presente < c_05_uv | uv_presente > c_95_uv
 *	drop if uv_presente < c_50_uv/100 | uv_presente > c_50_uv*100
 	
-	
+	/*
 	***Pour faire un plus petit sample
 	*En ne gardant que 10 ou 20% des produits et des pays
-/*	local limite 50
-	bys prod_unit : egen total_product = total(value_`year')
-	bys iso_d : egen total_iso_d = total(value_`year')
-	bys iso_o : egen total_iso_o = total(value_`year')
+	local limite 50
+	bys prod_unit : egen total_product = total(value)
+	bys iso_d : egen total_iso_d = total(value)
+	bys iso_o : egen total_iso_o = total(value)
 	
 	egen threshold_product = pctile (total_product),p(`limite')
 	egen threshold_iso_d = pctile (total_iso_d),p(`limite')
@@ -368,38 +211,18 @@ timer on 2
 	
 	codebook prod_unit iso_o iso_d
 	
-*/
 	
-**taken away: all ms calculations done prior to instrumenting
-	*****Calcul des ms
-	*Par pays expt chez un import
-*	rename value_`year' value
-*	bys iso_d : egen tot_import=total(value)
-*	bys iso_d iso_o : egen tot_import_export = total(value)
-*	bys iso_o : egen tot_export = total(value)
-*	egen tot_trade = total(value)
-	*Market share d'un pays par destination 
-*	generate ms_pays = tot_import_export / tot_import
-*	generate lnms_pays = ln( tot_import_export / tot_import)
+	*/
+	***********
 	
-	*Par exportateur dans de commerce mondial
-*	generate ms_tot = tot_export/tot_trade
-
-	*On enlève les tout petits exportateurs
-*	drop if ms_tot < (1/1000)
-*	drop tot_import tot_trade
-*	bys iso_d : egen tot_import=total(value)
-*	egen tot_trade = total(value)
-*	replace ms_tot = tot_export/tot_trade
+	
 	
 
 
-	*Par secteur chez un importateur
-*	bys iso_d prod_unit : egen tot_import_secteur = total(value)
-*	generate ms_secteur = tot_import_secteur / tot_import
-
 	
 	
+	
+	**************
 	egen group_iso_o=group(iso_o)
 	quietly tabulate iso_o, gen(iso_o_)
 	su group_iso_o, meanonly	
@@ -436,10 +259,10 @@ bys iso_d iso_o	: replace weight = 1/_N
 	
 *	nl nonlin @ ms_pays prix_rel_5 ms_secteur_5 `liste_variables_iso_o', eps(1e-3) iterate(100) parameters(sigma `liste_parametres_iso_o' ) initial(sigma 1.5 `initial_iso_o')
 *	display "nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
-	display "nl nonlin @ lnms_pays_fin pred_uv `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
+	display "nl nonlin @ lnms_pays pred_uv `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
 *	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o', iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
 *	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
-	nl nonlin @ lnms_pays_fin pred_uv `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
+	nl nonlin @ lnms_pays pred_uv `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
 	
 	
 	
@@ -480,15 +303,16 @@ if "`c(hostname)'" =="ECONCES1" {
 	drop iso_o_*
 		
 *	save "$dir/temp_`year'_result", replace
-	save "$dir/temp_`spec'_`instr'_`lag'_`year'_result", replace
+	save "$dir/temp_`instr'_`lag'_`year'_result", replace
 
 	keep if _n==1
 	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
 *	append using "$dir/temp_result"
 *	save "$dir/temp_result", replace
-	capture append using "$dir/temp_`spec'_`instr'_`lag'_result"
-	save "$dir/temp_`spec'_`instr'_`lag'_result", replace
-	clear	
+	append using "$dir/temp_`instr'_`lag'_result"
+	save "$dir/temp_`instr'_`lag'_result", replace
+*	erase "$dir/temp_`instr'_`lag'_`year'_result.dta"
+*	clear	
 
 	
 end
@@ -510,31 +334,35 @@ clear
 set obs 1
 gen year=.
 *capture save "$dir/temp_result"
-local which gdpo i k
-local what baseline combined
-local lag 2
+local which gdpo /*i k*/
+*local what baseline /*combined*/
+local lags 3
 foreach instr of local which {
-	foreach spec of local what {
-		foreach year of num 1965(1)2011 {
-			display "`year' `instr' `spec' `lag'"
+	foreach lag of local lags {
+	clear
+	gen rc=.
+	capture save "$dir/temp_`instr'_`lag'_result.dta"
+*	foreach spec of local what {
+		foreach year of num 1966(1)2011 {
+			display "`year' `instr' `lag'"
 *	display "`year'"
 *	display
-			instr_set `instr' `spec' `lag'
-			instr_uv `year' `instr' `spec' `lag'
-			reg_nlin `year' `instr' `spec' `lag'
+*			instr_set `instr' `spec' `lag'
+*			instr_uv `year' `instr' `spec' `lag'
+			reg_nlin `year' `instr' `lag'
 *	calc_ms prepar_full `year'
 *	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 *	erase "$dir/temp_`year'.dta"
-			erase temp_`spec'_`instr'_`lag'_`year'.dta
-			erase tmp_`spec'_`lag'.dta
+	*capture	erase temp_`spec'_`instr'_`lag'_`year'.dta
+	*		erase tmp_`spec'_`lag'.dta
 		}
 	}	
 }
 	
 
-*twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
-*twoway (line coef_sigma year, sort) (lfit coef_sigma year, sort)
+twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
+twoway (line coef_sigma year, sort) (lfit coef_sigma year, sort)
 
 
 timer off 1
