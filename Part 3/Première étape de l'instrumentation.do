@@ -235,7 +235,7 @@ program first_stage_instr
 	label var rel_`instr'_`iprime' "Prices @ t-2"
 	label var rel_`instr'_`i' "Prices @ t-3"
 	
-	outreg2 using "first_stage_results.xlsx", excel ctitle(`year') adds(F-test, `e(F)', Nbr obs, `e(N)')
+	outreg2 using "$dir/Résultats/Troisième partie/first_stage_results.xlsx", excel ctitle(`year') adds(F-test, `e(F)', Nbr obs, `e(N)')
 	
 	
 	
