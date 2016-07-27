@@ -166,8 +166,8 @@ end
 ***********************************************************
 *run different specifications: save coefs and std errors 
 ***********************************************************
-capture program drop coef_instr
-program coef_instr
+capture program drop first_stage_instr
+program first_stage_instr
 	args year instr
 	*years: 1965-2011
 	*instr: gdpo i k 
@@ -208,7 +208,7 @@ program coef_instr
 	
 	***D'abord pour 1 lag
 	gen explained = ln_uv - ln_uv_`j'
-	reg explained rel_`instr'_`j'
+	reg explained rel_`instr'_`j', noconstant 
 	
 	predict explained_predict
 	gen ln_uv_instr_`instr'_1lag = explained_predict + ln_uv_`j'
@@ -216,7 +216,7 @@ program coef_instr
 	
 	***2 lags
 	replace explained = ln_uv - ln_uv_`iprime'
-	reg explained rel_`instr'_`j' rel_`instr'_`iprime'
+	reg explained rel_`instr'_`j' rel_`instr'_`iprime', noconstant 
 	
 	predict explained_predict
 	gen ln_uv_instr_`instr'_2lag = explained_predict + ln_uv_`iprime'
@@ -224,12 +224,18 @@ program coef_instr
 	
 	***3 lags
 	replace explained = ln_uv - ln_uv_`i'
-	reg explained rel_`instr'_`j' rel_`instr'_`iprime' rel_`instr'_`i'
+	reg explained rel_`instr'_`j' rel_`instr'_`iprime' rel_`instr'_`i', noconstant 
 	
 	predict explained_predict
 	gen ln_uv_instr_`instr'_3lag = explained_predict + ln_uv_`i'
 	
+	**Ici, nous allons sauver les résultats.
 	
+	label var rel_`instr'_`j' "Prices @ t-1"
+	label var rel_`instr'_`iprime' "Prices @ t-2"
+	label var rel_`instr'_`i' "Prices @ t-3"
+	
+	outreg2 using "first_stage_results.xlsx", excel ctitle(`year') adds(F-test, `e(F)', Nbr obs, `e(N)')
 	
 	
 	
@@ -347,7 +353,9 @@ program coef_instr
  
 drop *`i' *`j' *`iprime' explained* ln_`instr'*
 
-save "$dir/Résultats/Troisième partie/first_stage_`year'_`instr'.dta", replace	
+save "$dir/Résultats/Troisième partie/first_stage_`year'_`instr'.dta", replace
+
+	
 	
 	
 end
@@ -413,14 +421,17 @@ foreach n of numlist 1963/2013 {
 	calc_ms `n'
 }
 
+
+
 foreach n of numlist 1966/2011 {
 	prep_instr `n'
 }
 
+/*
 foreach year of numlist 1963/2011 {
 	erase temp_`year'.dta
 }
-
+*/
 
 
 
@@ -429,7 +440,7 @@ local instr gdpo /* i k */
 foreach n of numlist 1966/2011 {
 	local k 1
 	foreach i of local instr {
-		coef_instr `n' `i'
+		first_stage_instr `n' `i'
 	}
 	
 	if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`n'.dta"
