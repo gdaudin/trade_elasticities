@@ -126,6 +126,10 @@ program prepwt
 		}	
 		foreach v of local vars {
 			drop `v'_`n'
+				label var rel_`instr'_`j' "Evolution of `v' prices btw t-1 & t"
+				label var rel_`instr'_`iprime' "Evolution of `v' prices btw t-2 & t"
+				label var rel_`instr'_`i' "Evolution of `v' prices btw t-3 & t"
+
 		}
 		gen year=`n'
 		save tmp_pwt81_`n', replace

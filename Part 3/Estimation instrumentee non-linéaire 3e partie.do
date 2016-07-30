@@ -361,8 +361,9 @@ foreach instr of local which {
 }
 	
 
-twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
-twoway (line coef_sigma year, sort) (lfit coef_sigma year, sort)
+generate one_minus_sigma = 1-sigma_est	
+twoway (line one_minus_sigma year, sort) (qfit one_minus_sigma year, sort)
+twoway (line one_minus_sigma year, sort) (lfit one_minus_sigma year, sort)
 
 
 timer off 1

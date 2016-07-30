@@ -22,7 +22,7 @@ if "`c(hostname)'" =="ECONCES1" {
 	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
 }
 
-
+/*
 
 *****Test pour les BLX, BEL, LUX, FRG, DEU, SER, YUG : donne la liste des années pour lesquelles les pays sont présents
 
@@ -53,7 +53,7 @@ foreach pays of local pays_a_tester  {
 	}
 }
 
-
+*/
 
 ***********************************************************
 *prepare annual unit value files: crop data; construct ms 
@@ -137,28 +137,39 @@ program prep_instr
 	*group data by 3-year period: lagged prices
 	use temp_`year', clear
 	save temp_mod_`year', replace
-	local i=`year'-3
-	local j=`year'-1
-	foreach t of numlist `i'/`j' {
-		use temp_`t', clear
-		assert year==`t'
+	
+	
+	local i=1
+	
+	
+	
+	foreach lag of numlist 1/3 {
+		
+		local year_lag = `year'-`lag'
+		
+		use temp_`year_lag', clear
+		assert year==`year_lag'
 		keep iso_o iso_d prod_unit sitc4 qty_token qty_unit uv_presente ms_secteur ms_pays
 		local vars uv_presente ms_secteur ms_pays
 		foreach v of local vars {
-			rename `v' `v'_`t'
+			rename `v' `v'_lag_`lag'
 		}
 		gen year=`year'
 		joinby iso_o iso_d year prod_unit sitc4 qty_token qty_unit using temp_mod_`year', unmatched(using)
 		drop _merge 
+		
+		
+		
 		save temp_mod_`year', replace
 	}
 	use temp_mod_`year', clear
 	joinby iso_o year using tmp_pwt81_`year', unmatched(master)
 	drop _merge
+	foreach lag of numlist 1/3 {
+		local year_lag = `year'-`lag'
+		rename *_`year_lag' *_lag_`lag'
+	}
 	save temp_mod_`year', replace
-	* erase tmp_pwt81_`year'.dta
-	* erase temp_`i'.dta
-	clear
 end
 
 
@@ -205,37 +216,43 @@ program first_stage_instr
 	*local k 3
 	
 	
+	encode prod_unit, generate (prod_unit_num)
+	
 	
 	***D'abord pour 1 lag
 	gen explained = ln_uv - ln_uv_`j'
-	reg explained rel_`instr'_`j', noconstant 
+	reg explained i.prod_unit_num#c.rel_`instr'_`j', noconstant 
 	
 	predict explained_predict
 	gen ln_uv_instr_`instr'_1lag = explained_predict + ln_uv_`j'
 	drop explained_predict
 	
+	outreg2 using "$dir/Résultats/Troisième partie/first_stage_results.xlsx", excel ctitle(`year'_1lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
+	corr  ln_uv ln_uv_instr_gdpo_1lag ln_uv_`j'
+	
+	/*
+	
 	***2 lags
 	replace explained = ln_uv - ln_uv_`iprime'
-	reg explained rel_`instr'_`j' rel_`instr'_`iprime', noconstant 
+	reg explained i.prod_unit_num#c.rel_`instr'_`iprime', noconstant 
 	
 	predict explained_predict
 	gen ln_uv_instr_`instr'_2lag = explained_predict + ln_uv_`iprime'
 	drop explained_predict
+	*/
 	
+	/*
 	***3 lags
 	replace explained = ln_uv - ln_uv_`i'
-	reg explained rel_`instr'_`j' rel_`instr'_`iprime' rel_`instr'_`i', noconstant 
+	reg explained i.prod_unit_num#c.rel_`instr'_`i', noconstant 
 	
 	predict explained_predict
 	gen ln_uv_instr_`instr'_3lag = explained_predict + ln_uv_`i'
-	
+	*/
 	**Ici, nous allons sauver les résultats.
 	
-	label var rel_`instr'_`j' "Prices @ t-1"
-	label var rel_`instr'_`iprime' "Prices @ t-2"
-	label var rel_`instr'_`i' "Prices @ t-3"
 	
-	outreg2 using "$dir/Résultats/Troisième partie/first_stage_results.xlsx", excel ctitle(`year') adds(F-test, `e(F)', Nbr obs, `e(N)')
+	
 	
 	
 	
@@ -415,23 +432,24 @@ end
 
 
 
+/*
 
-
-foreach n of numlist 1963/2013 {
+foreach n of numlist 1963/1966 {
 	calc_ms `n'
 }
 
+*/
 
-
-foreach n of numlist 1966/2011 {
+foreach n of numlist 1966/1966 {
 	prep_instr `n'
 }
 
 /*
-foreach year of numlist 1963/2011 {
+
+foreach year of numlist 1966/2011 {
 	erase temp_`year'.dta
 }
-*/
+
 
 
 
