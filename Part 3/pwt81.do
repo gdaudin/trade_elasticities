@@ -112,23 +112,24 @@ program prepwt
 		preserve
 		local i=`n'-3
 		local j=`n'-1
+		local iprime=`n'-2
 		keep if year>=`i' & year<=`n'
-		local vars da gdpo i k
-		foreach v of local vars {
+		local liste_instr da gdpo i k
+		foreach v of local liste_instr {
 			rename pl_`v' `v'_
 		}
 		reshape wide da_ gdpo_ i_ k_, i(iso_o) j(year)
 		foreach t of numlist `i'/`j' {
-			foreach v of local vars {
+			foreach v of local liste_instr {
 				gen double rel_`v'_`t'=`v'_`n'/`v'_`t'
 				drop `v'_`t'
 			}
 		}	
-		foreach v of local vars {
+		foreach v of local liste_instr {
 			drop `v'_`n'
-				label var rel_`instr'_`j' "Evolution of `v' prices btw t-1 & t"
-				label var rel_`instr'_`iprime' "Evolution of `v' prices btw t-2 & t"
-				label var rel_`instr'_`i' "Evolution of `v' prices btw t-3 & t"
+				label var rel_`v'_`j' "Evolution of `v' prices btw t-1 & t"
+				label var rel_`v'_`iprime' "Evolution of `v' prices btw t-2 & t"
+				label var rel_`v'_`i' "Evolution of `v' prices btw t-3 & t"
 
 		}
 		gen year=`n'
