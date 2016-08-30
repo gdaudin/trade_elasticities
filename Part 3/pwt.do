@@ -60,7 +60,7 @@ capture program drop pwtin
 	replace countrycode="ZAR" if countrycode=="COD"
 	
 	
-	cd "$dir/DATA_TEMP/Third_Part/PWT"
+	cd "$dir/Data_Interm/Third_Part/PWT"
 	save tmp_pwt90,replace
 	
 	
@@ -98,8 +98,8 @@ program prepwt
 	
 	
 	
-	*keep relevant variables: price level of exports
-	keep iso_o year pl_x
+	*keep relevant variables: price level of exports, price level of domestic absorption; price level of domestic output, price level of investment, price level of capital stock
+	keep iso_o year pl_x pl_da pl_gdpo pl_i pl_k
 	drop if pl_x==.
 	drop if year<1962
 	save tmp_pwt90, replace
@@ -120,12 +120,12 @@ program prepwt
 		local i = `year'-3
 		
 		keep if year>=`i' & year<=`year'
-		local liste_instr x
+		local liste_instr x da gdpo i k
 		foreach v of local liste_instr {	
 			rename pl_`v' `v'_
 		}
 		
-		reshape wide x_, i(iso_o) j(year)
+		reshape wide x_ da_ gdpo_ i_ k_, i(iso_o) j(year)
 	*	blouk
 		foreach lag of numlist `laglist' {
 			foreach instr of local liste_instr {
@@ -144,6 +144,6 @@ program prepwt
 	erase tmp_pwt90.dta
 end
 prepwt
-*EX: tmp_pwt90_1965.dta contains price levels for 1965 rel. 1964-1962: gdp, da, i, k
+*EX: tmp_pwt90_1965.dta contains price levels for 1965 rel. 1964-1962: x, gdp, da, i, k
 *gdp-da very strongly correlated; idem for i-k; but gdp-i(k) much less correlated
 

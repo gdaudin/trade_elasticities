@@ -12,7 +12,7 @@ set more off
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
-	cd "$dir/Data/For Third Part/"
+	cd "$dir/Data_Interm/Third_Part/"
 
 }
 
@@ -62,7 +62,7 @@ foreach pays of local pays_a_tester  {
 capture program drop calc_ms
 program calc_ms
 	args year
-	use prepar_cepii_`year', clear
+	use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
 	
 	replace iso_o="BEL" if iso_o=="BLX"
 	*En effet, BEL et LUX commencent en 1999 dans WITS : c'est toujours BLX avant
@@ -165,7 +165,7 @@ program prep_instr
 		save temp_mod_`year', replace
 	}
 	use temp_mod_`year', clear
-	joinby iso_o year using "$dir/DATA_TEMP/Third_Part/PWT/tmp_pwt90_`year', unmatched(master)
+	joinby iso_o year using "$dir/Data_Interm/Third_Part/PWT/tmp_pwt90_`year'", unmatched(master)
 	drop _merge
 	save temp_mod_`year', replace
 end
@@ -467,13 +467,13 @@ end
 
 
 
-foreach n of numlist 1963/2011 {
+foreach n of numlist 1963/2014 {
 	calc_ms `n'
 }
 
 
 
-foreach n of numlist 1964/2011 {
+foreach n of numlist 1963/2014 {
 	prep_instr `n'
 }
 
@@ -487,9 +487,9 @@ foreach year of numlist 1964/2011 {
 */
 
 
-* local instr gdpo /* i k */
+local instr gdpo i /*k */
 
-foreach n of numlist 1963/2013 {
+foreach n of numlist 1963/2014 {
 	local k 1
 		first_stage_instr, year(`n') liste_instr(x)
 	
