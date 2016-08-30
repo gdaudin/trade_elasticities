@@ -107,37 +107,40 @@ program prepwt
 	
 	**first approach to constructing annual files for instrumenting unit values:
 	*group data by 5-year period: start in 1967; finish in 2011
-	use tmp_pwt81, clear
-	foreach n of numlist 1965/2011 {
-		preserve
-		local i=`n'-3
-		local j=`n'-1
-		local iprime=`n'-2
-		keep if year>=`i' & year<=`n'
+	
+	foreach year of numlist 1965/2011 {
+		use tmp_pwt81, clear
+	
+		if `year' == 1964 local laglist 1
+		if `year' == 1965 local laglist 1/2
+		if `year' >= 1966 local laglist 1/3
+	
+	
+		local i = `year'-3
+		
+		keep if year>=`i' & year<=`year'
 		local liste_instr da gdpo i k
-		foreach v of local liste_instr {
+		foreach v of local liste_instr {	
 			rename pl_`v' `v'_
 		}
+		
 		reshape wide da_ gdpo_ i_ k_, i(iso_o) j(year)
-		foreach t of numlist `i'/`j' {
-			foreach v of local liste_instr {
-				gen double rel_`v'_`t'=`v'_`n'/`v'_`t'
-				drop `v'_`t'
+	*	blouk
+		foreach lag of numlist `laglist' {
+			foreach instr of local liste_instr {
+				local lagyear=`year'-`lag'
+				gen double rel_`instr'_lag_`lag'=`instr'_`year'/`instr'_`lagyear'
+				drop `instr'_`lagyear'			
+				label var rel_`instr'_lag_`lag' "Evolution of `instr' prices btw t-`lag' & t"
 			}
-		}	
-		foreach v of local liste_instr {
-			drop `v'_`n'
-				label var rel_`v'_`j' "Evolution of `v' prices btw t-1 & t"
-				label var rel_`v'_`iprime' "Evolution of `v' prices btw t-2 & t"
-				label var rel_`v'_`i' "Evolution of `v' prices btw t-3 & t"
-
 		}
-		gen year=`n'
-		save tmp_pwt81_`n', replace
-		restore
+		foreach instr of local liste_instr {
+			drop `instr'_`year'
+		}		
+		gen year=`year'
+		save tmp_pwt81_`year', replace
 	}
 	erase tmp_pwt81.dta
-	clear
 end
 prepwt
 *EX: tmp_pwt81_1965.dta contains price levels for 1965 rel. 1964-1962: gdp, da, i, k

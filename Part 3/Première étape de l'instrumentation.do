@@ -141,9 +141,11 @@ program prep_instr
 	
 	local i=1
 	
+	if `year' == 1964 local laglist 1
+	if `year' == 1965 local laglist 1/2
+	if `year' >= 1966 local laglist 1/3
 	
-	
-	foreach lag of numlist 1/3 {
+	foreach lag of numlist `laglist' {
 		
 		local year_lag = `year'-`lag'
 		
@@ -165,10 +167,6 @@ program prep_instr
 	use temp_mod_`year', clear
 	joinby iso_o year using tmp_pwt81_`year', unmatched(master)
 	drop _merge
-	foreach lag of numlist 1/3 {
-		local year_lag = `year'-`lag'
-		rename *_`year_lag' *_lag_`lag'
-	}
 	save temp_mod_`year', replace
 end
 
@@ -179,9 +177,11 @@ end
 ***********************************************************
 capture program drop first_stage_instr
 program first_stage_instr
-	args year instr
+	syntax, year(integer) liste_instr(string) /*instr*/
 	*years: 1965-2011
 	*instr: gdpo i k 
+	*exemple : first_stage_instr, year(1965) liste_inst(gdpo i k)
+	
 	use temp_mod_`year', clear
 	*clean data: restrict to dest-product groups where at least 5 suppliers observed \& to dest where at least 50 products observed
 	bysort iso_d prod_unit: gen nb_obs=_N
@@ -197,20 +197,34 @@ program first_stage_instr
 	joinby iso_d using tmp, unmatched(none)
 	erase tmp.dta
 	
+	
 	*construct logged variables in each year: current and lagged
 	gen double ln_uv=ln(uv_presente)
-	local i=`year'-3
-	local j=`year'-1
-	local iprime=`year'-2
-	foreach t of numlist `i'/`j' {
-		gen double ln_uv_`t'=ln(uv_presente_`t')
-		gen double ln_`instr'_`t'=ln(rel_`instr'_`t')
+
+	if `year' == 1964 local laglist 1
+	if `year' == 1965 local laglist 1/2
+	if `year' >= 1966 local laglist 1/3
+	
+	
+	foreach lag of numlist `laglist' {
+		gen double ln_uv_lag_`lag'=ln(uv_presente_lag_`lag')
+		foreach instr of local liste_instr {
+			gen double ln_`instr'_lag_`lag'=ln(rel_`instr'_lag_`lag')
+		}
 	}
 	
 	*add info on one lag or two lag exporter price level for specifications in which two lags are used
 	*reformulate as per year changes:
-	gen double ln_`instr'_lag1=ln(rel_`instr'_`iprime'/rel_`instr'_`j')
-	gen double ln_`instr'_lag2=ln(rel_`instr'_`i'/rel_`instr'_`iprime')
+	
+	foreach instr of local liste_instr {
+		foreach lag of numlist `laglist' {
+		
+			gen double ln_rel_`instr'_lag`lag'=ln(rel_`instr'_lag_`lag')
+		*	gen double ln_`instr'_lag2=ln(rel_`instr'_`i'/rel_`instr'_`iprime')
+		}
+	}
+	
+
 	*drop if iso_o=="USA"
 	**run simple lag specifications and store coefs and std errors: uv and instr in some year
 	*local k 3
@@ -218,18 +232,37 @@ program first_stage_instr
 	
 	encode prod_unit, generate (prod_unit_num)
 	
+	foreach lag of numlist `laglist' {
 	
-	***D'abord pour 1 lag
-	gen explained = ln_uv - ln_uv_`j'
-	reg explained i.prod_unit_num#c.rel_`instr'_`j', noconstant 
+		local var_explicatives
+		foreach instr of local liste_instr {
+				local var_explicatives `var_explicatives' ln_rel_`instr'_lag`lag'
+		}
+		
+		
+		
+		gen explained = ln_uv - ln_uv_lag_`lag'
+		reg explained `var_explicatives' /*, noconstant*/ 
+		
+		predict explained_predict
+		gen ln_uv_instr_`lag'lag = explained_predict + ln_uv_lag_`lag'
+		drop explained explained_predict
+		
+		outreg2 using "$dir/Résultats/Troisième partie/first_stage_results", excel ctitle(`year'_`lag'lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
+		corr  ln_uv ln_uv_instr_`lag'lag ln_uv_lag_`lag'
+		gen uv_instr_`lag'lag = exp(ln_uv_instr_`lag'lag)
+		
+		local predict_for_corr `predict_for_corr' uv_instr_`lag'lag
+		local var_for_corr `var_for_corr' uv_presente_lag_`lag'
+		
 	
-	predict explained_predict
-	gen ln_uv_instr_`instr'_1lag = explained_predict + ln_uv_`j'
-	drop explained_predict
 	
-	outreg2 using "$dir/Résultats/Troisième partie/first_stage_results.xlsx", excel ctitle(`year'_1lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
-	corr  ln_uv ln_uv_instr_gdpo_1lag ln_uv_`j'
+	}
 	
+	
+	
+	
+	corr  uv_presente `var_for_corr' `predict_for_corr'
 	/*
 	
 	***2 lags
@@ -368,7 +401,7 @@ program first_stage_instr
 	
 	
  
-drop *`i' *`j' *`iprime' explained* ln_`instr'*
+* drop *`i' *`j' *`iprime' explained* ln_`instr'*
 
 save "$dir/Résultats/Troisième partie/first_stage_`year'_`instr'.dta", replace
 
@@ -432,38 +465,39 @@ end
 
 
 
-/*
 
-foreach n of numlist 1963/1966 {
+
+foreach n of numlist 1963/2011 {
 	calc_ms `n'
 }
 
-*/
 
-foreach n of numlist 1966/1966 {
+
+foreach n of numlist 1964/2011 {
 	prep_instr `n'
 }
 
 /*
 
-foreach year of numlist 1966/2011 {
+foreach year of numlist 1964/2011 {
 	erase temp_`year'.dta
 }
 
 
+*/
 
 
-local instr gdpo /* i k */
+* local instr gdpo /* i k */
 
-foreach n of numlist 1966/2011 {
+foreach n of numlist 1964/2011 {
 	local k 1
-	foreach i of local instr {
-		first_stage_instr `n' `i'
-	}
+		first_stage_instr, year(`n') liste_instr(gdpo i k)
+	
 	
 	if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`n'.dta"
 	if `k'!=1 drop _merge
 	save "$dir/Résultats/Troisième partie/first_stage_`n'.dta", replace	
+	local k = `k'+1
 	
 }
 

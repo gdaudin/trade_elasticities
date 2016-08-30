@@ -169,14 +169,14 @@ capture program drop reg_nlin
 program reg_nlin
 *	args year
 *exemple : reg_nlin 
-args year instr /*spec*/ lag
+args year /*instr*/ /*spec*/ lag
 *exemple: reg_nlin 2009 gdpo /*baseline*/ 3
 timer clear 2
 timer on 2
  
 *	use "$dir/temp_`year'", clear
 	use "$dir/Résultats/Troisième partie/first_stage_`year'.dta", clear
-	generate pred_uv=exp(ln_uv_instr_`instr'_`lag'lag)
+	generate pred_uv=exp(ln_uv_instr/*_`instr'*/_`lag'lag)
 	
 
 	
@@ -262,7 +262,7 @@ bys iso_d iso_o	: replace weight = 1/_N
 	display "nl nonlin @ lnms_pays pred_uv `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
 *	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o', iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
 *	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
-	nl nonlin @ lnms_pays pred_uv `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
+	capture nl nonlin @ lnms_pays pred_uv `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
 	
 	
 	
@@ -303,14 +303,17 @@ if "`c(hostname)'" =="ECONCES1" {
 	drop iso_o_*
 		
 *	save "$dir/temp_`year'_result", replace
-	save "$dir/temp_`instr'_`lag'_`year'_result", replace
+*	save "$dir/temp_`instr'_`lag'_`year'_result", replace
+	save "$dir/temp_`lag'_`year'_result", replace
 
 	keep if _n==1
 	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
 *	append using "$dir/temp_result"
 *	save "$dir/temp_result", replace
-	append using "$dir/temp_`instr'_`lag'_result"
-	save "$dir/temp_`instr'_`lag'_result", replace
+*	append using "$dir/temp_`instr'_`lag'_result"
+	append using "$dir/temp_`lag'_result"
+*	save "$dir/temp_`instr'_`lag'_result", replace
+	save "$dir/temp_`lag'_result", replace
 *	erase "$dir/temp_`instr'_`lag'_`year'_result.dta"
 *	clear	
 
@@ -337,14 +340,16 @@ gen year=.
 local which gdpo /*i k*/
 *local what baseline /*combined*/
 local lags 3
-foreach instr of local which {
+*foreach instr of local which {
 	foreach lag of local lags {
 	clear
 	gen rc=.
-	capture save "$dir/temp_`instr'_`lag'_result.dta"
+*	capture save "$dir/temp_`instr'_`lag'_result.dta"
+	capture save "$dir/temp_`lag'_result.dta"
+
 *	foreach spec of local what {
-		foreach year of num 1966(1)2011 {
-			display "`year' `instr' `lag'"
+		foreach year of num 1985(1)2011 {
+			display "`year' /*`instr'*/ `lag'"
 *	display "`year'"
 *	display
 *			instr_set `instr' `spec' `lag'
@@ -358,7 +363,7 @@ foreach instr of local which {
 	*		erase tmp_`spec'_`lag'.dta
 		}
 	}	
-}
+*}
 	
 
 generate one_minus_sigma = 1-sigma_est	
