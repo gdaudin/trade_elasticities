@@ -1,6 +1,6 @@
 *Sept 10th, 2015*
 
-*This file combines unit value data with lagged unit values and info on price level changes from PWT 8.1
+*This file combines unit value data with lagged unit values and info on price level changes from PWT
 *to instrument observed unit values prior to running non-linear estimation of Armington elasticity
 *assumption: cost shocks to the economy are absorbed relatively quickly: use 1-2-3 lags
 
@@ -165,7 +165,7 @@ program prep_instr
 		save temp_mod_`year', replace
 	}
 	use temp_mod_`year', clear
-	joinby iso_o year using tmp_pwt81_`year', unmatched(master)
+	joinby iso_o year using "$dir/DATA_TEMP/Third_Part/PWT/tmp_pwt90_`year', unmatched(master)
 	drop _merge
 	save temp_mod_`year', replace
 end
@@ -179,8 +179,8 @@ capture program drop first_stage_instr
 program first_stage_instr
 	syntax, year(integer) liste_instr(string) /*instr*/
 	*years: 1965-2011
-	*instr: gdpo i k 
-	*exemple : first_stage_instr, year(1965) liste_inst(gdpo i k)
+	*instr: x
+	*exemple : first_stage_instr, year(1965) liste_inst(x)
 	
 	use temp_mod_`year', clear
 	*clean data: restrict to dest-product groups where at least 5 suppliers observed \& to dest where at least 50 products observed
@@ -201,9 +201,9 @@ program first_stage_instr
 	*construct logged variables in each year: current and lagged
 	gen double ln_uv=ln(uv_presente)
 
-	if `year' == 1964 local laglist 1
-	if `year' == 1965 local laglist 1/2
-	if `year' >= 1966 local laglist 1/3
+	if `year' == 1963 local laglist 1
+	if `year' == 1964 local laglist 1/2
+	if `year' >= 1965 local laglist 1/3
 	
 	
 	foreach lag of numlist `laglist' {
@@ -489,9 +489,9 @@ foreach year of numlist 1964/2011 {
 
 * local instr gdpo /* i k */
 
-foreach n of numlist 1964/2011 {
+foreach n of numlist 1963/2013 {
 	local k 1
-		first_stage_instr, year(`n') liste_instr(gdpo i k)
+		first_stage_instr, year(`n') liste_instr(x)
 	
 	
 	if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`n'.dta"
