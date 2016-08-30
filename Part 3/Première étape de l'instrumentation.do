@@ -133,17 +133,15 @@ program prep_instr
 	**Exemple : prep_instr 2011
 	
 	
-	
-	*group data by 3-year period: lagged prices
 	use temp_`year', clear
 	save temp_mod_`year', replace
 	
 	
 	local i=1
 	
-	if `year' == 1964 local laglist 1
-	if `year' == 1965 local laglist 1/2
-	if `year' >= 1966 local laglist 1/3
+	if `year' == 1963 local laglist 1
+	if `year' == 1964 local laglist 1/2
+	if `year' >= 1965 local laglist 1/3
 	
 	foreach lag of numlist `laglist' {
 		
@@ -245,14 +243,14 @@ program first_stage_instr
 		reg explained `var_explicatives' /*, noconstant*/ 
 		
 		predict explained_predict
-		gen ln_uv_instr_`lag'lag = explained_predict + ln_uv_lag_`lag'
+		gen ln_uv_`liste_instr'_`lag'lag = explained_predict + ln_uv_lag_`lag'
 		drop explained explained_predict
 		
 		outreg2 using "$dir/Résultats/Troisième partie/first_stage_results", excel ctitle(`year'_`lag'lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
-		corr  ln_uv ln_uv_instr_`lag'lag ln_uv_lag_`lag'
-		gen uv_instr_`lag'lag = exp(ln_uv_instr_`lag'lag)
+		corr  ln_uv ln_uv_`liste_instr'_`lag'lag ln_uv_lag_`lag'
+		gen uv_`liste_instr'_`lag'lag = exp(ln_uv_`liste_instr'_`lag'lag)
 		
-		local predict_for_corr `predict_for_corr' uv_instr_`lag'lag
+		local predict_for_corr `predict_for_corr' uv_`liste_instr'_`lag'lag
 		local var_for_corr `var_for_corr' uv_presente_lag_`lag'
 		
 	
@@ -403,7 +401,7 @@ program first_stage_instr
  
 * drop *`i' *`j' *`iprime' explained* ln_`instr'*
 
-save "$dir/Résultats/Troisième partie/first_stage_`year'_`instr'.dta", replace
+*save "$dir/Résultats/Troisième partie/first_stage_`year'_`liste_instr'.dta", replace
 
 	
 	
@@ -467,13 +465,13 @@ end
 
 
 
-foreach n of numlist 1963/2014 {
+foreach n of numlist 1962/2013 {
 	calc_ms `n'
 }
 
 
 
-foreach n of numlist 1963/2014 {
+foreach n of numlist 1963/2013 {
 	prep_instr `n'
 }
 
@@ -487,18 +485,19 @@ foreach year of numlist 1964/2011 {
 */
 
 
-local instr gdpo i /*k */
 
-foreach n of numlist 1963/2014 {
+local liste_instr gdpo i
+
+foreach year of numlist 1963/2013 {
 	local k 1
-		first_stage_instr, year(`n') liste_instr(x)
+	 foreach instr of local liste_instr {
 	
-	
-	if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`n'.dta"
-	if `k'!=1 drop _merge
-	save "$dir/Résultats/Troisième partie/first_stage_`n'.dta", replace	
-	local k = `k'+1
-	
+		first_stage_instr, year(`year') liste_instr(`instr')
+		if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`year'.dta"
+		if `k'!=1 drop _merge
+		save "$dir/Résultats/Troisième partie/first_stage_`year'.dta", replace	
+		local k = `k'+1
+	}
 }
 
 
