@@ -46,12 +46,12 @@ capture program drop pwtin
 	**one country doesn't match: MNE (Montenegro)
 	
 	if "`c(hostname)'" =="ECONCES1" {
-		use13 "$dir/EKpaper_data/revision_data_2015/pwt81/pwt81.dta", clear
+À MODIFIER		use13 "$dir/EKpaper_data/revision_data_2015/pwt81/pwt81.dta", clear
 	}
 	
 	
 	if strmatch("`c(username)'","*daudin*")==1 {
-		use pwt81.dta, clear
+		use PWT/pwt90.dta, clear
 	
 	}
 	
@@ -59,7 +59,9 @@ capture program drop pwtin
 	replace countrycode="SER" if countrycode=="SRB"
 	replace countrycode="ZAR" if countrycode=="COD"
 	
-	save pwt81,replace
+	
+	cd "$dir/DATA_TEMP/Third_Part/PWT"
+	save tmp_pwt90,replace
 	
 	
 	clear
@@ -67,11 +69,11 @@ end
 pwtin
 
 *******************************************************************************
-*reorganize PWT 8.1 in annual files with lagged GDP-investment-cap stock price levels 
+*reorganize PWT 9.0 in annual files with lagged GDP-investment-cap stock price levels 
 *******************************************************************************
 capture program drop prepwt
 program prepwt
-	use pwt81, clear
+	use tmp_pwt90.dta, clear
 	
 	
 	if "`c(hostname)'" =="ECONCES1" {
@@ -84,7 +86,7 @@ program prepwt
 	
 	if strmatch("`c(username)'","*daudin*")==1 {
 		rename countrycode iso
-		joinby iso using "../Comparaison Wits Cepii.dta", unmatched(none)
+		joinby iso using "$dir/Data/Comparaison Wits Cepii.dta", unmatched(none)
 		drop iso
 		rename cepii iso_o
 	
@@ -96,35 +98,34 @@ program prepwt
 	
 	
 	
-	*keep relevant variables: price level of domestic absorption; price level of domestic output, price level of investment, price level of capital stock
-	keep iso_o year pl_da pl_gdpo pl_i pl_k
-	drop if pl_gdpo==.
+	*keep relevant variables: price level of exports
+	keep iso_o year pl_x
+	drop if pl_x==.
 	drop if year<1962
-	save tmp_pwt81, replace
+	save tmp_pwt90, replace
 	
 	
 	
 	
 	**first approach to constructing annual files for instrumenting unit values:
-	*group data by 5-year period: start in 1967; finish in 2011
 	
-	foreach year of numlist 1965/2011 {
-		use tmp_pwt81, clear
+	foreach year of numlist 1963/2014 {
+		use tmp_pwt90, clear
 	
-		if `year' == 1964 local laglist 1
-		if `year' == 1965 local laglist 1/2
-		if `year' >= 1966 local laglist 1/3
+		if `year' == 1963 local laglist 1
+		if `year' == 1964 local laglist 1/2
+		if `year' >= 1965 local laglist 1/3
 	
 	
 		local i = `year'-3
 		
 		keep if year>=`i' & year<=`year'
-		local liste_instr da gdpo i k
+		local liste_instr x
 		foreach v of local liste_instr {	
 			rename pl_`v' `v'_
 		}
 		
-		reshape wide da_ gdpo_ i_ k_, i(iso_o) j(year)
+		reshape wide x_, i(iso_o) j(year)
 	*	blouk
 		foreach lag of numlist `laglist' {
 			foreach instr of local liste_instr {
@@ -138,11 +139,11 @@ program prepwt
 			drop `instr'_`year'
 		}		
 		gen year=`year'
-		save tmp_pwt81_`year', replace
+		save tmp_pwt90_`year', replace
 	}
-	erase tmp_pwt81.dta
+	erase tmp_pwt90.dta
 end
 prepwt
-*EX: tmp_pwt81_1965.dta contains price levels for 1965 rel. 1964-1962: gdp, da, i, k
+*EX: tmp_pwt90_1965.dta contains price levels for 1965 rel. 1964-1962: gdp, da, i, k
 *gdp-da very strongly correlated; idem for i-k; but gdp-i(k) much less correlated
 
