@@ -21,8 +21,10 @@ if strmatch("`c(username)'","*daudin*")==1 {
 
 
 if "`c(hostname)'" =="ECONCES1" {
-	global dir "/Users/liza/Documents/LIZA_WORK"
-	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
+*	global dir "/Users/liza/Documents/LIZA_WORK"
+	global dir "Y:\ELAST_NONLIN"
+	cd "$dir"
+*	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
 }
 
 
