@@ -126,6 +126,21 @@ else {
 	drop iso_o
 	rename ccode_cepii iso_o
 }
+local source o d
+local name RUS UKR UZB KAZ BLR AZE GEO TJK MDA KGZ LTU TKM ARM LVA EST
+local germany FRG DDR DEU
+local center CZE SVK
+foreach s of local source {
+	foreach n of local name {
+		quietly replace iso_`s'="SUN" if iso_`s'=="`n'"
+	}	
+	foreach g of local germany {
+		quietly replace iso_`s'="DEU" if iso_`s'=="`g'"
+	}	
+	foreach c of local center {
+		quietly replace iso_`s'="CSH" if iso_`s'=="`c'"
+	}	
+}
 drop if iso_o==iso_d
 collapse (sum) trade_value, by(product iso_o)
 by iso_o, sort: egen tot=total(trade_value)
