@@ -1,3 +1,5 @@
+*Sept 7 version: program should work on both computers
+
 *June 29th : on se borne à ce qui est dans le cepii (_v2GD)
 *June 15th, 2015*This file insheets 1962-2013 data extracted from UN COMTRADE via WITS interface (advanced query procedure)
 *there are some discrepancies with previous extraction in 2005-2009: therefore I extract 2000-2013
@@ -104,7 +106,7 @@ rename iso iso_o
 drop if iso_o==iso_d
 *collapse (sum) trade_value quantity, by(product qty_unit qty_token iso_o iso_d year)
 save cepii-4D-`1', replace
-*rm All-4D-`1'.dta
+rm All-4D-`1'.dta
 clear
 end
 
