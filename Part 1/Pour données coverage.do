@@ -1,3 +1,5 @@
+*Sept 07 version: should work on both computers
+
 **This file works with data extracted from UN COMTRADE via WITS interface (bulk download procedure)
 **and downloaded into stata to produce a set of statistics about the data
 **comparison cov_per_year: nb reporters per year, nb pairs per year, tot trade, tot uv trade, nb product lines (all pairs, aggregating by sitc4 (all qty_units))
@@ -43,9 +45,12 @@ clear
 
 foreach i of numlist 1962(1)2013 {
 	display "--cov_per_year--------`i'---------------------"
-	
-*	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
-	use cepii-4D-`i', clear	
+if strmatch("`c(username)'","*daudin*")==1 {
+	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
+}
+if "`c(hostname)'" =="ECONCES1"  {
+	use cepii-4D-`i', clear
+}	
 	drop if iso_d=="WLD"
 	drop if iso_o=="WLD"
 *nb reporters
@@ -109,9 +114,12 @@ foreach i of numlist 1962(1)2013 {
 foreach i of numlist 1962(1)2013 {
 	*cd "$dir\SITC_Rev1_wits_bulk\wits_june_2011"
 	display "--cov_per_year_pair--------`i'---------------------"
-	
-*	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
-	use cepii-4D-`i', clear	
+if strmatch("`c(username)'","*daudin*")==1 {
+	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
+}
+if "`c(hostname)'" =="ECONCES1"  {
+	use cepii-4D-`i', clear
+}	
 	drop if iso_d=="WLD"
 	drop if iso_o=="WLD"
 	drop if iso_o==iso_d
