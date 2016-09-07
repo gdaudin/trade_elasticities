@@ -96,7 +96,7 @@ rename iso iso_o
 drop if iso_o==iso_d
 *collapse (sum) trade_value quantity, by(product qty_unit qty_token iso_o iso_d year)
 save cepii-4D-`1', replace
-rm All-4D-`1'.dta
+*rm All-4D-`1'.dta
 clear
 end
 
