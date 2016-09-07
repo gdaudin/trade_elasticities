@@ -1,3 +1,5 @@
+*Sept 7 version: should work on both computers
+
 *Pour appendice 1 (coverage).do version of Sept 6: only part on constructing superbal sample used 
 *to construct superbal sample & to rerun estimations for part 1 (graphs)
 *Version Juin 2015 pour Guillaume et intégrer jusqu'à 2013
@@ -13,22 +15,32 @@ clear all
 set matsize 800
 set more off
 
-*GD
-*global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
-*cd "$dir"
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	cd "$dir/Data/COMTRADE_2015_lite"
 
-*on econces1:
-global dir "Y:\ELAST_NONLIN"
-cd "$dir"
+}
 
+
+if "`c(hostname)'" =="ECONCES1" {
+*	global dir "/Users/liza/Documents/LIZA_WORK"
+*	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
+	global dir "Y:\ELAST_NONLIN"
+	cd "$dir"
+}
 
 **1**create superbalanced sample for some subset of years: 
 *pairs trading both ways in each year
 capture program drop superbal
 program superbal
 **redef_full_pair_tot_trade file has total trade by pair redefined to have SUN, DEU, CSH
-*use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-use cov_per_year_pair, clear
+if strmatch("`c(username)'","*daudin*")==1 {
+	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
+}
+if "`c(hostname)'" =="ECONCES1"  {
+	use cov_per_year_pair, clear
+}	
 
 *`1' is starting year for the superbalanced sample: 1963 or 1970
 *`2' is defined as a fct of `1' to drop unneeded years: 1962 or 1962-1969
@@ -116,8 +128,14 @@ end
 *************
 capture program drop cover
 program cover
-*use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-use cov_per_year_pair, clear
+
+if strmatch("`c(username)'","*daudin*")==1 {
+	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
+}
+if "`c(hostname)'" =="ECONCES1"  {
+	use cov_per_year_pair, clear
+}
+
 local source o d
 local name RUS UKR UZB KAZ BLR AZE GEO TJK MDA KGZ LTU TKM ARM LVA EST
 local germany FRG DDR
