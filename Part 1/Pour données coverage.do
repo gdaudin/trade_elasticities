@@ -15,15 +15,27 @@
 //then compare the two data extractions
 
 
-**Reprise Sept 06, 2016: run on econces server to get cov_per_year_pair.dta
-*on econces1:
-global dir "Y:\ELAST_NONLIN"
-cd "$dir"
+*****************************
+***set directory and matsize
+*****************************
+clear all
+set matsize 800
+set more off
 
-*GD
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
-cd "$dir"
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	cd "$dir/Data/COMTRADE_2015_lite"
 
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+*	global dir "/Users/liza/Documents/LIZA_WORK"
+*	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
+	global dir "Y:\ELAST_NONLIN"
+	cd "$dir"
+}
 
 
 
