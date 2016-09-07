@@ -169,14 +169,14 @@ capture program drop reg_nlin
 program reg_nlin
 *	args year
 *exemple : reg_nlin 
-args year /*instr*/ /*spec*/ lag
+args year instr /*spec*/ lag
 *exemple: reg_nlin 2009 gdpo /*baseline*/ 3
 timer clear 2
 timer on 2
  
 *	use "$dir/temp_`year'", clear
 	use "$dir/Résultats/Troisième partie/first_stage_`year'.dta", clear
-	generate pred_uv=exp(ln_uv_instr/*_`instr'*/_`lag'lag)
+	generate pred_uv=exp(ln_uv_`instr'_`lag'lag)
 	
 
 	
@@ -303,17 +303,17 @@ if "`c(hostname)'" =="ECONCES1" {
 	drop iso_o_*
 		
 *	save "$dir/temp_`year'_result", replace
-*	save "$dir/temp_`instr'_`lag'_`year'_result", replace
-	save "$dir/temp_`lag'_`year'_result", replace
+	save "$dir/temp_`instr'_`lag'_`year'_result", replace
+*	save "$dir/temp_`lag'_`year'_result", replace
 
 	keep if _n==1
 	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
 *	append using "$dir/temp_result"
 *	save "$dir/temp_result", replace
-*	append using "$dir/temp_`instr'_`lag'_result"
-	append using "$dir/temp_`lag'_result"
-*	save "$dir/temp_`instr'_`lag'_result", replace
-	save "$dir/temp_`lag'_result", replace
+	append using "$dir/temp_`instr'_`lag'_result"
+*	append using "$dir/temp_`lag'_result"
+	save "$dir/temp_`instr'_`lag'_result", replace
+*	save "$dir/temp_`lag'_result", replace
 *	erase "$dir/temp_`instr'_`lag'_`year'_result.dta"
 *	clear	
 
@@ -337,19 +337,21 @@ clear
 set obs 1
 gen year=.
 *capture save "$dir/temp_result"
-local which gdpo /*i k*/
+local liste_instr gdpo i /*k*/
 *local what baseline /*combined*/
-local lags 3
+local lags 2
+local instr gdpo
 *foreach instr of local which {
+
 	foreach lag of local lags {
 	clear
 	gen rc=.
 *	capture save "$dir/temp_`instr'_`lag'_result.dta"
-	capture save "$dir/temp_`lag'_result.dta"
+	capture save "$dir/temp_`instr'_`lag'_result.dta"
 
 *	foreach spec of local what {
-		foreach year of num 1985(1)2011 {
-			display "`year' /*`instr'*/ `lag'"
+		foreach year of num 1964(1)2013 {
+			display "`year' `instr' `lag'"
 *	display "`year'"
 *	display
 *			instr_set `instr' `spec' `lag'
@@ -369,10 +371,72 @@ local lags 3
 generate one_minus_sigma = 1-sigma_est	
 twoway (line one_minus_sigma year, sort) (qfit one_minus_sigma year, sort)
 twoway (line one_minus_sigma year, sort) (lfit one_minus_sigma year, sort)
-
-
 timer off 1
 timer list 1
+
+local lags 1
+local instr gdpo
+*foreach instr of local which {
+
+	foreach lag of local lags {
+	clear
+	gen rc=.
+*	capture save "$dir/temp_`instr'_`lag'_result.dta"
+	capture save "$dir/temp_`instr'_`lag'_result.dta"
+
+*	foreach spec of local what {
+		foreach year of num 1963(1)1967 {
+			display "`year' `instr' `lag'"
+*	display "`year'"
+*	display
+*			instr_set `instr' `spec' `lag'
+*			instr_uv `year' `instr' `spec' `lag'
+			reg_nlin `year' `instr' `lag'
+*	calc_ms prepar_full `year'
+*	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+*	erase "$dir/temp_`year'.dta"
+	*capture	erase temp_`spec'_`instr'_`lag'_`year'.dta
+	*		erase tmp_`spec'_`lag'.dta
+		}
+	}	
+*}
+
+local lags 2
+local instr i
+*foreach instr of local which {
+
+	foreach lag of local lags {
+	clear
+	gen rc=.
+*	capture save "$dir/temp_`instr'_`lag'_result.dta"
+	capture save "$dir/temp_`instr'_`lag'_result.dta"
+
+*	foreach spec of local what {
+		foreach year of num 1965(8)2013 {
+			display "`year' `instr' `lag'"
+*	display "`year'"
+*	display
+*			instr_set `instr' `spec' `lag'
+*			instr_uv `year' `instr' `spec' `lag'
+			reg_nlin `year' `instr' `lag'
+*	calc_ms prepar_full `year'
+*	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+*	erase "$dir/temp_`year'.dta"
+	*capture	erase temp_`spec'_`instr'_`lag'_`year'.dta
+	*		erase tmp_`spec'_`lag'.dta
+		}
+	}	
+*}
+
+
+
+
+
+
+
+
 
 
 *log close	
