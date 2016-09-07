@@ -13,10 +13,10 @@
 //then compare the two data extractions
 
 
-*on my laptop:
-*global dir "G:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*at OFCE:
-*global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
+**Reprise Sept 06, 2016: run on econces server to get cov_per_year_pair.dta
+*on econces1:
+global dir "Y:\ELAST_NONLIN"
+cd "$dir"
 
 *GD
 global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
@@ -44,8 +44,8 @@ clear
 foreach i of numlist 1962(1)2013 {
 	display "--cov_per_year--------`i'---------------------"
 	
-	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
-	
+*	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
+	use cepii-4D-`i', clear	
 	drop if iso_d=="WLD"
 	drop if iso_o=="WLD"
 *nb reporters
@@ -110,8 +110,8 @@ foreach i of numlist 1962(1)2013 {
 	*cd "$dir\SITC_Rev1_wits_bulk\wits_june_2011"
 	display "--cov_per_year_pair--------`i'---------------------"
 	
-	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
-	
+*	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
+	use cepii-4D-`i', clear	
 	drop if iso_d=="WLD"
 	drop if iso_o=="WLD"
 	drop if iso_o==iso_d
