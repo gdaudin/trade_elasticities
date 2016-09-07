@@ -53,6 +53,9 @@ set more off
 *cd "$dir\SITC_Rev1_wits_bulk\wits_june_2011"
 
 clear
+*delete previously constructed files if rerun:
+capture erase cov_per_year.dta
+capture erase cov_per_year_pair.dta
 
 
 foreach i of numlist 1962(1)2013 {
