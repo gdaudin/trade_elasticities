@@ -1,4 +1,5 @@
 *this program taken up on Sept 7 to run regressions for part 1 on KUL server
+*adjusts previous program so as to work with cepii-4D-`year'.dta
 
 **This program was written in May 2013 following GD "regression_partie1.do"
 *is adapted to follow revision in Nov 2013
@@ -36,40 +37,64 @@ if "`c(hostname)'" =="ECONCES1" {
 capture program drop weightyear
 program weightyear
 *`1': year which weights used as stable weights
-*use "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\All-4D-`1'.dta", clear
-use All-4D-`1', clear
+if strmatch("`c(username)'","*daudin*")==1 {
+	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`1'.dta", clear
+}
+if "`c(hostname)'" =="ECONCES1"  {
+	use cepii-4D-`1', clear
+}
+*use All-4D-`1', clear
+*drop if iso_d=="All"
+*drop if iso_o=="All"
 
-drop if iso_d=="All"
-drop if iso_o=="All"
 **procedure for correspondence
 **change all ERI-ETH variations to ETH only; idem YUG-SER and BEL-LUX
-capture replace iso_d= YUG if iso_d=="SER"
-capture replace iso_o= YUG if iso_o=="SER"
-capture replace iso_d= BEL if iso_d=="LUX"
-capture replace iso_o= BEL if iso_o=="LUX"
-capture replace iso_d=ETH if iso_d=="ERI"
-capture replace iso_o=ETH if iso_o=="ERI"
+replace iso_d= "YUG" if iso_d=="SER"
+replace iso_o= "YUG" if iso_o=="SER"
+replace iso_d= "BEL" if iso_d=="LUX"
+replace iso_o= "BEL" if iso_o=="LUX"
+replace iso_d= "ETH" if iso_d=="ERI"
+replace iso_o= "ETH" if iso_o=="ERI"
+
 **for me: keep only attributed trade in our sample (pairs; products)
 if `1'<1991 {
-*	joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_62_90.dta", unmatched(none)
-	joinby iso_d using wits_cepii_corresp_d_62_90, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_62_90.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_d using wits_cepii_corresp_d_62_90, unmatched(none)
+	}	
+
 	drop iso_d
 	rename ccode_cepii iso_d
-*	joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_62_90.dta", unmatched(none)
-	joinby iso_o using wits_cepii_corresp_o_62_90, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_62_90.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_o using wits_cepii_corresp_o_62_90, unmatched(none)
+	}	
 	drop iso_o
 	rename ccode_cepii iso_o
 }
 else {
-*	joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_91_06.dta", unmatched(none)
-	joinby iso_d using wits_cepii_corresp_d_91_06, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_91_06.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_d using wits_cepii_corresp_d_91_06, unmatched(none)
+	}	
 	drop iso_d
 	rename ccode_cepii iso_d
-*	joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_91_06.dta", unmatched(none)
-	joinby iso_o using wits_cepii_corresp_o_91_06, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_91_06.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_o using wits_cepii_corresp_o_91_06, unmatched(none)
+	}	
 	drop iso_o
 	rename ccode_cepii iso_o
 }
+
 drop if iso_o==iso_d
 *fillin iso_d iso_o
 *drop _fillin
@@ -92,40 +117,64 @@ weightyear 1970
 capture program drop countryyear
 program countryyear
 *`1': year which weights used as stable weights
-*use "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\All-4D-`1'.dta", clear
-use All-4D-`1', clear
+if strmatch("`c(username)'","*daudin*")==1 {
+	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`1'.dta", clear
+}
+if "`c(hostname)'" =="ECONCES1"  {
+	use cepii-4D-`1', clear
+}	
+*use All-4D-`1', clear
+*drop if iso_d=="All"
+*drop if iso_o=="All"
 
-drop if iso_d=="All"
-drop if iso_o=="All"
 **procedure for correspondence
 **change all ERI-ETH variations to ETH only; idem YUG-SER and BEL-LUX
-capture replace iso_d= YUG if iso_d=="SER"
-capture replace iso_o= YUG if iso_o=="SER"
-capture replace iso_d= BEL if iso_d=="LUX"
-capture replace iso_o= BEL if iso_o=="LUX"
-capture replace iso_d=ETH if iso_d=="ERI"
-capture replace iso_o=ETH if iso_o=="ERI"
+replace iso_d= "YUG" if iso_d=="SER"
+replace iso_o= "YUG" if iso_o=="SER"
+replace iso_d= "BEL" if iso_d=="LUX"
+replace iso_o= "BEL" if iso_o=="LUX"
+replace iso_d= "ETH" if iso_d=="ERI"
+replace iso_o= "ETH" if iso_o=="ERI"
+
 **for me: keep only attributed trade in our sample (pairs; products)
 if `1'<1991 {
-*	joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_62_90.dta", unmatched(none)
-	joinby iso_d using wits_cepii_corresp_d_62_90, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_62_90.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_d using wits_cepii_corresp_d_62_90, unmatched(none)
+	}	
+
 	drop iso_d
 	rename ccode_cepii iso_d
-*	joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_62_90.dta", unmatched(none)
-	joinby iso_o using wits_cepii_corresp_o_62_90, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_62_90.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_o using wits_cepii_corresp_o_62_90, unmatched(none)
+	}	
 	drop iso_o
 	rename ccode_cepii iso_o
 }
 else {
-*	joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_91_06.dta", unmatched(none)
-	joinby iso_d using wits_cepii_corresp_d_91_06, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_91_06.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_d using wits_cepii_corresp_d_91_06, unmatched(none)
+	}	
 	drop iso_d
 	rename ccode_cepii iso_d
-*	joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_91_06.dta", unmatched(none)
-	joinby iso_o using wits_cepii_corresp_o_91_06, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_91_06.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_o using wits_cepii_corresp_o_91_06, unmatched(none)
+	}	
 	drop iso_o
 	rename ccode_cepii iso_o
 }
+
 local source o d
 local name RUS UKR UZB KAZ BLR AZE GEO TJK MDA KGZ LTU TKM ARM LVA EST
 local germany FRG DDR DEU
@@ -171,20 +220,26 @@ countryyear 1963
 capture program drop baseline
 program baseline
 syntax, year(int) method(string) [fta(string) balanced(string) weightyear(string) countryyear(string)]
-*on mac:
-*use "/Volumes/VERBATIM HD/LIZA_WORK/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2011/All-4D-`year'.dta", clear
-use All-4D-`year', clear 
+if strmatch("`c(username)'","*daudin*")==1 {
+	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
+}
+if "`c(hostname)'" =="ECONCES1"  {
+	use cepii-4D-`year', clear
+}
 
-drop if iso_d=="All"
-drop if iso_o=="All"
+*use All-4D-`year', clear 
+*drop if iso_d=="All"
+*drop if iso_o=="All"
+
 **procedure for correspondence
 **change all ERI-ETH variations to ETH only; idem YUG-SER and BEL-LUX
-capture replace iso_d= YUG if iso_d=="SER"
-capture replace iso_o= YUG if iso_o=="SER"
-capture replace iso_d= BEL if iso_d=="LUX"
-capture replace iso_o= BEL if iso_o=="LUX"
-capture replace iso_d=ETH if iso_d=="ERI"
-capture replace iso_o=ETH if iso_o=="ERI"
+replace iso_d= "YUG" if iso_d=="SER"
+replace iso_o= "YUG" if iso_o=="SER"
+replace iso_d= "BEL" if iso_d=="LUX"
+replace iso_o= "BEL" if iso_o=="LUX"
+replace iso_d= "ETH" if iso_d=="ERI"
+replace iso_o= "ETH" if iso_o=="ERI"
+
 *******************
 **for Guillaume: prepare Germany
 *replace iso_d= "DEU_avt91" if `year' <=1990 & iso_d=="DEU"
@@ -203,22 +258,39 @@ capture replace iso_o=ETH if iso_o=="ERI"
 *******************
 **for me: prepare Germany
 if `year'<1991 {
-*	joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_62_90.dta", unmatched(none)
-	joinby iso_d using wits_cepii_corresp_d_62_90, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_62_90.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_d using wits_cepii_corresp_d_62_90, unmatched(none)
+	}	
+
 	drop iso_d
 	rename ccode_cepii iso_d
-*	joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_62_90.dta", unmatched(none)
-	joinby iso_o using wits_cepii_corresp_o_62_90, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_62_90.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_o using wits_cepii_corresp_o_62_90, unmatched(none)
+	}	
 	drop iso_o
 	rename ccode_cepii iso_o
 }
 else {
-*	joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_91_06.dta", unmatched(none)
-	joinby iso_d using wits_cepii_corresp_d_91_06, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_d using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_91_06.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_d using wits_cepii_corresp_d_91_06, unmatched(none)
+	}	
 	drop iso_d
 	rename ccode_cepii iso_d
-*	joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_91_06.dta", unmatched(none)
-	joinby iso_o using wits_cepii_corresp_o_91_06, unmatched(none)
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_o using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_o_91_06.dta", unmatched(none)
+	}
+	if "`c(hostname)'" =="ECONCES1"  {
+		joinby iso_o using wits_cepii_corresp_o_91_06, unmatched(none)
+	}	
 	drop iso_o
 	rename ccode_cepii iso_o
 }
