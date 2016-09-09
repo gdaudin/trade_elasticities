@@ -1,4 +1,4 @@
-*Sept 8 version: only constructs superbal sample (should work on both computers)
+*Sept 9 version: constructs superbal sample for 1962-2013; 1963-2013; 1965-2013 (should work on both computers)
 *based on "Pour appendice 1 (coverage).do" but only constructs superbal sample 
 
 *Version Juin 2015 pour Guillaume et intégrer jusqu'à 2013
@@ -124,5 +124,5 @@ end
 superbal 1962
 *1963: 932 pairs
 superbal 1963
-*1970: 1464 pairs
-superbal 1970
+*1965: 1208 pairs
+superbal 1965
