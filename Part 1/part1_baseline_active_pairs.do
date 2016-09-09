@@ -1,3 +1,5 @@
+*This program is no longer used: replaced by "pour graphique coverage partie 1.do"
+
 **This program was written in May 2013
 **adapted to follow revision in Nov 2013
 **this program computes additional stats on active pairs reported in paper
@@ -146,12 +148,3 @@ clear
 end
 active
 
-
-**next program runs baseline regressions in part 1 for 1963-2009
-*baseline
-*composition 1963: world
-*composition 1963: country
-*sample 1963
-*fta 1963
-*combined: recap table
-**next program investigates distance distribution of trade
