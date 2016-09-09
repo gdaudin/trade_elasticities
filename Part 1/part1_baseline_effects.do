@@ -1,5 +1,5 @@
-*this program taken up on Sept 7 to run regressions for part 1 on KUL server
-*adjusts previous program so as to work with cepii-4D-`year'.dta
+*this program revised on Sept 9 to run regressions for 1962-2013 with 1962 as base year (variant: 1963; 1965)
+*and to adjust previous program so as to work with cepii-4D-`year'.dta
 
 **This program was written in May 2013 following GD "regression_partie1.do"
 *is adapted to follow revision in Nov 2013
@@ -107,8 +107,10 @@ drop trade_value tot
 save weight_`1'_full, replace
 clear
 end
+weightyear 1962
 weightyear 1963
-weightyear 1970
+weightyear 1965
+
 ***********************************************
 **1b**weights for each category: country
 ***********************************************
@@ -198,8 +200,9 @@ drop trade_value tot
 save weight_country_`1'_full, replace
 clear
 end
-countryyear 1970
+countryyear 1962
 countryyear 1963
+countryyear 1965
 **this country reweight: only includes products in joint set
 **hence, this reweight evaluates evolution of substitutability within set of stable goods:
 **goods present in base year and each subsequent year, with base year weights
@@ -438,114 +441,118 @@ save part1_`method'_`balanced'_`fta'_`weightyear'_`countryyear', replace
 display "`year' done"
 end
 
-**BASIC ESTIMATION FILES FOR PART 1:
-**baseline estimation: full sample, no fta, no reweight
+*********************************************
+**ESTIMATION FILES FOR PART 1: SEPT 9, 2016
+*********************************************
+*ok*baseline estimation: full sample, no fta, no reweight
 *file with results: "part1_ppml_full_nofta_current_current.dta"
+*results are marginally different from file that used All-4D-`year' (results kept in file with extension "_init")
 foreach i of numlist 1962(1)2013 {
 	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(current) countryyear(current)  
 }
-**fix world composition of goods: full sample, no fta, reweight 1963
+*ok*fix world composition of goods: full sample, no fta, reweight 1962
+*file with results: "part1_ppml_full_nofta_1962_current.dta"
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(1962) countryyear(current)
+}
+*ok*same specification with weightyear 1963
 *file with results: "part1_ppml_full_nofta_1963_current.dta"
 foreach i of numlist 1962(1)2013 {
 	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(1963) countryyear(current)
 }
-**fix world composition of trade partners: superbal sample, no fta, no reweight
+*ok*same specification with weightyear 1965
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(1965) countryyear(current)
+}
+
+*ok*fix world composition of trade partners: superbal 1962, no fta, no reweight
+*file with results: "part1_ppml_1962_nofta_current_current.dta"
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(1962) fta(nofta) weightyear(current) countryyear(current) 
+}
+*ok*same specification but with superbal sample on basis 1963-2013, no fta, no reweight
 *file with results: "part1_ppml_1963_nofta_current_current.dta"
 foreach i of numlist 1962(1)2013 {
 	baseline, year(`i') method(ppml) balanced(1963) fta(nofta) weightyear(current) countryyear(current) 
 }
-**allow for FTAs: full sample, fta, no reweight
+*ok*same specification with superbal sample on basis 1965-2013, no fta, no reweight
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(1965) fta(nofta) weightyear(current) countryyear(current) 
+}
+*not updated*allow for FTAs: full sample, fta, no reweight
 *file with results: "part1_ppml_full_big_current_current.dta"
 *foreach i of numlist 1963(1)2009 {
 *	baseline, year(`i') method(ppml) balanced(full) fta(big) weightyear(current) countryyear(current)
 *}
-**two-by-two effects: sample and composition
-*file with results: "part1_ppml_1963_nofta_1963_current.dta"
+*ok*two-by-two effects: sample and composition (1962)
+*file with results: "part1_ppml_1962_nofta_1962_current.dta"
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(1962) fta(nofta) weightyear(1962) countryyear(current)
+}
+*ok*same specification but with sample and composition effects on basis 1963
 foreach i of numlist 1962(1)2013 {
 	baseline, year(`i') method(ppml) balanced(1963) fta(nofta) weightyear(1963) countryyear(current)
 }
-**two-by-two effects: sample and FTAs, no reweight
+*ok*same specification with sample and composition effects on basis 1965
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(1965) fta(nofta) weightyear(1965) countryyear(current)
+}
+*not updated*two-by-two effects: sample and FTAs, no reweight
 *file with results: "part1_ppml_1963_big_current_current.dta"
 *foreach i of numlist 1963(1)2009 {
 *	baseline, year(`i') method(ppml) balanced(1963) fta(big) weightyear(current) countryyear(current)
 *}
-**two-by-two effects: composition and FTAs (full, big and reweight 1963)
+*not updated*two-by-two effects: composition and FTAs (full, big and reweight 1963)
 *file with results: "part1_ppml_full_big_1963_current.dta"
 *foreach i of numlist 1963(1)2009 {
 *	baseline, year(`i') method(ppml) balanced(full) fta(big) weightyear(1963) countryyear(current)
 *}
-**all combined: superbal 1963, FTA, reweight 1963
+*not updated*all combined: superbal 1963, FTA, reweight 1963
 *file with results: "part1_ppml_1963_big_1963_current.dta"
 *foreach i of numlist 1963(1)2009 {
 *	baseline, year(`i') method(ppml) balanced(1963) fta(big) weightyear(1963) countryyear(current)  
 *}
-**ALL BASELINE SPECIFICATION RESULTS CONFORM TO THOSE REPORTED IN PAPER
-*POINT OUT THAT DISTANCE PUZZLE IS NOT A COMPOSITION EFFECT, BUT RATHER WITHIN-STABLE-SET EFFECT
-*JUSTIFIES FOCUS ON HETEROGENEITY RATHER THAN ON SET OF COUNTRIES OR DISTANCE FUNCTION
-*FURTHER CHECKS (NEXT PROGRAM) TO PUSH IDEA THAT DISTANCE PUZZLE IS A WITHIN-STABLE-SET EFFECT
-
-**EXTRA ESTIMATION FILES FOR PART 1:
-*1970 country composition effect and full and ftas:
-*foreach i of numlist 1963(1)2009 {
-*	baseline, year(`i') method(ppml) balanced(full) fta(big) weightyear(current) countryyear(1970)  
-*}
-*1970 country composition effect and full
-foreach i of numlist 1962(1)2013 {
-	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(current) countryyear(1970)  
-}
-
-*1970 country composition effect and superbal and ftas
-*foreach i of numlist 1963(1)2009 {
-*	baseline, year(`i') method(ppml) balanced(1970) fta(big) weightyear(current) countryyear(1970)  
-*}
-*1970 superbalanced and country composition effect for 1970 instead of 1963
-*very similar pattern to 1963-1963 fixing
-foreach i of numlist 1962(1)2013 {
-	baseline, year(`i') method(ppml) balanced(1970) fta(nofta) weightyear(current) countryyear(1970)  
-}
-*1970 superbalanced and ftas:
-*foreach i of numlist 1963(1)2009 {
-*	baseline, year(`i') method(ppml) balanced(1970) fta(big) weightyear(current) countryyear(current)  
-*}
-*1970 superbalanced (sample)
-foreach i of numlist 1962(1)2013 {
-	baseline, year(`i') method(ppml) balanced(1970) fta(nofta) weightyear(current) countryyear(current)  
-}
-*1970 composition effect (world)
-foreach i of numlist 1962(1)2013 {
-	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(1970) countryyear(current)  
-}
 
 ****************************************************
-**3**additional composition effect: country bundle 
-****************************************************
+**ADDITIONAL COMPOSITION EFFECT: COUNTRY BUNDLE 
 *fix composition of country-specific product bundle 
 ****************************************************
-*pure country bundle composition effect: enhances distance puzzle
-*file with results: "part1_ppml_full_nofta_current_1963.dta"
+*ok*country bundle composition effect: for 1962
+*file with results: "part1_ppml_full_nofta_current_1962.dta"
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(current) countryyear(1962)  
+}
+*ok*same specification but with 1963 as basis year for country-specific bundles
 foreach i of numlist 1962(1)2013 {
 	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(current) countryyear(1963)  
 }
-**sample+country bundle composition effect: enhances distance puzzle (slightly)
-*file with results: "part1_ppml_1963_nofta_current_1963.dta"
+*ok*same specification but with 1965 as basis year for country-specific bundle
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(full) fta(nofta) weightyear(current) countryyear(1965)  
+}
+
+*ok*sample+country bundle composition effect in 1962
+*file with results: "part1_ppml_1962_nofta_current_1962.dta"
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(1962) fta(nofta) weightyear(current) countryyear(1962)  
+}
+*ok*same specification but bundle and sample effects on basis 1963
 foreach i of numlist 1962(1)2013 {
 	baseline, year(`i') method(ppml) balanced(1963) fta(nofta) weightyear(current) countryyear(1963)  
 }
-**fta+country bundle composition effect: 
+*ok*same specification but bundle and sample effects on basis 1965
+foreach i of numlist 1962(1)2013 {
+	baseline, year(`i') method(ppml) balanced(1965) fta(nofta) weightyear(current) countryyear(1965)  
+}
+
+*not updated*fta+country bundle composition effect: 
 *file with results: "part1_ppml_full_big_current_1963.dta"
 *foreach i of numlist 1963(1)2009 {
 *	baseline, year(`i') method(ppml) balanced(full) fta(big) weightyear(current) countryyear(1963)  
 *}
-*sample+fta+country bundle composition effect:
+*not updated*sample+fta+country bundle composition effect:
 *file with results: "part1_ppml_1963_big_current_1963.dta"
 *foreach i of numlist 1963(1)2009 {
 *	baseline, year(`i') method(ppml) balanced(1963) fta(big) weightyear(current) countryyear(1963)  
 *}
-
 ***********************************************************
-*next: PREP GRAPHS AND TABLE FOR PAPER: REPLACE CURRENT: 
-*decomposition table: conclude on product-driven // distance-driven effects
-
-
-*additional stuff in other files: fix distance distribution of trade within/outside of ftas: puzzle robust!
-
