@@ -1,3 +1,4 @@
+*This file replaced by part1_for_paper_short.do on Sept.12, 2016
 
 *This file prepares graphs and recap table reported in part 1 of the paper
 *****************************
