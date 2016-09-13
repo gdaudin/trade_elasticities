@@ -1,4 +1,5 @@
 *This program was taken up on Sept 9 to adjust to sample: 1962-2013
+*NB: program runs on latest version of cov_per_year_pair.dta (cepii names)
 
 **This program was written in May 2013
 **adapted to follow revision in Nov 2013
@@ -184,12 +185,3 @@ clear
 end
 active
 
-
-**next program runs baseline regressions in part 1 for 1963-2009
-*baseline
-*composition 1963: world
-*composition 1963: country
-*sample 1963
-*fta 1963
-*combined: recap table
-**next program investigates distance distribution of trade
