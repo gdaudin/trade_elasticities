@@ -1,5 +1,6 @@
-*This program adjusted on Sept 12 to replace part1_for_paper.do
-*stable sample defined in 1962-2013; no FTA controls*
+*This program adjusted on Sept 13 to replace part1_for_paper.do
+*and to use correct superbalanced sample defined in 1962-2013; 
+*we suppress FTA bit of program (go back to part1_for_paper.do for that part)
 
 *This file prepares graphs and recap table reported in part 1 of the paper
 
@@ -65,8 +66,9 @@ foreach s of local sample {
 	predict `s'
 	replace `s'=-(exp(`s'))
 *growth rate: 
-*0.09% per year for full sample (sign. at 10%): 4.5% increase in coef (marg significant)
-*0.3% per year for superbal sample (sign at 1%): 16.6% increase in coef 
+*growth rate: 
+*0.087% per year for full sample (sign. at 10%): 4.5% increase in coef (marg significant)
+*0.33% per year for superbal sample (sign at 1%): 18.2% increase in coef (using 1965 increases growth rate to .47% per year)
 	quietly graph twoway (scatter estim_`s' ci_`s'_high ci_`s'_low year, msymbol(smcircle smcircle_hollow smcircle_hollow) mcolor(gs4 gs8 gs8)) /*
 	*/ (line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)), legend(order(1 2 4) label(1 "coef_estim") /*
 	*/ label(2 "conf_int") label(4 "geometric fit")) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s')
@@ -107,7 +109,7 @@ foreach s of local sample {
 	replace `s'=-(exp(`s'))
 *growth rate: 
 *0.265% per year for full sample (sign. at 1%): 14.5% increase in coef 
-*0.292% per year for superbal sample (sign at 1%): 16% increase in coef 
+*0.331% per year for superbal sample (sign at 1%): 18.4% increase in coef (using 1965 increases growth rate to .495% per year)
 	quietly graph twoway (scatter estim_`s' ci_`s'_high ci_`s'_low year, msymbol(smcircle smcircle_hollow smcircle_hollow) mcolor(gs4 gs8 gs8)) /*
 	*/ (line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)), legend(order(1 2 4) label(1 "coef_estim") /*
 	*/ label(2 "conf_int") label(4 "geometric fit")) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s')
@@ -146,8 +148,8 @@ foreach s of local sample {
 	predict `s'
 	replace `s'=-(exp(`s'))
 *growth rate: 
-*0.4% per year for full sample (sign. at 1%): 22% increase in coef [explains 89% of tot variation]
-*0.51% per year for superbal sample (sign at 1%): 34% increase in coef 
+*0.40% per year for full sample (sign. at 1%): 22.7% increase in coef [explains 87% of tot variation]
+*0.54% per year for superbal sample (sign at 1%): 31.4% increase in coef (using 1965 increases growth rate to .61% per year)
 	graph twoway (scatter estim_`s' ci_`s'_high ci_`s'_low year, msymbol(smcircle smcircle_hollow smcircle_hollow) mcolor(gs4 gs8 gs8)) /*
 	*/ (line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)), legend(order(1 2 4) label(1 "coef_estim") /*
 	*/ label(2 "conf_int") label(4 "geometric fit")) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s')
@@ -207,8 +209,8 @@ reg ln_base`2' year, robust
 predict pred_base`2'
 replace pred_base`2'=-(exp(pred_base`2'))
 keep year pred_base`2'
-joinby year using basic
-save basic, replace
+joinby year using basic_`1'
+save basic_`1', replace
 
 *full with world bundle
 *local 1 1962
@@ -221,8 +223,8 @@ reg ln_base`2' year, robust
 predict pred_base_full`2'
 replace pred_base_full`2'=-(exp(pred_base_full`2'))
 keep year pred_base_full`2'
-joinby year using basic
-save basic, replace
+joinby year using basic_`1'
+save basic_`1', replace
 *stable with world bundle
 use part1_ppml_`1'_nofta_`1'_current, clear
 keep coef_lndist year
@@ -232,8 +234,8 @@ reg ln_base`2'`2' year, robust
 predict pred_base`2'`2'
 replace pred_base`2'`2'=-(exp(pred_base`2'`2'))
 keep year pred_base`2'`2'
-joinby year using basic
-save basic, replace
+joinby year using basic_`1'
+save basic_`1', replace
 
 *full with country bundle
 *local 1 1962
@@ -246,8 +248,8 @@ reg ln_basec`2' year, robust
 predict pred_base_fullc`2'
 replace pred_base_fullc`2'=-(exp(pred_base_fullc`2'))
 keep year pred_base_fullc`2'
-joinby year using basic
-save basic, replace
+joinby year using basic_`1'
+save basic_`1', replace
 *stable with country bundle
 use part1_ppml_`1'_nofta_current_`1', clear
 keep coef_lndist year
@@ -257,8 +259,8 @@ reg ln_base`2'c`2' year, robust
 predict pred_base`2'c`2'
 replace pred_base`2'c`2'=-(exp(pred_base`2'c`2'))
 keep year pred_base`2'c`2'
-joinby year using basic
-save basic, replace
+joinby year using basic_`1'
+save basic_`1', replace
 
 *full with naive FTA
 *use part1_ppml_full_big_current_current, clear
