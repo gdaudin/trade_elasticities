@@ -1,4 +1,4 @@
-*Sept 07 version: should work on both computers
+*Sept 12 version: should work on both computers and use cepii names
 
 **This file works with data extracted from UN COMTRADE via WITS interface (bulk download procedure)
 **and downloaded into stata to produce a set of statistics about the data
@@ -66,8 +66,12 @@ if strmatch("`c(username)'","*daudin*")==1 {
 if "`c(hostname)'" =="ECONCES1"  {
 	use cepii-4D-`i', clear
 }	
-	drop if iso_d=="WLD"
-	drop if iso_o=="WLD"
+drop iso_o iso_d
+rename cepii_o iso_o 
+rename cepii_d iso_d	
+*	drop if iso_d=="WLD"
+*	drop if iso_o=="WLD"
+drop if iso_o==iso_d
 *nb reporters
 	preserve
 	keep iso_d year
@@ -135,8 +139,11 @@ if strmatch("`c(username)'","*daudin*")==1 {
 if "`c(hostname)'" =="ECONCES1"  {
 	use cepii-4D-`i', clear
 }	
-	drop if iso_d=="WLD"
-	drop if iso_o=="WLD"
+drop iso_o iso_d
+rename cepii_o iso_o 
+rename cepii_d iso_d	
+*	drop if iso_d=="WLD"
+*	drop if iso_o=="WLD"
 	drop if iso_o==iso_d
 	by iso_o iso_d, sort: egen tot_pair=total(trade_value)
 	generate uv = trade_value/quantity
