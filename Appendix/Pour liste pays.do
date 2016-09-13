@@ -1,5 +1,6 @@
-*Program taken up on Sept 9 to correct path in order to work on both computers
-*and to use sample to 1962-2013
+*Program taken up on Sept 12 to correct path in order to work on both computers
+*to use sample in 1962-2013; to use correct superbalanced sample (with Germany)
+*to use latest version of auxiliary files (cepii names)
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
@@ -22,23 +23,23 @@ program cntrlist
 
 if strmatch("`c(username)'","*daudin*")==1 {
 	use "Data/For Appendix/cepii_wits_country_list.dta", clear
-	merge m:1 iso_o using "R√©sultats/Premi√®re partie/Coverage/list_partner.dta"
+	merge m:1 iso_o using "Résultats/Première partie/Coverage/list_partner.dta"
 	gen status ="P" if _merge==3 
 	drop _merge stable
 	rename nb_years nb_years_partner
 	
-	merge m:1 iso_d using "R√©sultats/Premi√®re partie/Coverage/list_reporter.dta"
+	merge m:1 iso_d using "Résultats/Première partie/Coverage/list_reporter.dta"
 	replace status =status + "; R" if _merge==3 
 	drop _merge stable
 	rename nb_years nb_years_reporting
 
-	merge m:m iso_d using "R√©sultats/Appendice/superbal_list_1963.dta"
-	bys ccode_wits : keep if _n==1
+	merge m:m iso_d using superbal_list_1962
+	bys iso_o iso_d: keep if _n==1
 	replace status = status + "; S" if _merge==3
 	drop _merge
 
-	merge m:m iso_o using "R√©sultats/Appendice/superbal_list_1963.dta"
-	bys ccode_wits : keep if _n==1
+	merge m:m iso_o using superbal_list_1962
+	bys iso_o iso_d : keep if _n==1
 	replace status = status + "; S" if _merge==3
 	drop _merge
 }
@@ -56,13 +57,13 @@ if "`c(hostname)'" =="ECONCES1"  {
 	drop _merge stable
 	rename nb_years nb_years_reporting
 
-	merge m:m iso_d using superbal_list_1963
-	bys ccode_wits : keep if _n==1
+	merge m:m iso_d using superbal_list_1962
+	bys iso_o iso_d : keep if _n==1
 	replace status = status + "; S" if _merge==3
 	drop _merge
 
-	merge m:m iso_o using superbal_list_1963
-	bys ccode_wits : keep if _n==1
+	merge m:m iso_o using superbal_list_1962
+	bys iso_o iso_d : keep if _n==1
 	replace status = status + "; S" if _merge==3
 	drop _merge
 }
