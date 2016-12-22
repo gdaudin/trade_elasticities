@@ -109,6 +109,8 @@ collapse (sum) trade_value, by(product)
 egen tot=total(trade_value)
 gen double share_world_`1'=trade_value/tot
 drop trade_value tot
+
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Data_Interm/First_Part"
 save weight_`1'_full, replace
 clear
 end
@@ -209,6 +211,7 @@ collapse (sum) trade_value, by(product iso_o)
 by iso_o, sort: egen tot=total(trade_value)
 gen double share_country_`1'=trade_value/tot
 drop trade_value tot
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Data_Interm/First_Part"
 save weight_country_`1'_full, replace
 clear
 end
@@ -322,6 +325,7 @@ replace iso_o= "ETH" if iso_o=="ERI"
 *replace trade_value=0 if trade_value==.
 
 if "`weightyear'"!="current" {
+	if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Data_Interm/First_Part"
 	joinby product using weight_`weightyear'_full, unmatched(none)
 	egen double tot=total(trade_value)
 	by product, sort: egen double tot_product=total(trade_value)
@@ -349,6 +353,7 @@ if "`countryyear'"!="current" {
 	}
 	drop if iso_o==iso_d
 **link data to file with stable country-specific weights for each product
+	if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Data_Interm/First_Part"
 	joinby iso_o product using weight_country_`countryyear'_full, unmatched(none)
 	by iso_o, sort: egen double tot=total(trade_value)
 	by iso_o product, sort: egen double tot_product=total(trade_value)
@@ -364,6 +369,9 @@ fillin iso_d iso_o
 drop _fillin
 drop if iso_d==iso_o
 replace trade_value=0 if trade_value==.
+
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Data/"
+
 if "`balanced'"!="full" {
 **I redefine countries before keeping only stable reporters and partners 
 	local source o d
@@ -382,13 +390,19 @@ if "`balanced'"!="full" {
 		}	
 	}
 **keep sample of stable pairs for specific base year (superbal)
+
+
+
 	joinby iso_o iso_d using superbal_list_`balanced', unmatched(none)
 	**no fillin done here b/c pairs may actually exist in some years
 	collapse (sum) trade_value, by(iso_d iso_o)
 	drop if iso_d==iso_o
 }
 **add data on bilateral distance:
-joinby iso_o iso_d using dist_final, unmatched(none)
+
+
+	joinby iso_o iso_d using dist_final, unmatched(none)
+
 generate year = `year'
 sort iso_o iso_d year
 generate double lndist=ln(dist)
@@ -410,14 +424,24 @@ if "`fta'"=="big"  {
 ***}
 **updated fta file for full sample: Results_fta.dta
 if ("`fta'"=="big" | "`fta'"=="small") & "`balanced'"=="full" & "`country'"=="current" {
+	
+	
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_o iso_d using  "FTA_2011/Results_fta.dta", unmatched(none)
+	}
 	*for mac:
-	joinby iso_o iso_d year using "/Volumes/VERBATIM HD/LIZA_WORK/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2011/FTA_2011/Results_fta.dta", unmatched(none)
+	else joinby iso_o iso_d year using "/Volumes/VERBATIM HD/LIZA_WORK/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2011/FTA_2011/Results_fta.dta", unmatched(none)
 	*for dell: joinby iso_o iso_d year using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\FTA_2011\Results_fta.dta", unmatched(none)
 }
 **updated fta file for superbal sample and for composition effect with country weights: fta_mod.dta
 if ("`fta'"=="big" | "`fta'"=="small") & ("`balanced'"!="full" | "`country'"!="current") {
+	
+	
+	if strmatch("`c(username)'","*daudin*")==1 {
+		joinby iso_o iso_d using  "FTA_2011/fta_mod.dta", unmatched(none)
+	}
 	*for mac:
-	joinby iso_o iso_d year using "/Volumes/VERBATIM HD/LIZA_WORK/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2011/FTA_2011/fta_mod.dta", unmatched(none)
+	else joinby iso_o iso_d year using "/Volumes/VERBATIM HD/LIZA_WORK/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2011/FTA_2011/fta_mod.dta", unmatched(none)
 	*for dell: joinby iso_o iso_d year using "$dir\GUILLAUME_DAUDIN\COMTRADE_Stata_data\SITC_Rev1_adv_query_2011\FTA_2011\fta_mod.dta", unmatched(none)
 }
 **we have checked that there is no pb of spurious convergence:
@@ -450,6 +474,9 @@ foreach i of local varexpl {
 	capture generate double se_`i'=[#1]_se[`i'] if converged ==1
 	capture generate double se_`i'_logit=[#2]_se[`i'] if converged ==1
 }
+
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie"
+
 if year!=1962 {
 	append using  part1_`method'_`balanced'_`fta'_`weightyear'_`countryyear'
 }

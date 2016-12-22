@@ -4,7 +4,7 @@
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
 	cd "$dir"
 
 }
@@ -33,12 +33,13 @@ if strmatch("`c(username)'","*daudin*")==1 {
 	drop _merge stable
 	rename nb_years nb_years_reporting
 
-	merge m:m iso_d using superbal_list_1962
+	
+	merge m:m iso_d using "Résultats/Première partie/Coverage/superbal_list_1962.dta"
 	bys iso_o iso_d: keep if _n==1
 	replace status = status + "; S" if _merge==3
 	drop _merge
 
-	merge m:m iso_o using superbal_list_1962
+	merge m:m iso_o using "Résultats/Première partie/Coverage/superbal_list_1962.dta"
 	bys iso_o iso_d : keep if _n==1
 	replace status = status + "; S" if _merge==3
 	drop _merge
@@ -78,7 +79,11 @@ drop if nb_years_partner==. & nb_years_reporting==.
 
 drop if nb_years_partner==. & nb_years_reporting==.
 
+if strmatch("`c(username)'","*daudin*")==1 cd "Résultats/Appendice"
+
 export excel using "Table4.xlsx", firstrow(variables) replace
 
+end 
 
+cntrlist
 

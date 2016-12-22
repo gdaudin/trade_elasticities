@@ -62,6 +62,7 @@ foreach i of numlist 1962(1)2013 {
 	display "--cov_per_year--------`i'---------------------"
 if strmatch("`c(username)'","*daudin*")==1 {
 	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
+	cd "~/Documents/Recherche/OFCE Substitution Elasticities/Résultats/Première partie/Coverage"
 }
 if "`c(hostname)'" =="ECONCES1"  {
 	use cepii-4D-`i', clear

@@ -19,7 +19,7 @@ set matsize 800
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
-	cd "$dir/Data/COMTRADE_2015_lite"
+	cd "$dir/Résultats/Première Partie"
 
 }
 

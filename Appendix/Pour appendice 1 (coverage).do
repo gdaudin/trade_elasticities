@@ -49,12 +49,9 @@ if "`c(hostname)'" =="ECONCES1" {
 capture program drop superbal
 program superbal
 **redef_full_pair_tot_trade file has total trade by pair redefined to have SUN, DEU, CSH
-if strmatch("`c(username)'","*daudin*")==1 {
-	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-}
-if "`c(hostname)'" =="ECONCES1"  {
-	use cov_per_year_pair, clear
-}	
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+use cov_per_year_pair, clear
+	
 
 *`1' is starting year for the superbalanced sample: 1962 or 1965
 *`2' is defined as a fct of `1' to drop unneeded years: nothing or 1962-1964
@@ -85,12 +82,10 @@ graph export nb_years_pair_presence_`1'_13.eps, replace
 *--------------------------------------------------------------------------------
 **construct superbalanced sample defined from some year `1' until 2013**
 **defined as the set of all pairs which trade both ways in each year of the sample
-if strmatch("`c(username)'","*daudin*")==1 {
-	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-}
-if "`c(hostname)'" =="ECONCES1"  {
-	use cov_per_year_pair, clear
-}	
+
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+use cov_per_year_pair, clear
+	
 local 2=`1'-1
 local name tot_pair tot_uv
 foreach n of local name {
@@ -137,6 +132,7 @@ saveold balanced_`1'_13, version(12) replace
 
 preserve
 *keep iso_o iso_d
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
 save list_stable_`1'_13, replace
 *use list_stable_`1'_13, clear
 rename iso_o partner
@@ -147,7 +143,6 @@ rename reporter iso_o
 save tmp_switch, replace
 restore
 joinby iso_d iso_o using tmp_switch, unmatched(none)
-
 save superbal_`1'_13, replace
 erase tmp_switch.dta
 erase list_stable_`1'_13.dta
@@ -179,6 +174,7 @@ end
 capture program drop square
 program square
 *local 1 1965
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
 use superbal_`1'_13, clear
 keep iso_o iso_d 
 fillin iso_o iso_d
@@ -391,12 +387,10 @@ end
 *************
 capture program drop cover
 program cover
-if strmatch("`c(username)'","*daudin*")==1 {
-	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-}
-if "`c(hostname)'" =="ECONCES1"  {
-	use cov_per_year_pair, clear
-}	
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+
+use cov_per_year_pair, clear
+	
 local source o d
 local name RUS UKR UZB KAZ BLR AZE GEO TJK MDA KGZ LTU TKM ARM LVA EST
 local germany FRG DDR
@@ -485,12 +479,10 @@ end
 **which trade both ways in 1962 (1965)
 capture program drop recip
 program recip
-if strmatch("`c(username)'","*daudin*")==1 {
-	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-}
-if "`c(hostname)'" =="ECONCES1"  {
-	use cov_per_year_pair, clear
-}	
+
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+use cov_per_year_pair, clear
+
 *local 1 1962
 local 2=`1'-1900
 keep iso_o iso_d tot_pair year
@@ -512,12 +504,9 @@ keep iso_o iso_d
 save recip`2', replace
 erase tmp_switch.dta
 
-if strmatch("`c(username)'","*daudin*")==1 {
-	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-}
-if "`c(hostname)'" =="ECONCES1"  {
-	use cov_per_year_pair, clear
-}	
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+use cov_per_year_pair, clear
+	
 drop share_uv
 joinby iso_o iso_d using recip`2', unmatched(none)
 *reshape long tot_pair, i(iso_o iso_d) j(year)
@@ -539,12 +528,10 @@ end
 *eg if we take pairs which trade both ways in a given year, how much that is out of total trade
 capture program drop annual
 program annual
-if strmatch("`c(username)'","*daudin*")==1 {
-	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-}
-if "`c(hostname)'" =="ECONCES1"  {
-	use cov_per_year_pair, clear
-}	
+
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+use cov_per_year_pair, clear
+	
 keep iso_o iso_d tot_pair year
 drop if tot_pair==. | tot_pair==0
 preserve
@@ -563,12 +550,9 @@ keep iso_o iso_d year
 save recip, replace
 erase tmp_switch.dta
 
-if strmatch("`c(username)'","*daudin*")==1 {
-	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta"
-}
-if "`c(hostname)'" =="ECONCES1"  {
-	use cov_per_year_pair, clear
-}	
+if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+use cov_per_year_pair, clear
+	
 drop share_uv
 joinby iso_o iso_d year using recip, unmatched(none)
 *reshape long tot_pair, i(iso_o iso_d) j(year)
