@@ -199,7 +199,7 @@ reg ln_base year, robust
 predict pred_base_full
 replace pred_base_full=-(exp(pred_base_full))
 keep year pred_base_full
-save basic, replace
+save basic_`1', replace
 *stable sample baseline
 use part1_ppml_`1'_nofta_current_current, clear
 keep coef_lndist year
