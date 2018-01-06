@@ -1,0 +1,778 @@
+%This document contains Liza's update (as of December 2016) of abstract, intro, part 1, and appendix 1 
+\documentclass[12pt,twoside,a4paper,notitlepage]{article}
+%\documentclass[preprint,authoryear]{article} 
+\usepackage{indentfirst}
+\usepackage [english]{babel}
+%\usepackage[utf8]{inputenc}
+%\usepackage{times} %this package has impact on fonts of output
+\usepackage[latin9]{inputenc} %this package allows reading French accented letters directly
+\usepackage[T1]{fontenc} %this package makes hyphenated characters such as umlauts available in latex
+\usepackage{amsmath} 
+\usepackage{amssymb} %ams symbols (\mathbb fonts}
+\usepackage{amscd} %draws commutative diagrams
+\usepackage{bm} %bold mat fonts(\mathbm)
+\usepackage{graphicx,pst-all} 
+%\usepackage{graphicx}
+\usepackage{hyphenat} %enables control over hyphenation 
+\usepackage{fancyvrb,moreverb} %verbatim
+\usepackage{float} %enables float [H] option: useful for putting figures in the text
+\usepackage{mathptmx}
+\usepackage{amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage{mathrsfs} %more math symbols (viz., \mathscr)
+\usepackage{textcomp} %this package helps with writing symbols
+\usepackage[gen]{eurosym}
+\usepackage{epstopdf}
+\usepackage[strict]{changepage}
+\usepackage{enumerate}
+\usepackage[margin=2.5cm]{geometry}
+%\usepackage[letterpaper]{geometry}
+%\geometry{verbose,tmargin=1cm,bmargin=1cm,lmargin=0.95cm,rmargin=0.95cm}
+%\usepackage[usenames]{color}
+\usepackage{color}
+\usepackage{verbatim}
+%\usepackage{setspace}
+%\doublespacing
+%\linespread{1.6} %this gives double spacing throughout the document
+\linespread{1.3}
+%this package sets the spacing preferences
+\usepackage{natbib}
+%\usepackage[authoryear]{natbib}
+\usepackage[unicode=true, pdfusetitle, bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,  breaklinks=true,pdfborder={0 0 0},backref=false,colorlinks=true]{hyperref}
+\hypersetup{linkcolor=blue, citecolor=black, urlcolor=black}
+%these packages define how links to footnotes and to bibliography items are presented in the paper
+%\newcounter{prop}[subsubsection]
+%\renewcommand{\theprop}{\roman{prop}}
+\usepackage{relsize} %newly added package to use command \mathlarger{}
+\usepackage{mathtools} %newly added package to use command \mathrlap{}
+
+\makeatletter
+
+\usepackage{amsfonts}
+
+
+\@ifundefined{definecolor}
+ {\@ifundefined{definecolor}
+ {\@ifundefined{definecolor}
+ {\@ifundefined{definecolor}
+ {\usepackage{color}}{}
+}{}
+}{}
+}{}
+
+\usepackage{caption}
+\usepackage{psfrag}
+\usepackage{subfigure}
+\usepackage{epsfig}
+
+
+\usepackage{array}
+
+\usepackage{url}
+
+
+\urlstyle{same}
+\renewcommand{\baselinestretch}{1.5}
+\makeatother
+
+%\justifying
+
+%\setlength{\parindent}{20pt} %this command impedes paragraphs' indenting
+%\setlength{\parskip}{-4ex plus 0.2ex minus 0.2ex} %this command says how spaces between paragraphs can eventually vary so as to fit on the page
+
+\makeatletter
+%\bibliographystyle{plain}
+\bibliographystyle{chicago}
+%\bibliographystyle{aer}
+%\bibliographystyle{phjcp} %alternative biblio styles which look ok
+%\bibliographystyle{acm}
+%\bibliographystyle{ieeetr}
+\bibpunct{(}{)}{;}{d}{,}{,}
+\makeatother
+
+\long\def\symbolfootnote[#1]#2{\begingroup%
+\def\thefootnote{\fnsymbol{footnote}}\footnote[#1]#2\endgroup}
+%\symbolfootnote[1]{footnote} %this line should be used for the footnote to get the symbol between 1-9 but I don't understand how to use it
+%\renewcommand{\thesection}{\Roman{section}}
+%\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+%\renewcommand{\thefootnote}{\alph{footnote}} \this changes symbols used for footnotes in body of text
+
+\makeatletter
+\newlength{\myFootnoteWidth}
+\newlength{\myFootnoteLabel}
+\setlength{\myFootnoteLabel}{1.2em}
+\renewcommand{\@makefntext}[1]{
+  \setlength{\myFootnoteWidth}{\columnwidth}
+  \addtolength{\myFootnoteWidth}{-\myFootnoteLabel}
+  \noindent\makebox[\myFootnoteLabel][r]{\@makefnmark\ }
+  \parbox[t]{\myFootnoteWidth}{#1}
+}
+\makeatother
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+%\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+
+\newcommand{\noteLA}[1]{\textcolor{blue}{\footnotesize\textit{{noteLA: #1}}}} %this defines a new command for notes which has one argument
+\def\noteLA #1{} %when activated, suppresses printing notes - remember to de-activate with %sign when sending draft text
+%define another one for Guillaume, for example:
+\newcommand{\noteGD}[1]{\textcolor{red}{\footnotesize{noteGD: #1}}} %this defines a note command which has one argument
+\def\noteGD #1{} %when activated, suppresses printing notes - remember to de-activate with %sign when sending draft text
+\newcommand{\revLA}[1]{\textcolor{red}{\footnotesize\textit{{revLA: #1}}}} %this defines a new command for notes which has one argument
+\def\revLA #1{} %when activated, suppresses printing notes - remember to de-activate with %sign when sending draft text
+
+
+\pagestyle{plain}
+\begin{document}
+\linespread{1}
+\author{Elizaveta Archanskaia\thanks{KU Leuven.}\and Guillaume Daudin\thanks{Corresponding author (gdaudin@mac.com). University Paris Dauphine and Sciences Po/ OFCE.}}
+
+\title{Product substitutability and the Distance Puzzle\thanks{This paper has greatly benefited from helpful discussions with Thomas Chaney, Anne-C\'elia Disdier, Peter Egger, Lionel Fontagn\'e, Raphaël Franck, Joseph Francois, Guillaume Gaulier, Samuel Kortum, Jacques Le Cacheux, Philippe Martin, Thierry Mayer, and suggestions by seminar participants at the ETSG, the AFSE, the Ljubljana Empirical Trade Conference (Forum for Research in Empirical Internation Trade), the international workshop on the Economics of Global Interactions (Bari), at the Economics Department of SciencesPo, and at the International Trade Working Group at the University of Chicago. We thank Christian Broda, Natalie Chen, Dennis Novy, and David Weinstein for giving us access to their programs. The usual disclaimers apply.}}
+%previous title: Heterogeneity and the Distance Puzzle
+\date{December 2016
+\\
+}
+
+\maketitle
+\begin{abstract}
+%95 words
+%\linespread{1.3}
+We propose a novel explanation of the non-decreasing distance elasticity of trade over 1962-2013, commonly referred to as `the distance puzzle'. Consistently with previous work, we find that the changing composition of world trade has contributed to making trade less rather than more sensitive to distance.
+%reduced the magnitude of the distance puzzle. 
+Our original contribution consists in documenting a 35\% increase in the perceived substitutability of products traded on the world market over the same period. We find that the Armington elasticity of substitution increased from about 1.7 to 2.3 between 1965 and 2013. This elasticity corresponds to the elasticity of trade flows to trade costs on the intensive margin. In the Armington framework it determines the elasticity of trade flows to trade costs. The evolution of this parameter suffices to explain the non-decreasing distance elasticity of trade. 
+\end{abstract}
+
+\textit{Keywords}: gravity equation, distance puzzle, trade elasticity, trade costs
+
+\textit{JEL codes}: F15, N70
+\clearpage
+
+\section*{Introduction}
+%We document evolution 1962-2013 while Disdier and Head focussed their meta-analysis on 1870-2001. Bosquet and Boulhol (2015) use data in 1948-2006; Berthelon and Freund use data for 1985-2005. Head and Mayer (2014) update the Disdier and Head sample to papers published in 2001-2012 while Head and Mayer (2013) investigate the persistence of the distance effect on trade using cross-sectional gravity estimates of the distance coefficients in 1960-2005 (both loglinear and PPML). 
+
+%The estimated effect of distance in gravity equations has unambiguously increased over the last 60 years.
+It is a well-established fact that trade has not become less sensitive to distance over the last 60 years. 
+\cite{Disdier2008} adopt a meta-analytical approach and find that distance impedes trade by 37\% more in the 1990s than it did from 1870 to 1969\footnote{See also \cite{Berthelon2008,Combes2006, Brun2005, Buch2004}.}. 
+%Berthelon and Freund document a 10\% increase in the distance elasticity over 1985-2005.  
+\cite{HeadMayer2013} estimate the distance elasticity of trade in successive cross-sections and find that it has doubled in 1960-2005.
+This increase in the distance elasticity of trade has been dubbed the  ``distance puzzle'', as the common opinion is that technological developments in transportation and communication, e.g. the airplane, the container, and the internet, would have led to the ``death of distance'' by the end of the 20\textsuperscript{th} century\footnote{\cite{Cairncross1997,Levinson2006,Friedman2007}}.
+
+%Krautheim(2012) and Chaney(2016)
+In this paper we investigate the empirical relevance of a different mechanism that may help to rationalize the distance puzzle. We make the simple point that the flattening out of the world may go hand in hand with a persistent impeding effect of distance on trade if consumers perceive product bundles shipped out by each country to the world market as increasingly substitutable.\footnote{Equation (4) in \cite{HeadMayer2013}: the distance effect is a product of two elasticities, the elasticity of trade to trade costs and the elasticity of trade costs to distance. We investigate the evolution of the former.} We work with the canonical \cite{AndersonWincoop2003} framework to quantify the contribution of this mechanism. We find that the non-decreasing distance elasticity of trade can be explained \if 0 is fully attributable to \fi by the increasing sensitivity of consumers to price differences.  
+%Limitation of our approach: we do not provide a model which delivers an endogenous increase in the price elasticity of demand b/c we want first to assess whether empirical evidence corroborates this explanation. Further work: verification in other frameworks how $\gamma$ or $\theta$ evolve and/or theoretical investigation.
+
+\subsection*{Prominent explanations of the distance puzzle}
+%1.econometric approach; 2.trade cost function approach; next subsection: focus on trade elasticity and network approach (Chaney) + us
+Recent work rationalizes the distance puzzle in three complementary ways: by pointing out a possible misspecification of the econometric model, by refining the specification of the trade cost function, and, more recently, through the lens of network analysis. 
+
+The first strand of the literature investigates the incidence of the estimation method on the distance puzzle. \cite{SantosSilvaTenreyro2006} advocate estimating the gravity model in multiplicative form using a specific non-linear estimator, the Poisson Pseudo Maximum Likelihood (PPML). Contrary to the canonical loglinear approach, this estimator provides consistent estimates and is robust to rounding error and overdispersion which are both likely features of trade data\footnote{\cite{SantosSilvaTenreyro2011} and \cite{Fally2015} provide evidence on desirable properties of the PPML. 
+%Inadequacy of alternative non-linear estimators is discussed in \cite{Bosquet2015,Bosquet2014}. 
+ \cite{HeadMayer2014} review properties of alternative estimators. See also \cite{Bosquet2015,Bosquet2014}.}. The magnitude of the distance puzzle is reduced when the gravity model is estimated in multiplicative form (\cite{Bosquet2015, HeadMayer2013}). 
+%It is hence more accurate to state the puzzle as a non-decreasing distance elasticity of trade since the 1960s.
+%SST2006 show that PPML is robust to measurement error in the underlying data (rounding of the data).
+%SST2011 show that PPML remains consistent when zero trade flows are prevalent. The estimator is also robust to the misspecification of the conditional variance function.
+%SST argue that PPML is unique in that it is consistent with non-count data, and is unit independent contrary to alternative non-linear estimators which seek to accomodate excessive variance (such as the negative binomial or the zip). 
+%because the trade equation in levels is subject to heteroskedasticity // because the conditional expectation of the loglinearized error term is not independent of the regressors // the assumption of conditional independence of the loglinearized error term does not usually hold.
+
+%Sensitivity of distance effect to estimation method is in two aspects: the level (lower in ppml) and the evolution (stable in ppml).
+%Main point is that ppml preferable to investigate magnitude of the distance puzzle b/c does not suffer from sample selection bias of ols: evolution exaggerated in ols b/c of the extensive margin of trade. In this paper we show an alternative way to account for this extensive margin of trade: importance of distance is decreasing for establishment of trade relations, while stable effect on existing trade relations (either through appendix using Egger et al. or through additional graph in paper using Egger et al. methodology). Together these facts illustrate that distance puzzle is a stable set phenomenon (this is main point of our part 1) - main point of part 2 is to document evolution of trade elasticity (show that this evolution is stronger in the stable set?).
+The sensitivity of the distance puzzle to the estimation method is likely due to sample composition effects (\cite{HeadMayer2013,Larch2016}).
+%\cite{HeadMayer2013} show that the magnitude of the puzzle in the log-linear specification is reduced in the sample of stable trade partners.
+Indeed, the growth of trade has been both intensive in the sense that the volume of established trade relations has increased and extensive in the sense that new trade relations have been established (\cite{Helpman2008, Baldwin2011}). If trade relations have in priority been established between small and distant partners, the reduction in the number of zeros may have gradually reduced the underestimation of the distance coefficient in the loglinear specification\footnote{\cite{Larch2016} attribute the puzzle to the growing bias of the OLS estimates. Using a nonlinear estimator and controlling for the number of exporting firms, they find a decreasing distance elasticity in 1980-2006.}. This explanation echoes \cite{Felbermayr2006} who pointed out that the log-linear specification was subject to sample selection bias due to the exclusion of zero trade flows. They conjectured that the distance puzzle was an artefact of reduction in this bias through the extensive margin of trade\footnote{This leaves open the question of the estimator which correctly captures the level of the distance elasticity. \cite{HeadMayer2013} argue that PPML is giving little weight to small trade flows characteristic of more distant partners. For \cite{SantosSilvaTenreyro2006} small trade flows are more prone to measurement error.}. 
+%\cite{HeadMayer2013} find that the level of the distance elasticity in the log-linear specification is reduced to the level of the non-linear estimate when the sample is restricted to partners predicted to have relatively big trade flows. They also show that the level of the distance elasticity increases when the PPML estimator is implemented on expenditure shares instead of trade volumes (\cite{EKS2012} method).
+%choice of estimator remains an open issue: if one believes that the main aspect of globalization is filling in of the zero trade matrix: new and small trade flows between relatively distant partners are key feature, then ppml may be inadequate because gives little weight to small flows. If however one believes that the main feature is the stability of the distance profile of trade, then the doubling of the distance elasticity of trade in the log-linear estimation appears suspicious and driven by fitting small trade flows. I construct the appendix on the distance profile of trade to argue that the ppml with stable elasticity conforms to the stability of the distance distribution of trade flows observed over 1963-2009. Our key point is to establish that the distance puzzle is a stable set phenomenon in ppml, and we seek to explain why trade in the stable set is not becoming less sensitive to distance: we deal with extensive margin by showing that distance plays less important role in formation of trade relationships.
+
+%misspecification of the trade cost function: non-monotonic relationship between transport costs and total costs, in particular through input-output relationships or, more simply, increasing importance of trade cost components other than freight costs/tariffs
+The second and most prominent strand of the literature singles out the underpinnings of the trade cost function as key to understanding the distance puzzle. 
+The basic point formulated by \cite{Buch2004} is that the distance elasticity of trade is invariant to reductions in transportation and communication costs if their distribution over distance remains unchanged\footnote{\cite{Egger2008} argues that the marginal effect of distance on trade is fundamentally non uniform across trade partners and decreasing in the level of bilateral trade. This reinstates increased openness as a possible explanatory factor because a uniform reduction in trade costs has non uniform effects on bilateral trade.}. Furthermore, while the distance elasticity of transport costs may have decreased (\cite{Hummels2007}), other cost components, such as delays, may have become more distance-elastic (\cite{Hummels2013}). More generally, as argued by \cite{HeadMayer2013}, if freight costs account for an ever smaller fraction of distance-dependent trade costs, the distance elasticity of trade will be determined by other, possibly persistent, cost components\footnote{\cite{HeadMayer2013} propose a typology of persistent but unobserved trade costs. \if 0\cite{AndersonWincoop2004} provide a decomposition of total trade costs. \fi \cite{Daudin2003, Daudin2005} put forward that trade costs may have remained stable as a share of value added.}.
+%\cite{Egger2008} argues that the marginal effect of distance on trade is fundamentally non uniform across country pairs. It is decreasing in the level of bilateral trade, e.g. increasing in the toughness of competition in the destination and decreasing in the exporting capacity of the source. A reduction in the elasticity of trade costs to distance has non uniform effects on bilateral trade across country pairs and is compatible with an increasing distance elasticity of trade.
+%Egger combines issue of econometric misspecification of the gravity model and of theoretical explanation of increasing distance elasticity of trade as a consequence of increased openness. The main argument is that the loglinearity assumption in distance-trade relationship is flawed. He links misspecification of the estimated model and suggestion of a theoretical explanation for increasing marginal distance effects. The main point is that interaction effects of distance with characteristics of source and destination must be included on top of the standard fixed effects in estimating changes in marginal effect of distance to take into account average effect and distribution effect of changes in the distance elasticity of trade costs. The theoretical argument is about distance effect being a function of price indices (and therefore productivity and openness) and the number of varieties (population and productivity and openness). A given trade cost will matter more if the price index in the destination is lower and the number of varieties in source is lower b/c this reduces the volume of bilateral exports. According to Egger, the reduction in price indices in destination and of the number of varieties in the source explains the increase in the marginal effect of distance. Increased openness increases the toughness of competition in destination markets while decreasing the number of varieties exported by each source. But the impact of such changes on bilateral trade is non uniform across country pairs. When we take into account this distributional aspect, the marginal effect of distance on trade may increase. [conceptually this is similar to our argument: sensitivity to price differences increases, but works through different mechanism]  In terms of the econometric specification for the gravity model: interaction effects between country-specific variables and distance should be included on top of country fixed effects.
+
+A complementary mechanism is proposed in \cite{Krautheim2012} in the heterogeneous firms' framework. He models the informational component of trade costs as a fixed cost which decreases in the number of exporting firms. This refinement of the trade cost function magnifies the distance elasticity of trade because the number of exporters is decreasing in variable trade costs which increase with distance. This magnification mechanism may have been reinforced by the increasing weight of information costs in total fixed costs.
+%\cite{Krautheim2012} refines the specification of fixed trade costs in the heterogeneous firms' framework to rationalize the distance puzzle. The key assumption is that the informational component of fixed costs is decreasing in the number of exporting firms. As the number of exporters is decreasing in variable trade costs which increase with bilateral distance, this mechanism magnifies the elasticity of trade to distance. The magnification effect is enhanced if the informational component acquires greater weight, and results in an increasing distance elasticity of trade.
+%The argument presented in \cite{Buch2004} is that a proportional reduction in trade costs would lead to increasing trade volumes and leave the distance distribution of trade unchanged.
+%This suggests another explanation: the increasing importance of certain components of trade costs, such as trading on time, for most traded goods.
+
+An alternative explanation put forward in models with input-output linkages is that the relationship between total trade costs and transport costs may be non-monotonic. An increasing distance elasticity may be an endogenous outcome of transport cost reductions if they engender a reoptimization of the production process which ends up increasing the relative cost of long-distance trade. One possible mechanism is trade cost magnification through multiple border crossings by goods as a consequence of increased production fragmentation (\cite{Noguera2012,Yi2010}). Another mechanism formalized by \cite{Duranton2008} works through quality upgrading. Lower transport costs shift trade towards higher-quality inputs which are more distance-sensitive because their customization requires intensive communication, e.g. more back-and-forth travelling, between upstream and downstream firms.
+%in D&S transport cost reductions give incentive to input producers to increase quality of products, but higher quality means higher costs of technology transfer to downstream firm through back-and-forth travelling), hence total costs of trade increase. More distance sensitive because incurring higher total transaction costs which are magnified with distance through back-and-forth travelling: NOT more substitutable but increasingly customized (differentiated).
+%Problem of D&S: the increase in distance elasticity is not generated within this mechanism, but rather by assuming standardized and customized goods, and showing that trade shifts towards customized goods which require technology transfer. D&S argue this is a within-sectoral mechanism.
+%\cite{Berthelon2008} test the impact of the changing composition of world trade between 1985 and 2005 on the distance coefficient, but find that it has had a negligible effect. Berthelon and Freund find that 39\% of products and 54\% of trade has become more sensitive to distance over this period against 2.8\% of trade becoming less sensitive to distance.
+%I don't cite Baldwin and Taglioni b/c they focus on  role of intermediates in correct specification of economic mass variables in gravity equation, but not discuss link between globalization and distance puzzle through intermediates.
+%Whether transport costs have declined or increased, the crucial question for the evolution of the coefficient is whether non-distance dependent transport costs, such as loading costs at ports, have declined relatively to distance-dependent transport costs, such as fuel costs (\cite{Feyrer2009}). 
+%\footnote{\cite{Keller2013} find that the distance elasticity is increasing in the intensity of knowledge transfers required to produce a final good.} not cited b/c very different focus: Keller and Yeaple (2013) focus on sectoral differences in distance elasticity in cross-section to model trade between parent and affiliate as a function of product complexity, but complexity is very similar to intensity of communication in D&S. 
+
+\subsection*{A shift of focus to the trade elasticity}
+%transition to our approach: heterogeneity matters (example: Chaney); our approach: investigation of product heterogeneity within canonical AvW approach
+The focus of the literature on the shape of the trade cost function mirrors the expectation that the distance coefficient moves together with the elasticity of trade costs to distance. But \cite{Chaney2016} provides a theoretical foundation for the gravity equation through the lens of network analysis which demonstrates that the distance coefficient can be invariant to the trade cost function. In \cite{Chaney2016} the rate of distance decay in aggregate trade is linked to the rate of decay in the density of firms which cover that distance with their network of contacts. As the geographic dispersion of the network is increasing in firm size, the shape parameter of the firm size distribution plays a key role in explaining movements in the distance coefficient. Thus, technological advances in transportation increase the geographic dispersion of exports at the level of the firm \if 0 and enhance the degree of international production fragmentation \fi but have no incidence on the distance elasticity of aggregate trade as long as the stationary firm size distribution verifies Zipf's law.  
+%e.g. is such that the rank of the firm in terms of its weight in aggregate exports is inversely proportional to the frequency of such firms.
+%In \cite{Chaney2016} the distance distribution of trade for any firm is determined by the location of its contacts. The trade cost function shapes the geographic dispersion of this network by affecting the probability of drawing a contact in each location at firm birth and subsequent network expansion through existing contacts.
+%Network expands in two ways: acquiring contact for some cost; metting friends of your friends. The trade cost function determines the initial distribution of contacts, and hence affects probability of making a contact somewhere at any future date. However, I do not remember whether/how the trade cost function affects the cost of acquiring a contact in some location.
+%The rate of distance decay in aggregate trade is driven by the rate of decay in the density of firms which cover that distance with their network. In the specific case in which the stationary size distribution verifies Zipf's law, e.g. is such that the rank of the firm in terms of its weight in aggregate exports is inversely proportional to the frequency of such firms, the distance elasticity takes a constant value\footnote{The distance elasticity equals $1+\epsilon$ where $\epsilon$ is a function of structural parameters. $\epsilon$ tends to 0 whenever the firm size distribution verifies Zipf's law.}.
+%NB: distance elasticity is NOT equal to the shape parameter of the Pareto (which incidentally is 1 when firm size distribution follows Zipf's law.) Rather, the fact that the shape parameter equals 1 means that the distance coefficient is a constant (independent of changes in other structural parameters). BUT premise is that world cannot be flat for all firms: network must expand over distance with firm size. 
+%The empirical relevance of Zipf's law for the firm size distribution (\cite{Axtell2001,Gabaix2008,DiGiovanni2011}) would suffice to explain the stability of the distance coefficient. Structural changes in the trade cost function since the 1960s may have led to enhanced international production fragmentation and to increasing geographic dispersion of exports at the level of the firm. But such changes would have had no incidence on the value of the distance elasticity if the shape parameter of the firm size distribution had not deviated from one. Empirical evidence on the evolution of this parameter is insufficient to conclude on the validity of this theoretical mechanism. Nonetheless, the model highlights that an increasing distance elasticity is likely to reflect a change in the degree of firm heterogeneity.  
+%The model highlights that movements in the distance coefficient likely reflect changes in the degree of firm heterogeneity.
+%I do not discuss directly the effect of enhanced fragmentation of production b/c already too much info. But basic idea is given by citing Chaney: shape of trade cost function will change extent of fragmentation but not necessarily the distance coefficient b/c evolution of heterogeneity is key.
+%More generally argument of why GVC may be irrelevant is that effect may go both ways. If fragmentation arises as a consequence of lower trade costs, it is expected to increase the distance elasticity of trade through the magnification effect (more trade at closer distance) but also to decrease the distance elasticity of trade through enhanced technology transfer (product homogeneization): the two effects may be of similar magnitude.
+
+The link between the distance coefficient and the parameter which captures the degree of structural heterogeneity in the economy is not specific to \cite{Chaney2016}. Every theoretical foundation of the gravity model delivers a functional relationship of the distance elasticity with the intensity of the incentive to trade, e.g. the degree of structural heterogeneity in some model-specific dimension. The combination of empirical evidence on the changing shape of the trade cost function with evidence on the stability of the distance distribution of trade indicates that structural heterogeneity may have contributed to the evolution of the distance coefficient. However, empirical evidence on the evolution of structural heterogeneity in the economy since the 1960s is notoriously scarse (\cite{HeadMayer2013}).
+%The structural interpretation of the trade elasticity depends on the micro foundations used to derive the gravity equation. In the canonical models this paper builds on it corresponds alternatively to the elasticity of substitution between country-specific composite goods, to the dispersion in productive efficiency across sectors, or to the intrasectoral dispersion in firm productivity. In all cases the trade elasticity is inversely linked to the degree of heterogeneity in a single model-specific dimension.
+
+%Transition to our approach:  
+We pursue the idea that a key parameter for understanding movements in the distance coefficient is the one measuring the degree of structural heterogeneity in the economy. Following \cite{Arkolakis2012} we refer to this parameter as the `trade elasticity'. 
+%In theoretically derived gravity models of trade the value of the distance coefficient is not directly related to the level of trade costs. The level of trade costs, captured by country-specific fixed effects, influences the openness of each country. It is the product of two elasticities: the elasticity of trade flows to trade costs, and the elasticity of trade costs to distance. While the discussion on the distance puzzle in the literature has been mainly concerned with the evolution of the elasticity of trade costs to distance, one should look as well at the evolution of the elasticity of trade flows to trade costs.    
+%To effectively assess the evolution of structural heterogeneity in the economy since the 1960s we adopt an empirical approach. Instead of looking for a magnification mechanism inherent to the relationship of trade costs with distance, we investigate the evolution of the structural parameter which captures the intensity of the incentive to trade, e.g. the elasticity of trade flows to trade costs.
+Because of data limitations inherent to our 60-year perspective, we can only estimate the trade elasticity in the Armington framework. Structural heterogeneity is determined in this framework by perceived product substitutability, i.e. the degree of product differentiation by place of origin.
+
+%We assess the evolution of the trade elasticity in the canonical \cite{AndersonWincoop2003} framework in which structural heterogeneity captures the degree of product differentiation by place of production. 
+We estimate the distance elasticity of aggregate trade and the Armington elasticity of substitution between goods of different origin in each year between 1962 and 2013. These two elasticities are identified separately. We deduce the implied evolution of the elasticity of trade costs to distance from the two estimated elasticities\footnote{\cite{ErkelRousseMirza2002} do this exercise for just one point in time on a subsample of world trade flows.}.
+%The distance elasticity and the Armington elasticity are identified separately in the estimation while the elasticity of trade costs to distance is deduced from the estimated coefficients. 
+%We find robust evidence that the Armington elasticity has increased faster than the distance elasticity between 1962 and 2013. We conclude that the distance puzzle may be due to the increasing sensitivity of consumers to price differences. Further, we deduce the elasticity of trade costs to distance from the two estimated elasticities. We conclude that the evolution of the distance coefficient is compatible with a decreasing sensitivity of trade costs to distance. 
+Our main result is that the increase in the Armington elasticity not only rationalizes the non-decreasing distance elasticity of trade but also hints at a reduction in the elasticity of trade costs to distance. We conclude that in the Armington framework the distance puzzle is fully explained by the increasing sensitivity of consumers to price differences. More generally, our results suggest that the distance puzzle may be due to a reduction in structural heterogeneity.
+
+%COMPLEMENTARITY OF RESULTS TO PREVIOUS STUDIES
+%our approach differs and complements previous findings: not differentiation of varieties linked to consumer taste heterogeneity, but rather degree of similarity of the product mix. Underline consistency of our results with B\&F and differentiate directly from B\&W b/c aggregate rather than sectoral approach
+To the best of our knowledge, \cite{Berthelon2008} is the only paper that studies the impact of changes in perceived product substitutability on the distance coefficient. Using estimates of sectoral Armington elasticities obtained by \cite{Broda2006_2}, \cite{Berthelon2008} find a positive relationship between the variation in sectoral distance coefficients and the variation in Armington elasticities between 1985-1989 and 2001-2005\footnote{\cite{Berthelon2008} work with 776 sectors defined at the SITC Rev.2 4-digit level. \cite{Broda2006_2} use time-series variation in prices and market shares for the set of exporters to the US market to get one value for the Armington elasticity in 1972-1988 and another value in 1990-2001.}. 
+%\cite{Berthelon2008} also investigate the evolution of the elasticity of trade costs to distance using data on transport costs and tariffs, and conclude that this elasticity is likely to have decreased.
+%\cite{Berthelon2008} use average bilateral sectoral trade flows in each five-year period. 
+Our approach is different from \cite{Berthelon2008} because we focus on the aggregate Armington elasticity and provide direct estimates of this parameter in each year between 1962 and 2013. Our approach is different from \if 0 complementary to\fi \cite{Broda2006_2} because we exploit cross-sectional variation in prices and trade shares to infer the extent of substitutability while these authors exploit changes in prices and trade shares over time to identify one point estimate. \if 0 instead of investigating the degree of differentiation among sectoral varieties The added value of our approach is \fi Our approach enables us to trace out \if 0 to pin down the increase \fi changes in the perceived similarity of the product mix that countries supply to the world market.
+%\footnote{Our approach differs from \cite{Broda2006_2} because we exploit cross-sectional variation in prices and trade shares to infer the extent of substitutability while these authors use time variation to identify one point estimate.}
+%Difference with Broda and Weinstein is not only sectoral vs. aggregate but also the choice of using cross-sectional differences in trade shares owning to the cross-sectional variation in prices to infer the extent of substitutability.
+
+We proceed in three steps. First, we examine the hypothesis that the distance puzzle is a by-product of compositional changes in the set of traded goods or of trading pairs. We refute this hypothesis by showing that the distance puzzle is more pronounced in the stable set.
+%We start with invalidating the hypothesis that the distance puzzle is a by-product of compositional changes in the set of trading pairs or in the set of traded goods. We estimate the gravity model in multiplicative form while fixing the weight of each sector in total trade and restricting the set of partners to reciprocally active trade relationships in each year of the sample. The increase in the distance elasticity is magnified in this stable set.
+%This result is consistent with \cite{Berthelon2008} who find that sectoral distance elasticities are more likely to have increased for homogeneous goods. As the share of homogeneous goods has decreased in total trade, fixing trade shares helps preserve the importance of homogeneous goods: therefore magnification of distance puzzle in stable set. The distance puzzle is a stable set phenomenon. 
+Second, we point out that a straightforward nonlinear estimation approach allows identifying the aggregate Armington elasticity. The key intuition follows \cite{Imbs2015} who show that a consistent estimate of this elasticity is obtained by implementing a non-linear estimator on sectoral data while constraining sectoral elasticities to equality. In the estimation we instrument unit values - our proxy of prices - with lagged unit values together with the lagged real exchange rates specific to each bilateral relationship to address endogeneity concerns. 
+%Second, we use the assumption that consumer preferences are well represented by a two-tier CES utility function, e.g. within sectors between country-specific varieties at the lower level and between sectoral composite goods at the upper level, to consistently aggregate sectoral price information and construct the landed price of the composite good that each source delivers to each destination relatively to the price of the composite good the importer acquires from the world. This allows direct estimation of the annual aggregate price elasticity of demand across country-specific composite goods for the full set of bilateral trade relationships. This elasticity is the structural parameter which determines the elasticity of trade flows to trade costs in the canonical \cite{AndersonWincoop2003} framework. 
+%the consistent aggregation procedure given by the two-tier preference structure of the Armington model to construct the relative price of the composite good which each source exports to each destination. 
+%Third, we present our results for the aggregate Armington elasticity.
+Third, we present the results of this method and conduct a number of robustness checks. 
+%This allows direct estimation of the annual aggregate price elasticity of demand across country-specific composite goods for the full set of bilateral trade relationships. This elasticity is the structural parameter which determines the elasticity of trade flows to trade costs in the canonical \cite{AndersonWincoop2003} framework. 
+
+%We address endogeneity concerns which stem from the presence of zero trade flows in two complementary ways. In the first specification observed prices are instrumented with the real exchange rate which is specific to each bilateral relationship. In the second specification we use the prediction of the model that conditional on destination-specific characteristics and bilateral trade frictions, the frequency of zero trade flows carries information on fundamental exporter ability to construct an instrument which identifies substitutability on the basis of cross-sectional variation in exporter-specific prices on the world market. The distance elasticity and the trade elasticity are identified separately in the estimation, while the elasticity of trade costs to distance is deduced from the estimated coefficients.
+% We find robust empirical evidence that this elasticity has increased faster than the distance elasticity of aggregate trade between 1963 and 2009.
+%We discuss our main result on the 13\% increase in the aggregate trade elasticity between 1963 and 2009 in light of the distance puzzle and report a series of robustness checks. 
+%is endogeneity a big concern at the level of aggregate bundles? if demand shocks lead to movement up the supply curve within each sector, reasonable to assume that wash out across sectors?
+%DISCUSS GENERALITY OF RESULTS EITHER HERE OR IN PART 3: Although we document reduction in heterogeneity in the Armington framework, our results likely to be more general. If zeros are a statistical feature and given that sectoral Armington elasticities are finite, reduction in nb of zeros means that domestic price of the good has decreased enough for the volume of trade to increase sufficiently in order to be recorded in trade statistics. Hence, dispersion in prices of domestically produced goods decreases overtime. In Ricardian framework this is equivalent to reduction in dispersion of technological ability, e.g. a reduction in the strength of comparative advantage or an increase in the Ricardian trade elasticity. Evidence of this is provided in Levchenko and Zhang. As documented in L\&Z, strong heterogeneity across countries: in certain countries no reduction in dispersion. This could explain muted evolution of aggregate trade elasticity in our sample (additional robustness check would consist in verifying that increase in trade elasticity is magnified in the superbalanced sample and/or for the fixed set of goods). 
+
+\section{The magnitude of the distance puzzle} \label{sec:part1} 
+%REVISION: we adopt same notation as HM2013: distance effect is $\delta=-\epsilon\rho$; we adopt same scale on all figures and update figures to 1962-2013; we also reformulate table for summary effects (no FTA)
+%NOT DONE: explain why we always estimate gravity model for aggregate trade; improve discussion of fta effect and include discussion of fixing distance distribution of trade (not intensification of within-FTA trade through relative reduction in cost of within-FTA trade but broadening of FTA coverage (extensive margin))
+In this section we evaluate the sensitivity of the distance puzzle to compositional changes in the set of traded goods and in the set of trading pairs over 1962-2013. Such changes were identified in previous estimations of the loglinearized gravity model as explanatory of movements in the distance coefficient\footnote{\cite{Berthelon2008} find that changes in the sectoral composition of world trade do not help to explain movements in the distance coefficient in 1985-2005. \cite{HeadMayer2013} find that the distance puzzle is reduced in the set of stable pairs between 1960 and 2005 when the model is estimated in loglinear form.}. We estimate the gravity model in multiplicative form and document that the distance puzzle is magnified in the sample of stable pairs and robust to fixing the sectoral composition of world trade. 
+
+%REMOVED PART ON FTA: We also check whether the conduct of trade policy helps rationalize the distance puzzle. If Free Trade Agreements (FTAs) reduce the relative cost of within-FTA trade and FTA formation takes place at short-distance, regional integration would result in an increasing intensity of within-FTA trade, and mechanically induce an increasing distance elasticity of trade costs. We fail to find supportive evidence of this hypothesis in the data. Adopting a more flexible approach than \cite{Bosquet2015} in allowing the FTA effect to vary overtime we find weak evidence of trade intensification through FTA formation. This mechanism does not help explain the distance puzzle in the full sample. 
+%Rather, the process of regional integration appears to have been working through the extensive margin, e.g. through the increasing geographic scope of FTAs and their increasing coverage of short-distance trade. 
+%We do not observe directly the shape of the trade cost function. We know from previous studies that the transport cost component is unlikely to be key. Hence focus on institutional component b/c NTB and information costs may be key.
+%These results motivate our focus on structural heterogeneity as a possible alternative driving force behind the non-decreasing distance elasticity of trade.  
+
+\subsection{The magnitude of the sample composition effect} \label{subsec:data}
+We use the COMTRADE dataset to make our investigation of the distance puzzle directly comparable to \cite{HeadMayer2013} and \cite{Berthelon2008}. We work with the 4-digit SITC Rev.1 product classification (600-700 goods) because it provides the longest and most comprehensive coverage of disaggregate bilateral trade (1962-2013). 
+%We stop short of 2014-2015 where data is subject to revision. The earliest available year is 1962. We focus on 1965-2011 for consistency with the timeframe used in estimation of Armington trade elasticities in section \ref{sec:part3}. 
+Data on bilateral distance, bilateral trade cost controls such as adjacency, common language, colonial linkages, and data on belonging or having once belonged to the same country are taken from the CEPII\footnote{See \cite{Mayer2011}. The database is available at \url{www.cepii.fr}. We constructed bilateral distance and bilateral cost controls for East and West Germany, USSR, and Czechoslovakia.}. 
+
+We conduct the estimation on CIF import flows. We restrict the sample to trade in goods which are attributed to specific 4-digit categories and to pairs for which we have data on bilateral trade cost controls. App. \ref{app:E} lists the resulting set of countries. For each active pair attributed sectoral flows are summed to obtain total bilateral trade. We refer to the resulting sample as `the full sample'. It covers between 88\% and 99\% of reported trade in COMTRADE.
+%\footnote{COMTRADE itself covers between 70\% and 90\% of total world merchandise trade according to the WTO (\url{http://stat.wto.org/Home/WSDBHome.aspx}).} 
+%Our dataset covers between 70\% to 90\% of total world merchandise trade according to the WTO.\footnote{See \url{http://stat.wto.org/Home/WSDBHome.aspx}, accessed in May 2011.}. More precisely, 70\% in 1962, this increases to 80\% in the 1960s, stays stable until the late 1980s, and then increases to approximately 90\% in the 1990s and 2000s. As trade data is of better quality for imports, the estimation is conducted on import flows.
+
+Fig.\ref{fig:active_pairs} summarizes the main features of the data. The number of active pairs increases more than fourfold in 1962-2013 (in dash, left scale), both because more countries report trade to COMTRADE and because more pairs have non-zero trade flows (\cite{Helpman2008}). Active pairs make up between 45\% and 73\% of the total number of possible trade relationships, with a clear upward trend (in red, right scale).
+
+%graph updated for 1962-2013
+\begin{figure}[h!]
+\caption{Active pairs in COMTRADE (1962-2013) \label{fig:active_pairs}}
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[height=2.5in]{part1_active_pairs.eps}}
+\end{center}
+\end{figure}
+
+If we focus on the set of pairs that report non-zero trade in at least one year, the share of active pairs increases by 22 percentage points between 1962 and 1990 and by 27 percentage points between 1993 and 2013 (in blue, right scale)\footnote{We split the sample in two subperiods, 1962-1990 and 1993-2013, to take into account country creation and disappearance in the early 1990s.}. By the end of the sample about 2/3 of pairs which trade at least once between 1962 and 2013 are reporting non-zero trade. 
+
+Hence, sample composition effects are substantial. Nonetheless, the bulk of total trade is attributable to the 786 pairs which trade both ways in every year. We refer to this set of stable reciprocal pairs as the `superbalanced' sample and use it to investigate the magnitude of the sample composition effect\footnote{The superbalanced sample includes 32 countries listed in App. \ref{app:E}. The appendix discusses trade coverage.}.
+
+We follow the canonical \cite{AndersonWincoop2003} derivation of the gravity model to express aggregate bilateral trade $X_{ij}$ as a function of bilateral trade barriers $\tau_{ij}$, multilateral trade resistance terms in source $i$ and destination $j$ (resp. $\Pi_{i}$ and $P_{j}$), and nominal incomes $Y_{n}$ with $n\in\left\{i,j,w\right\}$ where $w$ is world income\footnote{This formulation is not specific to the Armington framework. See footnote 20 in \cite{EatonKortum2002} and subsequent discussions of equivalence in  \cite{Arkolakis2012, HeadMayer2013}.}. 
+ 
+\begin{eqnarray}
+X_{ijt} & = & \left(\frac{Y_{it}Y_{jt}}{Y_wt}\right)\left(\frac{\tau_{ijt}}{\Pi_{it}P_{jt}}\right)^{\epsilon_t}\label{eqn:1}
+\end{eqnarray}
+%$X_{ij,t}$ is the value of goods from country $i$ consumed in country $j$ in year $t$, i.e. bilateral imports at cif prices. Imports are a function of the nominal income of each trading partner $Y_{ij,t}$ and $Y_{j,t}$, of world income $Y_t$, of bilateral trade costs $\tau_{ij,t}$, and of inward and outward multilateral trade resistance terms $P_{j,t}$, $\Pi_{i,t}$.
+%\footnote{$\Pi_{i}$, $P_{j}$ are respectively inward and outward MR terms.} 
+
+We include the time subscript $t$ not only on each variable but also on the elasticity of trade flows to trade costs $\epsilon$ to underline that this parameter is subject to change. In the Armington framework $\epsilon_t=1-\sigma_t$ where $\sigma_t$ corresponds to the elasticity of substitution between goods of different national origin. We seek to quantify the evolution of the elasticity of aggregate trade flows to trade costs. Hence, the key parameter of interest for this paper is the Armington elasticity which captures perceived substitutability of composite goods which differ by their place of production. 
+
+As total bilateral trade costs $\tau_{ijt}$ are not directly observed for each pair and year, we model them as a function of observable time-invariant bilateral controls which are distance, adjacency, and common language together with persistent but time-varying controls standard in the gravity literature which are historical and current colonial linkages as well as belonging or having once belonged to the same country. We include an unobserved bilateral trade cost component $\nu_{ijt}$ assumed to have mean zero conditional on the observables\footnote{\if 0 This assumption can be questioned, in particular with respect to excluded trade cost controls which vary as a result of trade policy decisions. \fi The error term contains bilateral variation in trade costs due to trade policy. The question of possible changes in the distance distribution of trade costs as a consequence of policy decisions is beyond the scope of this paper.}. 
+%For consistency it would be good to redefine colonial linkages and same country as time-invariant controls: group 'having been /currently are' as single variable.
+%and a vector $Z_2$ of trade cost controls linked to trade policy such as common membership of GATT/WTO and common membership of an FTA. 
+We denote distance $\eth_{ij}$, group the other time-invariant observables in the vector $Z$ and time-varying observables in the vector $S_t$ to get the following specification of the trade cost function:
+\begin{eqnarray}
+\tau_{ijt}&=&\exp\left\{\rho_t\ln{\eth_{ij}}+{Z}'\zeta_{t}+{S_t}'\varsigma_{t}+\nu_{ijt}\right\} \label{eqn:20}
+\end{eqnarray}
+%\begin{eqnarray}
+%\tau_{ij,t}&=&exp\left\{\rho_t\ln{dist_{ij}}+%{Z_{1,t}}'\beta_{1,t}+{Z_{2,t}}'\beta_{2,t}\right\} \label{eqn:20}
+%\end{eqnarray}
+
+Replacing (\ref{eqn:20}) in (\ref{eqn:1}), substituting source and destination specific variables with country fixed effects (resp. $f_{it}$ and $f_{jt}$), defining a constant $\xi_t$ and specifying a multiplicative error term $\xi_{ijt}$ which includes the exponentiated unobserved bilateral trade cost gives the equation to be estimated on aggregate bilateral trade: 
+\begin{eqnarray}
+X_{ijt}&=&\exp{\left(\xi_t-\delta_{t}\ln{\eth_{ij}}+{Z}'\zeta_t+{S_t}'\varsigma_t+f_{it}+f_{jt}\right)\xi_{ijt}} \label{eqn:4}
+\end{eqnarray}
+%\begin{eqnarray}
+%X_{ij}&=&\exp{\left(\alpha_0-\alpha_1\ln{\eth_{ij}}+{Z}'\beta_1+{Z_2}'\beta_2+fe_{exp}+fe_{imp}\right)\epsilon_{ij}} \label{eqn:4}
+%\end{eqnarray}
+%where $fe_{exp}$ and $fe_{imp}$ are respectively exporter and importer fixed effects and $\xi_{ij}$ is a multiplicative error term which includes the unobserved bilateral trade cost.  
+
+To ensure consistency of the point estimates we do not loglinearize the model although switching to a non-linear estimator may entail a loss of efficiency (\cite{ManningMullahy1999}). We implement (\ref{eqn:4}) in the full and superbalanced samples using the PPML estimator (\cite{SantosSilvaTenreyro2006}). The estimation is conducted in cross section. The parameter of interest is the distance elasticity, $-\delta_t$, which corresponds to the product of the distance elasticity of trade costs $\rho_t$ and of the trade elasticity $\epsilon_t$\footnote{We follow the notation in \cite{HeadMayer2013} (see equation (4), p.1205).}. 
+
+%graph updated to 1962-2013
+\begin{figure}[h!]
+\caption{The sample composition effect \label{fig:compsample}}
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.5in]{sample_composition_effect_1962.eps}}
+\end{center}
+\end{figure}
+
+Results for both samples are shown in fig.\ref{fig:compsample}. In the full sample (left pane) the distance effect $\delta_t$ increased by $4.5$\% between 1962-2013 (left pane), but this increase is only marginally significant. In the superbalanced sample (right pane) the increase in the distance effect $\delta_t$ is magnified to $18.2$\%, and this increase is strongly significant\footnote{The annualized growth rate is 0.09\% in the full sample and 0.33\% in the superbalanced sample.}. 
+%The distance elasticity is clearly non-decreasing, and this finding holds in the set of stable partners. 
+Consistently with previous studies we find that the distance sensitivity of trade has not been reduced over time. Moreover, the distance puzzle is enhanced in the sample of stable trade relationships\footnote{The opposite result holds in the loglinear specification (\cite{HeadMayer2013}). In OLS the decrease in the distance elasticity due to the elimination of small trade flows between distant partners trumps the increase in the distance elasticity of stable trade relationships.}. 
+
+We obtain the large confidence intervals shown in fig.\ref{fig:compsample} when we implement the Huber-White correction of standard errors\footnote{Switching to the panel approach with the full set of country-year dummies does not achieve significant improvement in precision.}.  Standard errors are reduced by an order of magnitude when this correction is not implemented.  
+%\cite{SantosSilvaTenreyro2006} advocate this approach to account for possible misspecification of the conditional variance function. 
+%Computing heteroskedasticity-robust standard errors yields the large confidence intervals shown in fig.\ref{fig:compsample}, putting in doubt even the existence of the distance puzzle
+%The loss of precision is due to computing heteroskedasticity robust standard errors \if 0 implementing the Huber-White correction of standard errors advocated by \cite{SantosSilvaTenreyro2006} \fi to account for possible misspecification of the conditional variance function. 
+Considering that the PPML approach already takes into account heteroskedasticity, and that we are looking at these point estimates as if they were descriptive statistics on the whole population, we take the results shown in fig.\ref{fig:compsample} as sufficient evidence of the robustness of the distance puzzle to sample composition effects. 
+
+Next, we demonstrate that the distance puzzle is robust to product composition effects. In particular, the non-linearity in the evolution of the distance coefficient \if 0 is reduced in the sample of stable pairs (fig.\ref{fig:compsample}), and it \fi disappears once we control for product composition effects (see fig.\ref{fig:compbundle} below).
+
+\subsection{The magnitude of sectoral composition effects} \label{subsec:robustpuzzle}
+We assess the incidence of sectoral composition effects in two ways. The first exercise consists in fixing the sectoral composition of world trade. The second exercise consists in fixing the sectoral composition of the bundle supplied by each exporter to the world market. 
+%The intuition is that according to the model there should be substitution away from sectors which experience elasticity increases. Hence, muted puzzle?
+
+%Each exercise consists in implementing a specific reweighting procedure. 
+In the first exercise we fix the sectoral composition of total trade to the initial year of the sample. 
+%we fix the share of each sector in total world trade to its share in the initial year of the sample. 
+Denoting each 4-digit sector $k$ and the annual share of the sector in world trade ($w,t$) by $s^{k}_{w,t}$, the reweighting procedure fixes the share of each 4-digit sector in world trade to its share in 1962. The reweighted sectoral bilateral flow is $\tilde{X}^k_{ijt}=X^k_{ijt}*\frac{s^k_{w,1962}}{s^k_{w,t}}$. The reweighted sectoral flows are summed for each pair, and the gravity equation is estimated in each year for aggregate bilateral trade. 
+
+Results are shown in fig.\ref{fig:compworld}. \if 0 The non-linearity in the evolution of the distance coefficient is substantially reduced in the full sample (left pane),\fi The evolution of the distance coefficient becomes much more linear in the full sample (left pane), and this exacerbates the distance puzzle to a 14.5\% increase in $\delta_t$. The impact of this reweighting procedure is about nil in the sample of stable pairs (right pane) where $\delta_t$ increases by 18.4\%\footnote{The annualized growth rate is 0.26(0.33)\% in the full (superbalanced) sample. Confidence intervals are reported for the Huber-White correction of standard errors. Without it standard errors are reduced by a factor of 10.}. Indeed, the main incidence of fixing the sectoral composition of world trade is the elimination of short-term fluctuations in the distance coefficient due to fluctuations in the weight of the energy sector. As this sector plays a relatively minor role in trade of stable reciprocal partners, the reweighting procedure has little incidence on the distribution of trade over distance in this sample.
+%\footnote{Results on the incidence of the energy sector on the distance puzzle are available upon request.}.
+
+%graph updated for 1962-2013
+\begin{figure}[h!]
+\caption{Product composition effect: fixing the world bundle  \label{fig:compworld}}
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.5in]{product_composition_effect_world_1962.eps}}
+\end{center}
+\end{figure}
+
+%This exercise is only possible for countries that exist as partners (!) in 1962, so sample only includes countries that are listed as partners by reporters that exist in 1962
+In the second exercise we fix the composition of the bundle supplied by each exporter $i$ to the world market. Denoting the annual share of the sector in world imports from $i$ by $s^{k}_{i,t}$, the reweighting fixes the share of each 4-digit sector in world imports from $i$ to its share in 1962. The reweighted sectoral bilateral flow is $\tilde{X}^k_{ijt}=X^k_{ijt}*\frac{s^k_{i,1962}}{s^k_{i,t}}$. The resulting sectoral flows are summed for each pair, and the gravity equation is estimated on total reweighted bilateral trade.
+%This investigation is complementary to \cite{Berthelon2008} who find that changes in the relative weight of products in 1985-2005 are not explanatory of movements in the distance coefficient.  
+
+%graph updated for 1962-2013
+\begin{figure}[h!]
+\caption{Product composition effect: fixing the country bundle  \label{fig:compbundle}}
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.6in]{product_composition_effect_country_1962.eps}}
+\end{center}
+\end{figure}
+
+As illustrated in fig.\ref{fig:compbundle}, fixing the composition of the country-specific composite good \if 0 eliminates the non-linearity in the evolution of the distance coefficient and \fi
+exacerbates the magnitude of the distance puzzle.
+%\footnote{This is consistent with \cite{Berthelon2008} who find that products initially perceived as more homogeneous are more likely to have experienced an increase in the distance elasticity. Applying the \cite{Rauch1999} classification we find that the share of differentiated goods in total trade has increased by almost 20 percentage points (from 42 to 60\% of total trade in 1962-2000).}. 
+Further, while the degree of precision in the estimation of the gravity equation with the Huber-White correction of standard errors remains similar to the benchmark specification, 87\% of the variation in the distance coefficient is attributable to the time trend in the full sample, against just 7\% in the benchmark specification\footnote{In the superbalanced sample 77\% of the variation is attributable to the time trend when the product bundle is fixed against 49\% when the product bundle is not fixed.}. The corresponding annualized growth rate is .40\% in the full, and .54\% in the stable sample. This corresponds to a 22.7\% increase in the distance sensitivity of trade between 1962 and 2013 in the full sample, and to a 31.4\% increase in the sample of stable pairs.
+
+We conclude that short-term fluctuations in the distance effect $\delta_t$ are likely attributable to product and sample composition effects. But the long-term evolution of the distance effect appears linked to structural changes. These structural changes are more pronounced in the set of stable trade relationships. 
+%this pattern is reinforced in the set of stable trade relationships.
+%The superbalanced sample is a rectangular sample which includes 32 countries: Argentina, Belgium-Luxembourg, Brazil, Canada, Chile, Colombia, Denmark, France, Germany, Great Britain, Greece, Hong Kong, Iceland, Israel, Italy, Japan, Malaysia, Mexico, Netherlands, Philippines, Portugal, Paraguay, Singapor, South Korea, Spain, Sweden, Switzerland, Thailand, Tunisia, Turkey, Venezuela and the USA. China, India, Sub-Saharan African, Central and Eastern European countries do not have a reciprocal trading relationship in all years with any single country, and are thus excluded.
+
+\if 0
+%this subsection is discarded b/c FTA database not updated in 2009-2013 (should be updated in 2006-2013...)
+\subsection{The magnitude of the FTA effect} \label{subsec:distdistrib}
+%FTA formation and the relative intensity of within-FTA trade
+%Position this section as complementary to Hummels who investigates elasticity of transport costs to distance, B\&F who investigate incidence of changes in tariffs on distance, and us who analyze reduction in institutional costs. Differentiate approach from B\&B by showing that we estimate naive effect and then decompose what is due to extensive margin from `true' FTA effect: distance puzzle magnified.
+We consider the possibility that structural changes affected the distance distribution of trade costs inducing an increase in the distance elasticity. The distance elasticity of transport costs is likely to have decreased since the 1960s (\cite{Hummels2007}, \cite{Berthelon2008}). The distance elasticity of ad valorem tariffs is also unlikely to have increased (\cite{Berthelon2008}). However, institutional and informational trade barriers may have been disproportionately reduced for within-FTA trade and may have resulted in the intensification of short-distance trade if FTAs have predominantly consisted in intraregional integration. 
+%if local trade costs decrease faster than long-distance trade costs (which shows up as regionalization), then we pick up an increasing distance elasticity of trade b/c the measured elasticity of trade costs to distance would increase due to assumption of loglinear relationship (misspecification). Measure this with formation of FTAs: not just reduction in tariffs but also in associated NTBs: standards, hurdles, information costs. 
+
+\cite{Bosquet2015} investigate the impact of FTA formation on the distance puzzle while controlling for the endogeneity of country selection into FTAs with the \cite{Baier2007} methodology. Constraining the trade creating effect of FTAs to be identical in each year and for all FTAs, \cite{Bosquet2015} find that FTAs have had no impact on the evolution of the distance elasticity. This result may seem puzzling because the trade-creating effect of FTAs is expected to be reinforced by controlling for endogenous selection (\cite{Baier2007}, \cite{Egger2011}). 
+
+We adopt a more flexible approach to allow the trade creating effect of FTAs to vary across FTAs and overtime. 
+%key point: use cross-sectional dimension to identify selection effect: allow FTA effect to vary overtime b/c selection effect may have been key in 70s-80s, but intensification of within-FTA trade may have become important in recent period (production fragmentation)
+%complementarity with BB2009: they obtain the result that FTAs only impact level of distcoef while using the panel dimension to control for FTA endogeneity but in doing so they constrain FTA effect to be homogeneous overtime. We obtain the result that the evolution of the distance coefficient is not reversed by FTA formation but we use changes in the distance distribution in cross-section to identify the structural effect of FTAs to allow the effect to vary overtime.
+We measure the naive FTA effect by estimating (\ref{eqn:4}) in each year while augmenting the vector $S_t$ with a separate control for each active FTA and an additional control for GATT/WTO membership. The naive FTA effect reverses the direction of change in the distance elasticity (fig.\ref{fig:ftabench}). The effect of distance decreases by $1$\% per year without controlling for sectoral composition effects (left pane), and it decreases by $.5$\% per year when the composition of the country bundle is fixed (right pane)\footnote{App.\ref{app:D} provides details on each FTA and the years in which it appears in the sample. The naive FTA effect is magnified in the stable sample. The distance elasticity is reduced by $2$\% (resp.$1.5$\%) per year with the current (resp. fixed) product bundle.}.
+%The distance elasticity estimated in the naive specification is pointwise corrected for the magnitude of the selection effect to obtain the distance elasticity in the specification which controls for the structural effect of FTA formation. The annual growth rate in the distance elasticity controlling for the exogenous effect of FTAs is computed on the basis of this adjusted distance coefficient. 
+
+\begin{figure}[h!]
+\caption{Evolution of the distance elasticity with FTA controls \label{fig:ftabench}}
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 9mm, clip, height=2.5in]{fta_full_without_with_country_bundle_1963.eps}}
+\end{center}
+\end{figure} 
+
+To correct the FTA effect for the incidence of endogenous selection, the distance elasticity estimated in the naive  specification is rescaled with a correction factor. This correction factor is a year-specific ratio. The numerator of this ratio is the distance elasticity obtained when we estimate (\ref{eqn:4}) augmented with a dummy for common FTA membership while fixing the distance distribution of trade within and outside of FTAs to the initial year of the sample. The denominator of this ratio is the distance elasticity obtained when we estimate (\ref{eqn:4}) without FTA controls while fixing the distance distribution of total trade to the initial year of the sample\footnote{Total trade is split in 15 bins equidistant on the log scale and annual bilateral trade in each distance bin is reweighted to replicate the distance profile of trade in 1963. The reweighting is done separately for the full, within-FTA, and out-of-FTA sample. See app.\ref{app:distprofile}}. The naive FTA effect is $\delta_{fta}/\delta_{base}$, and the correction factor is $\delta_{distfix,fta}/\delta_{distfix,base}$. 
+
+The intuition of this correction procedure is simple. If the naive FTA effect captures the `intensive margin', e.g. trade regionalization attributable to reduced relative costs of within-FTA trade, the distance distribution of within-FTA trade will be stable while the distance distribution of total trade will be characterized by increasing densities in the distance range covered by FTAs. The correction factor will not exceed one and the naive FTA effect will be fully attributed to the structural effect of FTA formation.
+%idea: proportional increase in within-FTA trade b/c unchanged relative costs, but higher intensity of short-distance trade because increased relative cost of long-distance trade 
+
+If the naive effect captures the `extensive margin', e.g. changes in the distance elasticity due to non-random country selection into FTAs, the distance distribution of total trade will be stable while shifts in the distance distribution of trade within and outside of FTAs will be observed as a consequence of increasing geographic scope of FTAs and their increasing coverage of short-distance trade. In this case, the correction factor will exceed one and the naive FTA effect will exceed the structural effect of FTA formation. 
+
+Hence, it is sufficient to characterize the impact on the distance elasticity of changes in the distance profile of trade within and out of FTAs relatively to the impact on the distance elasticity of changes in the distance profile of total trade to quantify the magnitude of the selection effect. 
+%This is not the same as documenting stability of distance profile of trade; this is about documenting stability of relative intensity in-FTA/out-of-FTA trade  
+%when I fix distance distribution of trade out of ftas, I'm reducing share of long-distance trade. This shows that in the baseline with FTAs trade becomes less sensitive to distance b/c short-distance trade is progressively shifted to within-fta: change in distance distribution of trade outside of ftas b/c of geographic coverage of FTAs, not b/c of intensification of short-distance trade. 
+This correction procedure is equivalent to defining the structural effect of FTA formation as the pointwise change in the growth rate of the distance coefficient obtained when we control for FTA formation while constraining the distance distribution of trade within and out-of-FTA to evolve as in the full sample, e.g. to be independent of country selection into FTAs. The naive FTA effect is given by the difference in the growth rate of the distance coefficient obtained by including the FTA control: $e_{naif}=r_{base}-r_{fta}$. The selection effect is given by the difference in the growth rate of the distance coefficient obtained by fixing the distance profile of within- and out-of-FTA trade relatively to fixing the distance profile of total trade: $e_{endog}=r_{distfix,fta}-r_{distfix,base}$. The structural FTA effect is equal to: $r_{base}+(e_{naif}-e_{endog})$. 
+
+App.\ref{app:distprofile} reports a number of stylized facts on the stability of the distance distribution of total trade and on shifts in the distance distribution of trade within and out of FTAs. A salient example is the increase in FTA coverage of trade taking place at less than 2000 km from 40 to 80\% in 1963-2009 (fig.\ref{fig:ftascontig}) while the share of trade taking place at less than 2000 km in total trade has remained stable at 40\% (fig.\ref{fig:qqfull}). The geographic scope of within-FTA trade has increased as well (fig.\ref{fig:qqinfta}). Indeed, 22\% of within-FTA trade took place at less than 200 km in 1963 while just 5\% did so in 2009. Correspondingly, the distribution of non-FTA trade has become increasingly dispersed over distance (fig.\ref{fig:qqoutfta}). The first 5\% of non-FTA trade took place at less than 460 km in 1963 while the corresponding figure is 1150 km in 2009. Hence, the naive FTA effect is likely to be at least partly attributable to the extensive margin.  
+
+\begin{figure}[h!]
+\caption{Structural impact of FTA formation in the full sample (current bundle) \label{fig:ftacorrfull}}
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 9mm, clip, height=2.5in]{dist_profile_ftas_corr_full.eps}}
+\end{center}
+\end{figure}   
+
+\begin{figure}[h!]
+\caption{Structural impact of FTA formation in the full sample (fixed bundle) \label{fig:ftacorrfullc63}}
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 9mm, clip, height=2.5in]{dist_profile_ftas_corr_full_c1963.eps}}
+\end{center}
+\end{figure}  
+
+Fig.\ref{fig:ftacorrfull} reports the results for each component of the correction procedure without fixing the sectoral composition of trade while fig.\ref{fig:ftacorrfullc63} reports estimations implemented while fixing the sectoral composition of country-specific product bundles to the initial year of the sample. Grey circles correspond to specifications without FTA controls: full circles report the baseline elasticity $-\delta_{base}$, hollow circles report the baseline while fixing the distance profile of trade  $-\delta_{distfix,base}$. Red diamonds report specifications with FTA controls: full diamonds report results of the naive FTA estimation $-\delta_{fta}$,  hollow diamonds correspond to the specification which fixes the distance profile of trade within and out of FTAs $-\delta_{distfix,fta}$. 
+
+The elasticity in the corrected FTA specification $-\delta_{fta,corr}$ is reported with crosses. The distance puzzle is not attributable to the intensification of within-FTA trade. The implied annual growth rate of $\delta_{fta,corr}$ is $1$\% whether or not we control for sectoral composition effects, e.g. a 57-60\% increase in the effect of distance between 1963 and 2009. Nonetheless, there is a qualitative change in the effect of FTA formation. Until the end of the 1980s the selection effect is prevalent while in the more recent period there is evidence of intensification of within-FTA trade. This intensification is enhanced when the sectoral composition of country-specific composite goods is fixed. Thus, the composition of within-FTA trade is likely to have shifted towards more distance-sensitive goods. This evolution would be consistent with the theoretical mechanism of \cite{Duranton2008} as well as with the mechanism outlined in \cite{Yi2010} whereby decreasing trade costs trigger intraregional production fragmentation which entails a magnification of total incurred trade costs.
+%idea: within-FTA trade has been intensified, and this explains why the increase in the distance elasticity is less pronounced when we control for FTA formation. But within-FTA trade has also shifted towards more distance-sensitive goods, and this has mitigated the structural effect of FTA formation on the distance puzzle.
+%Results more nuanced than BB2009: fta formation has first proceeded through selection, but appears to have led to trade intensification since 1990s (particularly if we control for composition effect), but not sufficiently to modify overall evolution of distance coefficient: magnitude of puzzle not reduced.
+%PREVIOUS TEXT: DISCARDED
+%\begin{figure}[h!]
+%\caption{Distance coefficient controlling for FTAs (full sample) \label{fig:ftas}}
+%\begin{center}
+%\setlength{\fboxrule}{1pt} %makes border lines thick
+%\setlength{\fboxsep}{.1in} %increases distance to border\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{graph6.pdf}}
+%\end{center}
+%\end{figure}
+%As shown in Fig. \ref{fig:ftas}, controlling for countries' participation into free trade agreements solves the distance puzzle. However, this effect is mechanical. Indeed, Fig. \ref{fig:ftas} shows that in-FTA trade increased from less than 20\% to approximately 40\% of total trade from 1962 to 2009, and Fig. \ref{fig:ftascontig} shows that over the same period the share of intra-FTA trade among nearby (less than 2000 km) countries increased from 38\% to 79\% in 2009.\footnote{Trade at less than 2000 km corresponds to the first decile of the distance distribution of trade in 1962-2009.} This means that including controls for FTA membership amounts to adding a growing number of proximity controls in the regression. This reduces the sensitivity of trade flows to distance. 
+%A further argument for caution in interpreting results with FTA controls is the probable endogeneity of FTAs for which we do not correct in the estimation. In this respect, \cite{Bosquet2015} show that the distance coefficient evolves in the same way when they do not control for FTAs (fig. 9 in their paper) and when they control for FTAs correcting for endogeneity (fig. 11 in their paper).
+%\begin{figure}[H]
+%\caption{FTAs as proximity controls (full sample) \label{fig:ftascontig}}
+%\begin{center}
+%\setlength{\fboxrule}{1pt} %makes border lines thick
+%\setlength{\fboxsep}{.1in} %increases distance to border
+%\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, lip,height=3.2in]{graph_ftas_contig.png}}
+%\end{center}
+%\end{figure}
+%Controlling separately and jointly for sample and composition effects does not change the magnitude of the distance puzzle. On the other hand, controlling for FTAs eliminates the distance puzzle. As argued, the explanation of the distance puzzle through FTAs is not satisfactory because it amounts to adding a growing number of proximity controls in the regression and because FTAs are endogenous to trade intensity. We conclude that the distance puzzle is a robust feature of the data, and that the traditional approach is little informative of the driving forces behind the increased sensitivity of trade flows to distance.  
+\fi
+
+%SUMMARY: RECAP TABLE UPDATED for 1962-2013 *no FTA*
+\subsection{Summing up: the robustness of the distance puzzle}\label{part1recap}
+\begin{table}[h!]
+\caption{Evolution of $\delta_t$: sample, composition and FTA effects \label{tab:part1recap}}
+\begin{center}
+\begin{tabular}{|l|c|c|c||c|c|c|}
+\hline
+        & \multicolumn{3}{|c||} {FULL} & \multicolumn{3}{|c|} {STABLE} \\
+\hline
+        & {rate (\%)} & {R-sq} & {total change} & {rate (\%)} & {R-sq} & {total change} \\
+\hline
+Baseline  & $.09^{*}$ & $.07$ & $1.045$ & $.33^{***}$ & $.49$     & $1.182$ \\
+\hline
+World bundle & $.26^{***}$ & $.53$ & $1.145$ & $.33^{***}$ & $.68$ & $1.184$ \\
+\hline
+Country bundle & $.40^{***}$ & $.87$ & $1.227$ & $.54^{***}$ & $.77$ &  $1.314$ \\
+\hline
+%Naive FTA & $-.88^{***}$ & $.48$ & $0.667$ & $-1.99^{***}$ & $.55$ &  $0.398$          \\
+%\hline
+%Corrected FTA & $.99^{***}$ & $.60$ & $1.576$ & $-.57^{**}$ & $.06$ &  $0.769$          \\
+%\hline
+%Corr. FTA + bundle & $1.03^{***}$ & $.50$ & $1.600$ & $.44^{*}$ & $.05$ & $1.225$     \\
+%\hline
+\multicolumn{7}{|l|}{\begin{footnotesize} Note: Estimated annualized growth rates reported in col.2 and col.5 are obtained as a geometric fit on the\end{footnotesize}} \\
+ \multicolumn{7}{|l|}{\begin{footnotesize} basis of annual point estimates of the distance coefficient in 1962-2013. Col.3 and col.6 report the share \end{footnotesize}} \\
+ \multicolumn{7}{|l|}{\begin{footnotesize} of time variation in the point estimate explained with the annualized growth rate. 
+ \end{footnotesize}} \\
+ \hline
+\end{tabular}  
+\end{center}
+\end{table}
+%Remember that corrfta computed in full sample on basis of distfix70, but results very similar for distfix63
+Table \ref{tab:part1recap} summarizes our findings. The distance puzzle is magnified in the sample of stable pairs and robust to fixing the product composition of world trade. Hence, the non-decreasing distance elasticity of trade is likely to be a structural outcome rather than an artefact of composition effects. 
+\if 0 
+Furthermore, trade intensification through FTA formation does not help to explain the distance puzzle\footnote{Results are mitigated in the stable sample where the corrected FTA specification performs poorly.}. The process of regional integration appears to have been working through the extensive margin, e.g. through the increasing geographic scope of FTAs and their increasing coverage of short-distance trade rather than through the intensification of within-FTA trade.
+\fi
+These results motivate our focus on structural heterogeneity as a possible alternative explanation of the non-decreasing distance elasticity. 
+
+\clearpage
+\revLA{I SUPPRESS ALL OF THE FOLLOWING PARTS UNTIL REFERENCES WHICH I UPDATED AS WELL}
+
+
+%these lines should be at point where biblio should appear
+%\bibliographystyle{harvard} %alternative bibliography styles
+%\bibliographystyle{acm}
+\bibliographystyle{chicago}
+%\bibliographystyle{aer}
+\bibliography{Armington_biblio_inbibtex}
+%\end{spacing}
+
+\clearpage
+\appendix
+\revLA{I updated numbers in the text and graphs by defining the superbalanced sample for 1962-2013.}
+\section{Full and superbalanced samples} \label{app:E}
+The full sample contains 205 reporters (R) and 227 partners (P) listed in tables \ref{tab:list1} and \ref{tab:list2} below. `S' indicates that the country is present in the superbalanced sample. 
+
+In the full sample, several countries shift from reporting trade on an individual basis to reporting trade jointly with another country. This is the case of Belgium and Luxembourg, as well as Eritrea and Ethiopia. For consistency, we use a single country identifier for each of these two pairs. A single country identifier is also used for Yougoslavia and for Serbia and Montenegro. Fig.\ref{fig:pairpresence} shows the distribution of pairs in the full sample according to the number of years in which the pair reports a positive amount of trade.
+
+%graph updated for 1962-2013
+\begin{figure}[h!]
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0.5mm 0.5mm 0.5mm 8mm, clip, height=2.5in]{nb_years_pair_presence_1962_13.eps}}
+\end{center}
+\caption{Number of years each pair is present in the sample \label{fig:pairpresence}}
+\end{figure}
+
+The superbalanced sample corresponds to the subsample of pairs which trade both ways in each and every year in 1962-2013. To avoid discarding pairs which fall out of the superbalanced sample because countries split up or reunite at some point in 1962-2013, we introduce several additional single country identifiers before constructing the superbalanced sample. Consequently, Germany is present in the superbalanced sample.\footnote{A single identifier is used for East, West, and reunited Germany. A single identifier is used for the Czech Republic, Slovakia, and Czechoslovakia. A single identifier is used for the USSR and the 15 countries formed after the USSR split up. The 15 countries which constituted the USSR are absent from the superbalanced sample because the USSR is never a reporter to COMTRADE. The Czech Republic and Slovakia also drop out because there is no other country in the sample with which they have two-way trade in every year.} 
+%it is strange that Czech and Slovak Republics drop out from superbalanced sample...do not trade both ways with reunited Germany..maybe because DDR does not report trade in all years to COMTRADE.
+
+The superbalanced sample comprises 786 trading pairs and corresponds to 32 countries. This is less than the 992 pairs which would be observed if each reporter traded both ways with every other country. Indeed, the set of countries which trade with every other country in each year and which we refer to as the `square sample' comprises just 21 countries (420 pairs). Trade coverage in the superbalanced sample decreases from 68 to 39\% of total trade over 1962-2013 while it is reduced from 54 to 28\% for the square sample (see Fig.\ref{fig:coverage}). 
+
+%graph updated for 1962-2013
+\begin{figure}[h]
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0.5mm 0.5mm 0.5mm 8.5mm, clip, height=2.5in]{trade_coverage_1962.eps}}
+\end{center}
+\caption{Trade coverage in 1962-2013 \label{fig:coverage}}
+\end{figure}
+%graph updated for 1965-2013
+\begin{figure}[h!]
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0.5mm 0.5mm 0.5mm 8.5mm, clip, height=2.5in]{trade_coverage_1965.eps}}
+\end{center}
+\caption{Trade coverage in 1965-2013 \label{fig:superbal6513}}
+\end{figure}
+
+To check the sensitivity of trade coverage to the choice of the benchmark year we redefine the set of stable pairs as partners trading both ways in each year in 1965-2013.\footnote{The number of reporters increases from 70 in 1962 to 86 in 1965 to 111 in 1970 and 129 in 1975. But the reduction in trade coverage between the 1970s and the 1990s is qualitatively similar if we choose 1970 or 1975.} The superbalanced sample for 1965-2013 contains 1286 pairs that comprise 42 countries (out of 1722 possible pairs). The square sample for 1965-2013 contains 23 countries (506 pairs).
+
+As illustrated in Fig.\ref{fig:superbal6513}, the evolution of trade coverage is not sensitive to the choice of the starting year. Albeit from a higher level (73\% in 1965), trade coverage drops to 45\% by 2013. Indeed, the main reason for the reduction in trade coverage since the mid-1990s is due to the absence of China and of Central and Eastern European countries from the superbalanced sample. These countries drop out because they do not report trade to COMTRADE until the more recent period.\footnote{For example, China reports trade to UN COMTRADE in 1987-2013.} 
+
+Another way to check the sensitivity of trade coverage to the choice of the starting year is to compute the evolution of trade coverage for the sample of pairs which trade both ways in a specific year. The difference with the superbalanced sample is that we now relax the constraint that the pair have two-way trade in every year in 1962-2013. The share of total annual trade attributable to two-way pairs in 1962 and in 1965 is shown in Fig.\ref{fig:reciprocal}. As previously, the level but not the evolution of trade coverage is affected by the choice of the starting year.
+
+%graph updated for 1962(1965)-2013
+\begin{figure}[h!]
+\begin{center}
+\setlength{\fboxrule}{1pt} %makes border lines thick
+\setlength{\fboxsep}{.1in} %increases distance to border
+\fbox{\includegraphics[trim = 0.5mm 0.5mm 0.5mm 8.5mm, clip, height=2.5in]{recip_coverage_62_65.eps}}
+\end{center}
+\caption{Trade coverage in reciprocal trade \label{fig:reciprocal}}
+\end{figure}
+
+\cite{Helpman2008} document that the enlargement of the set of trading partners did not contribute in a major way to the growth of world trade in 1970-1997 because most of the increase was driven by pairs which traded both ways in 1970. We nuance this finding by showing that since the mid-1990s new reciprocal trade relationships did contribute strongly to the growth of world trade. Fig.\ref{fig:reciprocal} illustrates that while more than 70\% (resp. 80\%) of world trade in 1990 is attributable to pairs that traded both ways in 1962 (resp. 1965), less than 40\% (resp. 50\%) is still attributable to such pairs in 2013.   
+
+We document that these new trade relationships were formed between countries trading both ways. To illustrate, Fig.\ref{fig:reciprocal} also shows the share of total trade attributable to pairs which trade both ways in a given year (in black). Since the 1990s more than 95\% of total annual trade takes place between pairs which trade both ways. One-way trade flows represent a marginal and decreasing share of world trade. The greater frequency of one-way trade relationships observed in the early years of the sample may be in part attributable to the fact that the number of countries reporting trade to COMTRADE was initially relatively small. Consequently, reported zeros may be at least in part statistical zeros, i.e. non-zero trade flows reported as zeros due to missing reports to COMTRADE. 
+
+%list of countries updated for 1962-2013 (minor breaches of alphabetic order b/c naming conventions change between latest and previous samples)
+\begin{table}
+\caption {List of countries in the full and superbalanced samples \label{tab:list1}} 
+\begin{tabular}{|l|c|l|c|l|c|}
+\hline
+{\bf Country name} & {\bf Status} & {\bf Country name} & {\bf Status} & {\bf Country name} & {\bf Status } \\
+\hline
+Afghanistan &  {\it R;P} & French Polynesia &  {\it R;P} & N. Mariana Islands &          P \\
+
+   Albania &  {\it R;P} & French S. Antartic terr. &          P &     Norway &  {\it R;P} \\
+
+   Algeria &  {\it R;P} &      Gabon &  {\it R;P} &       Oman &  {\it R;P} \\
+
+   Andorra &  {\it R;P} &     Gambia &  {\it R;P} &   Pakistan &  {\it R;P} \\
+
+    Angola &  {\it R;P} &    Georgia &  {\it R;P} &      Palau &          P \\
+
+  Anguilla &  {\it R;P} &   \bf Germany &  {\bf R;P;S} &     Panama (Fm Panama Cz) &  {\it R;P} \\
+
+Antigua-Barbuda &  {\it R;P} &     Ghana &  {\it R;P} & Papua New Guinea &  {\it R;P} \\
+
+ \bf Argentina &  {\bf R;P;S} &  Gibraltar &          P &  \bf Paraguay &  {\bf R;P;S} \\
+
+   Armenia &  {\it R;P} &  \bf Greece &  {\bf R;P;S} &       Peru &  {\it R;P} \\
+
+     Aruba &  {\it R;P} &  Greenland &  {\it R;P} & \bf Philippines &  {\bf R;P;S} \\
+
+ Australia &  { R;P} &    Grenada &  {\it R;P} &   Pitcairn &          P \\
+
+   Austria &  { R;P} & Guadeloupe &  {\it R;P} &     Poland &  {\it R;P} \\
+
+Azerbaijan &  {\it R;P} &  Guatemala &  {\it R;P} &  \bf Portugal &  {\bf R;P;S} \\
+
+   Bahamas &  {\it R;P} &     Guinea &  {\it R;P} &      Qatar &  {\it R;P} \\
+
+   Bahrain &  {\it R;P} & Guinea-Bissau &  {\it R;P} &    Reunion &  {\it R;P} \\
+
+Bangladesh &  {\it R;P} &     Guyana &  {\it R;P} &    Romania &  {\it R;P} \\
+
+  Barbados &  {\it R;P} &      Haiti &  {\it R;P} & Russian Federation &  {\it R;P} \\
+
+   Belarus &  {\it R;P} &   Honduras &  {\it R;P} &     Rwanda &  {\it R;P} \\
+
+  \bf Belgium-Luxembourg &  {\bf R;P;S} & \bf Hong Kong &  {\bf R;P;S} & St. Helena &          P \\
+
+    Belize &  {\it R;P} &    Hungary &  {\it R;P} & St. Kitts and Nevis &  {\it R;P} \\
+
+     Benin &  {\it R;P} &  \bf Iceland &  {\bf R;P;S} &  St. Lucia &  {\it R;P} \\
+
+   Bermuda &  {\it R;P} &      India &  {\it R;P} & St. Vincent-Grenadines &  {\it R;P} \\
+
+    Bhutan &  {\it R;P} &  Indonesia &  {\it R;P} &      Samoa &  {\it R;P} \\
+
+   Bolivia &  {\it R;P} &       Iran &  {\it R;P} & San Marino &          P \\
+
+Bosnia-Herzeg. &  {\it R;P} &       Iraq &  {\it R;P} & Sao Tome-Principe &  {\it R;P} \\
+
+  Botswana &  {\it R;P} &   Ireland &  {R;P} & Saudi Arabia &  {\it R;P} \\
+
+  \bf Brazil &  {\bf R;P;S} &  \bf Israel &  {\bf R;P;S} &    Senegal &  {\it R;P} \\
+
+Br. Virgin Islands &          P &   \bf Italy &  {\bf R;P;S} & Serbia-Montenegro &  {\it R;P} \\
+
+Brunei Darussalam &  {\it R;P} &    Jamaica &  {\it R;P} & Seychelles &  {\it R;P} \\
+
+  Bulgaria &  {\it R;P} &   \bf Japan &  {\bf R;P;S} & Sierra Leone &  {\it R;P} \\
+  
+Burkina Faso &  {\it R;P} &     Jordan &  {\it R;P} & \bf Singapore &  {\bf R;P;S} \\
+
+ Burma (Myanmar)   & {\it R;P}  &  Kazakstan &  {\it R;P} &   Slovakia &  {\it R;P} \\
+
+   Burundi &  {\it R;P} &      Kenya &  {\it R;P} &   Slovenia &  {\it R;P} \\
+  
+  Cambodia &  {\it R;P} &   Kiribati &  {\it R;P} & Solomon Islands &  {\it R;P} \\
+
+  Cameroon &  {\it R;P} &   \bf Korea &  {\bf R;P;S} &    Somalia &  {\it R;P} \\
+
+  \bf Canada &  {\bf R;P;S} & DPR of Korea &          P & South Africa &  {\it R;P} \\
+\hline
+\end{tabular}    
+\end{table}
+
+\begin{table}
+\caption {List of countries in the full and superbalanced samples: Contd. \label{tab:list2}} 
+\begin{tabular}{|l|c|l|c|l|c|}
+\hline
+{\bf Country name} & {\bf Status} & {\bf Country name} & {\bf Status} & {\bf Country name} & {\bf Status } \\
+\hline
+Cape Verde &  {\it R;P} &     Kuwait &  {\it R;P} & Soviet Union &          P \\
+
+Cayman Islands &          P & Kyrgyzstan &  {\it R;P} &   \bf  Spain &  {\bf R;P;S} \\
+
+C.African Republic &  {\it R;P} &    Lao PDR &  {\it R;P} &  Sri Lanka &  {\it R;P} \\
+
+ Chad &  {\it R;P} &     Latvia &  {\it R;P} & St. Pierre and Miquelon &  {\it R;P} \\
+
+   \bf Chile &  {\bf R;P;S} &    Lebanon &  {\it R;P} &      Sudan &  {\it R;P} \\
+   
+ China &  {\it R;P} &    Lesotho &  {\it R;P} &   Suriname &  {\it R;P} \\
+
+Christmas Island &          P &    Liberia &  {\it R;P} &  Swaziland &  {\it R;P} \\
+
+Cocos Islands &          P &      Libya &  {\it R;P} &   \bf Sweden &  {\bf R;P;S} \\
+
+ \bf Colombia &  {\bf R;P;S} &  Lithuania &  {\it R;P} & \bf Switzerland &  {\bf R;P;S} \\
+
+   Comoros &  {\it R;P} & Luxembourg &  {R;P} &      Syria &  {\it R;P} \\
+
+   Congo &  {\it R;P} & Macau (Aomen) &  {\it R;P} &      &  \\
+
+Dem. Rep. of Congo &  {\it R;P} & Macedonia  &  {\it R;P} & Tajikistan &  {\it R;P} \\
+
+Cook Islands &  {\it R;P} & Madagascar &  {\it R;P} &   Tanzania &  {\it R;P} \\
+
+Costa Rica &  {\it R;P} &     Malawi &  {\it R;P} &  \bf Thailand &  {\bf R;P;S} \\
+
+   Croatia &  {\it R;P} &  \bf Malaysia &  {\bf R;P;S} &       Togo &  {\it R;P} \\
+
+      Cuba &  {\it R;P} &   Maldives &  {\it R;P} &    Tokelau &          P \\
+
+    Cyprus &  {\it R;P} &       Mali &  {\it R;P} &      Tonga &  {\it R;P} \\
+
+Czech Republic &  {\it R;P} &      Malta &  {\it R;P} & Trinidad-Tobago &  {\it R;P} \\
+
+Czechoslovakia &  {\it R;P} & Marshall Islands &          P &  \bf Tunisia &  {\bf R;P;S} \\
+
+C\^ote d'Ivoire &  {\it R;P} & Martinique &  {\it R;P} &   \bf Turkey &  {\bf R;P;S} \\
+
+  \bf Denmark &  {\bf R;P;S} & Mauritania &  {\it R;P} & Turkmenistan &  {\it R;P} \\
+
+  Djibouti &  {\it R;P} &  Mauritius &  {\it R;P} & Turks-Caicos Islands &  {\it R;P} \\
+
+  Dominica &  {\it R;P} &   \bf Mexico &  {\bf R;P;S} &     Tuvalu &  {\it R;P} \\
+
+Dominican Republic &  {\it R;P} & Micronesia  &          P &     Uganda &  {\it R;P} \\
+
+East Germany (DDR) &  {R;P} &    Moldova &  {\it R;P} &    Ukraine &  {\it R;P} \\
+
+East Timor &  {\it R;P} &   Mongolia &  {\it R;P} & United Arab Emirates &  {\it R;P} \\
+
+   Ecuador &  {\it R;P} & Montserrat &  {\it R;P} & \bf United Kingdom &  {\bf R;P;S} \\
+
+     Egypt &  {\it R;P} &    Morocco &  {\it R;P} &     \bf  USA &  {\bf R;P;S} \\
+
+El Salvador &  { R;P} & Mozambique &  {\it R;P} &    Uruguay &  {\it R;P} \\
+
+Equatorial Guinea &          P &    Namibia &  {\it R;P} & Uzbekistan &          P \\
+
+   Eritrea &  {\it R;P} &      Nauru &          P &    Vanuatu &  {\it R;P} \\
+
+   Estonia &  {\it R;P} &      Nepal &  {\it R;P} & \bf Venezuela &  {\bf R;P;S} \\
+
+  Ethiopia &  {\it R;P} & Netherland Antilles &  {\it R;P} &  Vietnam (Fm Vietnam Rp) &  {\it R;P} \\
+
+Falkland Islands &          P & \bf Netherlands &  {\bf R;P;S} & Wallis-Futuna &  {\it R;P} \\
+
+ Palestine & {\it R;P}  & New Caledonia &  {\it R;P} & West Germany (FRG) &  {R;P} \\
+
+      Fiji &  {\it R;P} & New Zealand &  {\it R;P} & Western Sahara &          P \\
+
+   Finland &  {R;P} &  Nicaragua &  {\it R;P} &      Yemen &  {\it R;P} \\
+
+\bf  France &  {\bf R;P;S} &      Niger &  {\it R;P} & Yugoslavia (Serbia-Mont.) &  {\it R;P} \\
+
+French Guiana & {\it R;P}  &  Nigeria &  {\it R;P} &     Zambia &  {\it R;P} \\
+
+Niue & P & Norfolk Island  & P &   Zimbabwe &  {\it R;P} \\
+\hline
+\end{tabular}    
+\end{table}
+
+
+\end{document}
+

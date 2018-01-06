@@ -1,0 +1,95 @@
+This is BibTeX, Version 0.99d (TeX Live 2013)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: elast_paper.aux
+The style file: chicago.bst
+Illegal, another \bibstyle command---line 101 of file elast_paper.aux
+ : \bibstyle
+ :          {chicago}
+I'm skipping whatever remains of this command
+Database file #1: Armington_biblio_inbibtex.bib
+Repeated entry---line 159 of file Armington_biblio_inbibtex.bib
+ : @article{Baldwin2011
+ :                     ,
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 276 of file Armington_biblio_inbibtex.bib
+ : 
+ : @incollection{Boldrin1988,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 1165 of file Armington_biblio_inbibtex.bib
+ : 
+ : @article{Greene1994,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 1267 of file Armington_biblio_inbibtex.bib
+ : 
+ : @article{Heston2011,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+I was expecting a `,' or a `}'---line 1725 of file Armington_biblio_inbibtex.bib
+ :    
+ :    author = {Long, Scott J.},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 2067 of file Armington_biblio_inbibtex.bib
+ :    
+ :    %note = {estimations of non-nested and lower-tier nested Armington elasticities for the US},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--page numbers missing in Baldwin2011
+Warning--page numbers missing in Bosquet2014
+Warning--no number and no volume in Chaney2016
+Warning--page numbers missing in Chaney2016
+Warning--no volume for Daudin2003
+Warning--no volume for Daudin2005
+Warning--page numbers missing in ErkelRousseMirza2002
+Warning--page numbers missing in Fally2015
+Warning--can't use both author and editor fields in HeadMayer2014
+Warning--page numbers missing in HeadMayer2014
+Warning--page numbers missing in ManningMullahy1999
+Warning--no volume for Mayer2011
+Warning--page numbers missing in Mayer2011
+Warning--no number and no volume in Noguera2012
+Warning--page numbers missing in Noguera2012
+You've used 37 entries,
+            2861 wiz_defined-function locations,
+            856 strings with 10107 characters,
+and the built_in function-call counts, 24283 in all, are:
+= -- 2037
+> -- 1700
+< -- 2
++ -- 510
+- -- 620
+* -- 2130
+:= -- 4484
+add.period$ -- 111
+call.type$ -- 37
+change.case$ -- 250
+chr.to.int$ -- 37
+cite$ -- 52
+duplicate$ -- 649
+empty$ -- 1502
+format.name$ -- 720
+if$ -- 4465
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 42
+newline$ -- 188
+num.names$ -- 370
+pop$ -- 164
+preamble$ -- 1
+purify$ -- 477
+quote$ -- 0
+skip$ -- 726
+stack$ -- 0
+substring$ -- 1234
+swap$ -- 209
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 690
+warning$ -- 15
+while$ -- 370
+width$ -- 0
+write$ -- 488
+(There were 7 error messages)
