@@ -5,3 +5,7 @@
 /Rédaction/tex/elast_paper-merged.synctex.gz
 /Rédaction/tex/elast_paper-merged.bbl
 /Rédaction/tex/elast_paper-merged.blg
+
+*.fdb_latexmk
+
+*.fls
