@@ -80,6 +80,7 @@ foreach agg of num 5(-1)1 {
 		/*keep iso_o iso_d sitc_agg`agg' uv_`year'*/
 		keep if iso_d=="`pays_dest'"
 		
+		
 		/*Par agrégation, je regarde s'il y a une unit value*/
 		bysort iso_o sitc_agg`agg': egen presence_unit_value=max(uv_`year')
 		replace presence_unit_value=1 if presence_unit_value!=.
@@ -96,7 +97,9 @@ foreach agg of num 5(-1)1 {
 		
 		/*je ne garde que les premières observations de chaque catégorie d'intérêt*/
 		bysort iso_o sitc_agg`agg': keep if _n==1
-		fillin iso_o sitc_agg`agg'
+		
+		fillin iso_o iso_d sitc_agg`agg'
+		
 		
 		/*Je rajoute qqch pour compter le nbr de zéros*/
 		gen pour_compter_`agg' 				= 1
@@ -115,7 +118,8 @@ foreach agg of num 5(-1)1 {
 		*/ pour_compter_sscommerce_`agg' /*
 		*/ (mean) commerce_paire_avec_uv_agg`agg'  /*
 		*/ commerce_paire commerce_destination commerce_origine,	/*
-		*/by(iso_o)
+		*/by(iso_o iso_d)
+		
 		
 		
 		/*Ici, je calcule les rapports*/
@@ -133,7 +137,7 @@ foreach agg of num 5(-1)1 {
 		save "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'", replace
 		display "`pays_dest'" " `year'" " zeros`agg'"
 		restore
-		blif
+		
 	}
 }
 
@@ -143,12 +147,10 @@ foreach agg of numlist 1(1)5 {
 	use "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'.dta", clear
 	generate year = `year'	
 	if `agg'!=1 {
-		merge 1:1 iso_o year  using "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta"
+		merge 1:1 iso_o iso_d year  using "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta"
 		drop _merge
 	}
 	save  "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta", replace
-	blif
-	
 	erase "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'.dta"
 }
 end
