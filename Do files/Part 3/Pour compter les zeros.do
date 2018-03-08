@@ -16,8 +16,19 @@ global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *at ScPo:
 *global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *GD
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
-*cd "$dir\SITC_Rev1_adv_query_2011"
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+	cd "$dir/Data/For Third Part/"
+
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
 
 
 *******************
@@ -43,9 +54,10 @@ args year
 
 
 foreach agg of num 5(-1)1 {
-	use "$dir/Data/For Third Part/prepar_full_`year'", clear
-	vallist iso_d
-	capture erase "$dir/Blouk_`year'_zeros`agg'.dta"
+	use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+	
+	capture erase "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'.dta"
+	
 		
 	/*Pour pouvoir jouer avec plus tard*/
 	/*Identifier les biens de la même agrégation*/
@@ -75,7 +87,7 @@ foreach agg of num 5(-1)1 {
 		/*Puis j'isole le commerce avec unit value*/
 		generate value_`year'_avec_uv_agg`agg'= value_`year'*presence_unit_value
 		
-		/*Je fais la somme du trade avec et uv*/
+		/*Je fais la somme du trade avec uv*/
 		bysort iso_o : egen /*
 		*/ commerce_paire_avec_uv_agg`agg'=total(value_`year'_avec_uv_agg`agg')
 	
@@ -105,6 +117,7 @@ foreach agg of num 5(-1)1 {
 		*/ commerce_paire commerce_destination commerce_origine,	/*
 		*/by(iso_o)
 		
+		
 		/*Ici, je calcule les rapports*/
 		
 		generate /*
@@ -116,25 +129,27 @@ foreach agg of num 5(-1)1 {
 		generate propor_sscommerce_`agg' =/* */pour_compter_sscommerce_`agg'/pour_compter_`agg'
 **propor_sscommerce_`agg' corresponds to nb of imputed obs out of total nb obs per iso_o iso_d
 *this corresponds to zero trade and therefore lacking uv	
-		capture append using "$dir/Blouk_`year'_zeros`agg'"
-		save "$dir/Blouk_`year'_zeros`agg'", replace
+		capture append using "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'"
+		save "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'", replace
 		display "`pays_dest'" " `year'" " zeros`agg'"
 		restore
+		blif
 	}
 }
 
 /*Puis on met ensemble les calculs pour les différents niveaux d'agrégation*/
 
 foreach agg of numlist 1(1)5 {
-	use "$dir/Blouk_`year'_zeros`agg'.dta", clear
+	use "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'.dta", clear
 	generate year = `year'	
 	if `agg'!=1 {
-		merge 1:1 iso_d iso_o year  using "$dir/Nbrdezeros_`year'.dta"
+		merge 1:1 iso_o year  using "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta"
 		drop _merge
 	}
-	save  "$dir/Nbrdezeros_`year'.dta", replace
+	save  "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta", replace
+	blif
 	
-	erase "$dir/Blouk_`year'_zeros`agg'.dta"
+	erase "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'.dta"
 }
 end
 
@@ -143,9 +158,9 @@ end
 foreach year of num 1962(1)2009 {
 	compter_zeros `year'
 	if `year' != 1962 {
-		append using "$dir/Nbrdezeros.dta"
+		append using "$dir/Résultats/Troisième partie/zéros/Nbrdezeros.dta"
 	}
-	save "$dir/Nbrdezeros.dta", replace
+	save "$dir/Résultats/Troisième partie/zéros/Nbrdezeros.dta", replace
 	capture erase 
 }
 
