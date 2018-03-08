@@ -25,9 +25,20 @@ global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *at ScPo:
 *global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *cd "$dir\SITC_Rev1_adv_query_2011"
-*GD
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
-cd "$dir"
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+	cd "$dir/Data_Interm/Third_Part/"
+
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
+
 
 capture log using "logs/`c(current_time)' `c(current_date)'"
 ****************************************************************************************************************************************************************
