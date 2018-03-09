@@ -157,13 +157,15 @@ end
 
 *********************************
 
-foreach year of num 1962(1)2009 {
+foreach year of num 1962(1)2013 {
 	compter_zeros `year'
+	use  "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta", clear
 	if `year' != 1962 {
 		append using "$dir/Résultats/Troisième partie/zéros/Nbrdezeros.dta"
 	}
 	save "$dir/Résultats/Troisième partie/zéros/Nbrdezeros.dta", replace
-	capture erase 
+	erase save  "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta", replace
+	
 }
 
 ************EXEMPLE REGRESSION:
