@@ -164,7 +164,7 @@ foreach year of num 1962(1)2013 {
 		append using "$dir/Résultats/Troisième partie/zéros/Nbrdezeros.dta"
 	}
 	save "$dir/Résultats/Troisième partie/zéros/Nbrdezeros.dta", replace
-	erase save  "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta", replace
+	erase   "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta", replace
 	
 }
 
