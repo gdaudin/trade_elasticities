@@ -1,6 +1,8 @@
+*March 12th, 2018*
+*adjusted to pwt 9.0 and to work on liza's laptop
 *Sept 10th, 2015*
 
-*This file takes PWT data in 8.1 edition of Penn World Tables
+*This file takes PWT data in 9.0 edition of Penn World Tables
 *checks country correspondence to data extracted from UN COMTRADE
 *prepares for each year the set of GDP data: lagged info for 1-2-3 years
 
@@ -10,7 +12,6 @@
 *set directory*
 ****************************************
 set more off
-
 
 
 display "`c(username)'"
@@ -26,8 +27,11 @@ if "`c(hostname)'" =="ECONCES1" {
 	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
 }
 
-
-
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+}
 
 
 
@@ -46,7 +50,7 @@ capture program drop pwtin
 	**one country doesn't match: MNE (Montenegro)
 	
 	if "`c(hostname)'" =="ECONCES1" {
-À MODIFIER		use13 "$dir/EKpaper_data/revision_data_2015/pwt81/pwt81.dta", clear
+*put data*		use "$dir/pwt90/pwt90.dta", clear
 	}
 	
 	
@@ -55,6 +59,10 @@ capture program drop pwtin
 	
 	}
 	
+	if "`c(hostname)'" =="LAmacbook.local" {
+		use "$dir/GUILLAUME_DAUDIN/pwt90/pwt90.dta", clear
+	}	
+
 	replace countrycode="ROM" if countrycode=="ROU"
 	replace countrycode="SER" if countrycode=="SRB"
 	replace countrycode="ZAR" if countrycode=="COD"

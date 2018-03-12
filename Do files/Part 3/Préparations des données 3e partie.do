@@ -52,10 +52,16 @@ foreach pays of local pays_a_tester  {
 
 
 *Why do we not check 1962 here?
-*Also, the directory used does not correspond to anything in laptop: modify?
+*I adjust directory so it also works on liza laptop
 foreach year of numlist 1962(1)2013 {
-*	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
-	use "cepii-4D-`year'.dta", clear
+
+	if strmatch("`c(username)'","*daudin*")==1 {
+		use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
+}
+	if "`c(hostname)'" =="LAmacbook.local" {
+		use "cepii-4D-`year'.dta", clear
+	}
+	
 	foreach pays of local pays_a_tester  {
 		foreach status in d o {
 			capture tabulate iso_`status' if iso_`status'== "`pays'"
@@ -81,9 +87,13 @@ program prepar
 args year
 *eg prepar 1962
 
-*again here I change directory
-*use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
-use "cepii-4D-`year'.dta", clear
+*again here I adjust directory so it also works on liza laptop
+	if strmatch("`c(username)'","*daudin*")==1 {
+		use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
+	}
+	if "`c(hostname)'" =="LAmacbook.local" {
+		use "cepii-4D-`year'.dta", clear
+	}
 assert qty_token!=.
 replace quantity=. if quantity<0 
 replace quantity=. if  quantity==0
@@ -139,9 +149,15 @@ foreach n of local name {
 	rename `n' `n'_`1'
 }
 
-*again here I change directory
-*save "$dir/Data/For Third Part/prepar_cepii_`year'", replace
-save "prepar_cepii_`year'", replace
+*again here I adjust directory so it also works on liza laptop
+if strmatch("`c(username)'","*daudin*")==1 {
+	save "$dir/Data/For Third Part/prepar_cepii_`year'", replace
+}
+
+if "`c(hostname)'" =="LAmacbook.local" {
+	save "prepar_cepii_`year'", replace
+}
+
 clear
 end
 
