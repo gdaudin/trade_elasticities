@@ -1,3 +1,4 @@
+*2018March12: program adjusted to work on LA laptop as well
 *Sept 7 version: program should work on both computers
 
 *June 29th : on se borne à ce qui est dans le cepii (_v2GD)
@@ -21,18 +22,22 @@ if strmatch("`c(username)'","*daudin*")==1 {
 
 }
 
-
+*for KUL server
 if "`c(hostname)'" =="ECONCES1" {
-*	global dir "/Users/liza/Documents/LIZA_WORK"
 	global dir "Y:\ELAST_NONLIN"
 	cd "$dir"
-*	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
 }
 
-
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+}
+*if `"`c(username)'"' == "mm597" cd `"`: env HOME'/Users/liza/Documents/LIZA_WORK/"'
+*else cd `"~/Documents/LIZA_WORK"'
 
 ********************************************************
-*insheet data: 2000-2013
+*insheet data: 1962-2013
 ********************************************************
 *sitcrev1_4dgt_`year'_`id'.txt
 *local year=2000/2013
@@ -86,6 +91,11 @@ if strmatch("`c(username)'","*daudin*")==1 {
 if "`c(hostname)'" =="ECONCES1"  {
 	joinby iso using "Comparaison Wits Cepii.dta", unmatched(none)
 }
+
+if "`c(hostname)'" =="LAmacbook.local" {
+	joinby iso using "Comparaison Wits Cepii.dta", unmatched(none)
+}
+
 replace iso  = "DEU" if iso=="FRG" & year<=1990
 rename cepii cepii_d
 rename iso iso_d
@@ -98,6 +108,11 @@ if strmatch("`c(username)'","*daudin*")==1 {
 if "`c(hostname)'" =="ECONCES1"  {
 	joinby iso using "Comparaison Wits Cepii.dta", unmatched(none)
 }
+
+if "`c(hostname)'" =="LAmacbook.local" {
+	joinby iso using "Comparaison Wits Cepii.dta", unmatched(none)
+}
+
 replace iso = "DEU" if iso=="FRG" & year<=1990
 rename cepii cepii_o
 rename iso iso_o 
@@ -117,6 +132,8 @@ end
 
 
 *crdata 2000
+*keepdatacepii 2000
+
 foreach year of numlist 1962/2013 {
 	crdata `year'
 	keepdatacepii `year'
