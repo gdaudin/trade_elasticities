@@ -46,6 +46,7 @@
 \usepackage{relsize} %newly added package to use command \mathlarger{}
 \usepackage{mathtools} %newly added package to use command \mathrlap{}
 \usepackage{tabularx}
+\usepackage{caption}
 
 \makeatletter
 
@@ -621,7 +622,7 @@ This yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $\footnote{Because
 
 To estimate the market share equation on the COMTRADE dataset we need to tackle the question of missing information on trade flows and unit values (uv).
 
-A first difficulty arises when the trade flow is observed but information on quantities is missing, and it is therefore not possible to compute the unit value. Figure \ref{fig:missing_uv} indicates how often that happens from 1962 to 2013, by level of aggregation. The problem arises for a small share of the total trade value (never more than 25\%).
+A first difficulty arises when the trade flow is observed but information on quantities is missing, and it is therefore not possible to compute the unit value. Figure \ref{fig:missing_uv}, \textit{4'-digit} indicates how often that happens from 1962 to 2013. The problem arises for a small share of the total trade value (never more than 25\%).
 We assume that information on quantities is missing due to imperfections in the data collection procedure, and that bilateral trade flows are observed with a similar degree of precision whether or not quantity has been recorded.
 
 
@@ -629,6 +630,7 @@ We assume that information on quantities is missing due to imperfections in the 
 \caption{Trade with missing unit values}
 \includegraphics[width=1\textwidth]{Graph_missing_uv.pdf}
 \label{fig:missing_uv}
+\caption*{The way to read this graph is : In 1962, 10\% of trade is in a 3-digit bilateral trade category that does not mention at least one unit value}
 \end{figure}
 
 
@@ -639,7 +641,7 @@ To deal with missing uv, we impute prices from similar products using a stepwise
 .
 
 The stepwise price imputation procedure is as follows. The relative price of each source in the destination is constructed at the highest disaggregation level for each product and quantity unit in which the source is active, the \textit{4'-digit} level. We then proceed level by level for aggregation: the relative price of the composite sectoral good of the source is constructed at the 4-digit level using the weighted average relative price observed at the 4'-digit level, with destination-specific weights for each variety of the 4'-digit good the source is active in%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z Given relative prices constructed at the 4-digit level, destination-specific weights are used to aggregate these up to the 3-digit level, and so on until the relative price for the composite good is constructed using relative prices at the 1-digit level. Given relative prices constructed at the 4-digit level, destination-specific weights are used to aggregate these up to the 3-digit level, and so on until the relative price for the composite good is constructed using relative prices at the 1-digit level.
-. If no price is available at the 4-digit level, we move at the 3-digit level, etc. This improves the estimation of prices if one assumes that missing destination-specific relative prices at the 4'-digit can be approximated by the mean observed destination-specific relative price among the corresponding 4-digit group (and similarly at each aggregation level).
+. If no price is available at the 4-digit level, we move at the 3-digit level, etc. As \ref{fig:missing_uv}, that procedure allows reduce considerably the share of trade without unit values. This improves the estimation of prices if one assumes that missing destination-specific relative prices at the 4'-digit can be approximated by the mean observed destination-specific relative price among the corresponding 4-digit group (and similarly at each aggregation level). 
 
 \subsection{ Zero trade flows\label{mark-2.2.}}
 
