@@ -621,9 +621,19 @@ This yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $\footnote{Because
 
 To estimate the market share equation on the COMTRADE dataset we need to tackle the question of missing information on trade flows and unit values (uv).
 
-A first difficulty arises when the trade flow is observed but information on quantities is missing, and it is therefore not possible to compute the unit value. On average, trade flows lacking unit values corresponds to 14\% of total value of trade in 1962-2009, with a gradual decrease from 17\% to 10\% between 1962-2000, and a subsequent increase back to 18\% in 2001-2009.
-In 2001-2006 they reprensent 13-15\% of trade, and about 18\% in 2007-2009.
-We assume that information on quantities is missing due to imperfections in the data collection procedure, and that bilateral trade flows are observed with a similar degree of precision whether or not quantity had been recorded.
+A first difficulty arises when the trade flow is observed but information on quantities is missing, and it is therefore not possible to compute the unit value. Figure \ref{fig:missing_uv} indicates how often that happens from 1962 to 2013, by level of aggregation. The problem arises for a small share of the total trade value (never more than 25\%).
+We assume that information on quantities is missing due to imperfections in the data collection procedure, and that bilateral trade flows are observed with a similar degree of precision whether or not quantity has been recorded.
+
+
+\begin{figure}
+\caption{Trade with missing unit values}
+\includegraphics[width=1\textwidth]{Graph_missing_uv.pdf}
+\label{fig:missing_uv}
+\end{figure}
+
+
+
+
 To deal with missing uv, we impute prices from similar products using a stepwise price imputation procedure
 %Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z Enlev\'{e} :~The weighted average price at a higher aggregation level for this sector and source will be used for the unobserved price. An alternative procedure consists in imputing the relative price observed at the same disaggregation level for another source with a similar market share in this sector and destination. Results are not sensitive to the procedure used. Enlev\'{e} :~The weighted average price at a higher aggregation level for this sector and source will be used for the unobserved price. An alternative procedure consists in imputing the relative price observed at the same disaggregation level for another source with a similar market share in this sector and destination. Results are not sensitive to the procedure used.
 .
@@ -708,8 +718,6 @@ Thus, the hypothesis we make on unobserved sectoral prices in ztf sectors does n
 According the preceding discussion, this is a lower bound on the increase in the underlying substituability parameter. 
 
 \textbf{Figure 7: Estimated $(1-\tilde{\sigma })$ }
-
-
 
 \includegraphics[width=1\textwidth]{image5.emf} 
 
