@@ -67,10 +67,11 @@ capture program drop pwtin
 	replace countrycode="SER" if countrycode=="SRB"
 	replace countrycode="ZAR" if countrycode=="COD"
 	
+	if strmatch("`c(username)'","*daudin*")==1 {
+		cd "$dir/Data_Interm/Third_Part/PWT"
+	}
 	
-	cd "$dir/Data_Interm/Third_Part/PWT"
 	save tmp_pwt90,replace
-	
 	
 	clear
 end
@@ -81,6 +82,11 @@ pwtin
 *******************************************************************************
 capture program drop prepwt
 program prepwt
+	
+	if strmatch("`c(username)'","*daudin*")==1 {
+		cd "$dir/Data_Interm/Third_Part/PWT"
+	}
+	
 	use tmp_pwt90.dta, clear
 	
 	
@@ -100,11 +106,12 @@ program prepwt
 	
 	}
 	
-	
-	
-	
-	
-	
+	if "`c(hostname)'" =="LAmacbook.local" {
+		rename countrycode iso
+		joinby iso using "Comparaison Wits Cepii.dta", unmatched(none)
+		drop iso 
+		rename cepii iso_o
+	}
 	
 	*keep relevant variables: price level of exports, price level of domestic absorption; price level of domestic output, price level of investment, price level of capital stock
 	keep iso_o year pl_x pl_da pl_gdpo pl_i pl_k
@@ -150,6 +157,7 @@ program prepwt
 		save tmp_pwt90_`year', replace
 	}
 	erase tmp_pwt90.dta
+clear
 end
 prepwt
 *EX: tmp_pwt90_1965.dta contains price levels for 1965 rel. 1964-1962: x, gdp, da, i, k
