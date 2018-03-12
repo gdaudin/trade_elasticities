@@ -24,13 +24,17 @@ if strmatch("`c(username)'","*daudin*")==1 {
 
 }
 
-
+*for KUL server
 if "`c(hostname)'" =="ECONCES1" {
 	global dir "/Users/liza/Documents/LIZA_WORK"
 	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data"
 }
 
-
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+}
 
 
 *****Test pour les noms de pays
@@ -47,9 +51,17 @@ foreach pays of local pays_a_tester  {
 
 
 
+*Why do we not check 1962 here?
+*I adjust directory so it also works on liza laptop
+foreach year of numlist 1962(1)2013 {
 
-foreach year of numlist 1963(1)2013 {
-	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
+	if strmatch("`c(username)'","*daudin*")==1 {
+		use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
+}
+	if "`c(hostname)'" =="LAmacbook.local" {
+		use "cepii-4D-`year'.dta", clear
+	}
+	
 	foreach pays of local pays_a_tester  {
 		foreach status in d o {
 			capture tabulate iso_`status' if iso_`status'== "`pays'"
@@ -65,7 +77,7 @@ foreach pays of local pays_a_tester  {
 	}
 }
 
-
+clear
 
 
 **first I pre-prepare data files keeping for each year the data I will need
@@ -75,9 +87,13 @@ program prepar
 args year
 *eg prepar 1962
 
-
-use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
-
+*again here I adjust directory so it also works on liza laptop
+	if strmatch("`c(username)'","*daudin*")==1 {
+		use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`year'.dta", clear
+	}
+	if "`c(hostname)'" =="LAmacbook.local" {
+		use "cepii-4D-`year'.dta", clear
+	}
 assert qty_token!=.
 replace quantity=. if quantity<0 
 replace quantity=. if  quantity==0
@@ -133,8 +149,15 @@ foreach n of local name {
 	rename `n' `n'_`1'
 }
 
+*again here I adjust directory so it also works on liza laptop
+if strmatch("`c(username)'","*daudin*")==1 {
+	save "$dir/Data/For Third Part/prepar_cepii_`year'", replace
+}
 
-save "$dir/Data/For Third Part/prepar_cepii_`year'", replace
+if "`c(hostname)'" =="LAmacbook.local" {
+	save "prepar_cepii_`year'", replace
+}
+
 clear
 end
 

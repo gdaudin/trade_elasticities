@@ -1,3 +1,6 @@
+*March 12th, 2018*
+*adjusted to work with pwt 9.0 data and on liza laptop
+
 *Sept 10th, 2015*
 
 *This file combines unit value data with lagged unit values and info on price level changes from PWT 8.1
@@ -22,7 +25,11 @@ if "`c(hostname)'" =="ECONCES1" {
 	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
 }
 
-
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+}
 
 *****Test pour les BLX, BEL, LUX, FRG, DEU, SER, YUG
 
@@ -35,8 +42,8 @@ foreach pays of local pays_a_tester  {
 	}
 }
 
-
-foreach year of numlist 1963(1)2013 {
+*start from 1962
+foreach year of numlist 1962(1)2013 {
 	use prepar_cepii_`year', clear
 	foreach pays of local pays_a_tester  {
 		foreach status in d o {
@@ -129,7 +136,7 @@ end
 capture program drop prep_instr
 program prep_instr
 args year
-*group data by 3-year period: lagged prices
+*group data by 3-year period: lagged prices (1965-2013)
 use temp_`year', clear
 save temp_mod_`year', replace
 local i=`year'-3
@@ -148,10 +155,10 @@ foreach t of numlist `i'/`j' {
 	save temp_mod_`year', replace
 }
 use temp_mod_`year', clear
-joinby iso_o year using tmp_pwt81_`year', unmatched(master)
+joinby iso_o year using tmp_pwt90_`year', unmatched(master)
 drop _merge
 save temp_mod_`year', replace
-erase tmp_pwt81_`year'.dta
+erase tmp_pwt90_`year'.dta
 erase temp_`i'.dta
 clear
 end
@@ -164,8 +171,10 @@ end
 capture program drop coef_instr
 program coef_instr
 args year instr
-*years: 1965-2011
+*years: 1965-2013
 *instr: gdpo i k 
+local year 1965
+local instr gdpo
 use temp_mod_`year', clear
 *clean data: restrict to dest-product groups where at least 5 suppliers observed \& to dest where at least 50 products observed
 bysort iso_d prod_unit: gen nb_obs=_N
@@ -188,18 +197,23 @@ local j=`year'-1
 local iprime=`year'-2
 foreach t of numlist `i'/`j' {
 	gen double ln_uv_`t'=ln(uv_presente_`t')
-	gen double ln_`instr'_`t'=ln(rel_`instr'_`t')
 }
+rename ln_uv_`i' ln_uv_lag_3
+rename ln_uv_`iprime' ln_uv_lag_2
+rename ln_uv_`j' ln_uv_lag_1
 
+foreach y of numlist 1/3 {
+	gen double ln_`instr'_lag_`y'=ln(rel_`instr'_lag_`y')
+}
 *add info on one lag or two lag exporter price level for specifications in which two lags are used
 *reformulate as per year changes:
-gen double ln_`instr'_lag1=ln(rel_`instr'_`iprime'/rel_`instr'_`j')
-gen double ln_`instr'_lag2=ln(rel_`instr'_`i'/rel_`instr'_`iprime')
+gen double ln_`instr'_lag1=ln(rel_`instr'_lag_2/rel_`instr'_lag_1)
+gen double ln_`instr'_lag2=ln(rel_`instr'_lag_3/rel_`instr'_lag_2)
 *drop if iso_o=="USA"
 **run simple lag specifications and store coefs and std errors: uv and instr in some year
 local k 3
-foreach t of numlist `i'/`j' {
-	xi: areg ln_uv I.iso_d ln_uv_`t' ln_`instr'_`t', absorb(prod_unit) cluster(iso_o)
+foreach t of numlist 1/3 {
+	xi: areg ln_uv I.iso_d ln_uv_lag_`t' ln_`instr'_lag_`t', absorb(prod_unit) cluster(iso_o)
 	preserve
 	keep if _n==1
 	keep year
@@ -212,8 +226,8 @@ foreach t of numlist `i'/`j' {
 	gen rsq = rsq
 	local var ln_uv ln_`instr'
 	foreach v of local var {
-		capture generate double coef_`v'=_b[`v'_`t']
-		capture generate double se_`v'=_se[`v'_`t']
+		capture generate double coef_`v'=_b[`v'_lag_`t']
+		capture generate double se_`v'=_se[`v'_lag_`t']
 	}
 	*keep info on price level used:
 	gen instr="`instr'"
@@ -227,7 +241,7 @@ foreach t of numlist `i'/`j' {
 	local k=`k'-1
 }
 **run combined lag specifications (first and second lag) and store coefs and std errors: uv and instr in two years
-xi: areg ln_uv I.iso_d ln_uv_`j' ln_uv_`iprime' ln_`instr'_`j' ln_`instr'_lag1, absorb(prod_unit) cluster(iso_o)
+xi: areg ln_uv I.iso_d ln_uv_lag_1 ln_uv_lag_2 ln_`instr'_lag_1 ln_`instr'_lag1, absorb(prod_unit) cluster(iso_o)
 preserve
 keep if _n==1
 keep year
@@ -240,13 +254,13 @@ gen obs = obs
 gen rsq = rsq
 local var ln_uv 
 foreach v of local var {
-	capture generate double coef_`v'_year1=_b[`v'_`j']
-	capture generate double se_`v'_year1=_se[`v'_`j']
-	capture generate double coef_`v'_year2=_b[`v'_`iprime']
-	capture generate double se_`v'_year2=_se[`v'_`iprime']
+	capture generate double coef_`v'_year1=_b[`v'_lag_1]
+	capture generate double se_`v'_year1=_se[`v'_lag_1]
+	capture generate double coef_`v'_year2=_b[`v'_lag_2]
+	capture generate double se_`v'_year2=_se[`v'_lag_2]
 }
-capture generate double coef_ln_`instr'_year1=_b[ln_`instr'_`j']
-capture generate double se_ln_`instr'_year1=_se[ln_`instr'_`j']
+capture generate double coef_ln_`instr'_year1=_b[ln_`instr'_lag_1]
+capture generate double se_ln_`instr'_year1=_se[ln_`instr'_lag_1]
 capture generate double coef_ln_`instr'_year2=_b[ln_`instr'_lag1]
 capture generate double se_ln_`instr'_year2=_se[ln_`instr'_lag1]
 *keep info on price level used:
@@ -343,29 +357,35 @@ end
 
 
 
-
-
+*market share file with cropped uv constructed for each year
 foreach n of numlist 1962/2013 {
 	calc_ms `n'
 }
 
-foreach n of numlist 2004/2011 {
+*market share file with lagged uv and 3-year lag is constructed in each year between 1965/2013
+foreach n of numlist 1965/2013 {
 	prep_instr `n'
 }
 
-foreach year of numlist 2009/2013 {
-	erase temp_`year'.dta
-}
-
-
-
-local instr gdpo i k
+*only run on gdpo (not i or k)
+*local instr gdpo i k
+local instr gdpo
 foreach i of local instr {
-	foreach n of numlist 1965/2011 {
+	foreach n of numlist 1965/2013 {
 		coef_instr `n' `i'
 	}
 }
 
 
+foreach year of numlist 1965/2013 {
+	erase temp_mod_`year'.dta
+}
 
+*view results (coefs on instruments)
+*only run on gdpo (not i or k)
+*local instr gdpo i k
+local instr gdpo
+foreach i of local instr {
+		vres `i'
+}
 
