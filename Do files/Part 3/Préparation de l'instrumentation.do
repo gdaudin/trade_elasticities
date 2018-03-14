@@ -173,8 +173,6 @@ program coef_instr
 args year instr
 *years: 1965-2013
 *instr: gdpo i k 
-local year 1965
-local instr gdpo
 use temp_mod_`year', clear
 *clean data: restrict to dest-product groups where at least 5 suppliers observed \& to dest where at least 50 products observed
 bysort iso_d prod_unit: gen nb_obs=_N
@@ -273,7 +271,7 @@ capture append using instr_coef_`instr'_combined
 save instr_coef_`instr'_combined, replace
 restore
 **run combined lag specifications (second and third lag) and store coefs and std errors: uv and instr in two years
-xi: areg ln_uv I.iso_d ln_uv_`iprime' ln_uv_`i' ln_`instr'_`iprime' ln_`instr'_lag2, absorb(prod_unit) cluster(iso_o)
+xi: areg ln_uv I.iso_d ln_uv_lag_2 ln_uv_lag_3 ln_`instr'_lag_2 ln_`instr'_lag2, absorb(prod_unit) cluster(iso_o)
 keep if _n==1
 keep year
 *keep info on which lags these are
@@ -285,13 +283,13 @@ gen obs = obs
 gen rsq = rsq
 local var ln_uv 
 foreach v of local var {
-	capture generate double coef_`v'_year1=_b[`v'_`iprime']
-	capture generate double se_`v'_year1=_se[`v'_`iprime']
-	capture generate double coef_`v'_year2=_b[`v'_`i']
-	capture generate double se_`v'_year2=_se[`v'_`i']
+	capture generate double coef_`v'_year1=_b[`v'_lag_2]
+	capture generate double se_`v'_year1=_se[`v'_lag_2]
+	capture generate double coef_`v'_year2=_b[`v'_lag_3]
+	capture generate double se_`v'_year2=_se[`v'_lag_3]
 }
-capture generate double coef_ln_`instr'_year1=_b[ln_`instr'_`iprime']
-capture generate double se_ln_`instr'_year1=_se[ln_`instr'_`iprime']
+capture generate double coef_ln_`instr'_year1=_b[ln_`instr'_lag_2]
+capture generate double se_ln_`instr'_year1=_se[ln_`instr'_lag_2]
 capture generate double coef_ln_`instr'_year2=_b[ln_`instr'_lag2]
 capture generate double se_ln_`instr'_year2=_se[ln_`instr'_lag2]
 *keep info on price level used:
@@ -316,11 +314,12 @@ capture program drop vres
 program vres
 args instr 
 *instr: gdpo i k
+*local instr gdpo
 use instr_coef_`instr'_baseline, clear
 graph twoway (scatter coef_ln_uv se_ln_uv year if lag_nbr==1) (scatter coef_ln_uv se_ln_uv year if lag_nbr==2) (scatter coef_ln_uv se_ln_uv year if lag_nbr==3)
 *coef on lagged uv very stable: with more lags; over whole sample
+*coef on lagged gdpo (idem for each lag) not stable: first positive, then all over the place (positive, negative)
 graph twoway (scatter coef_ln_`instr' se_ln_`instr' year if lag_nbr==1), legend(label(1 "coef 1 lag") label(2 "se 1 lag")) 
-local instr k
 graph twoway (scatter coef_ln_`instr' se_ln_`instr' year if lag_nbr==2) (scatter coef_ln_`instr' se_ln_`instr' year if lag_nbr==3), legend(label(1 "coef 2 lag") label(2 "se 2 lag") label(3 "coef 3 lag") label(4 "se 3 lag")) 
 **baseline:
 *gdpo: coef 2d and 3d lag significant positive before 1990s; negative when significant after 1990s
@@ -334,18 +333,16 @@ graph twoway (scatter coef_ln_uv_year1 se_ln_uv_year1 year if gap==1, msymbol(sm
 graph twoway (scatter coef_ln_uv_year1 se_ln_uv_year1 year if gap==2, msymbol(smcircle plus)) (scatter coef_ln_uv_year2 se_ln_uv_year2 year if gap==2, msymbol(smcircle plus)) 
 *coef on lagged uv very stable: with more lags; over whole sample
 **price level instrument:
-local instr k
 graph twoway (scatter coef_ln_`instr'_year1 se_ln_`instr'_year1 year if gap==1, msymbol(smcircle plus)) (scatter coef_ln_`instr'_year2 se_ln_`instr'_year2 year if gap==1, msymbol(smcircle plus)), legend(label(1 "coef 1 lag") label(2 "se 1 lag") label(3 "coef 2 lag") label(4 "se 2 lag")) 
-local instr k
 graph twoway (scatter coef_ln_`instr'_year1 se_ln_`instr'_year1 year if gap==2, msymbol(smcircle plus)) (scatter coef_ln_`instr'_year2 se_ln_`instr'_year2 year if gap==2, msymbol(smcircle plus)), legend(label(1 "coef 2 lag") label(2 "se 2 lag") label(3 "coef 3 lag") label(4 "se 4 lag")) 
 *combined: gdpo works for 2d and 3d lag in 1970-1988 (pos, sign) but then tends to flip sign (sometimes pos; sometimes neg)
 *combined: i, k: works for 2d and 3d lag until (roughly) 2000s, then flips sign
 end
 
-**bottom line: lagged uv strongly positively linked to current uv (cost or unobserved quality?)
-*doesn't alleviate pb of unobserved quality?
-*price level instrument is often imprecisely estimated (b/c std errors are clustered by iso_o: otherwise enormous t-stat on lagged uv)
-*important: price level flips sign from before to after 1990s...
+*ISSUES with instrumenting
+*ok*lagged uv strongly positively linked to current uv but t-stat enormous unless std errors clustered by iso_o
+*however* price level instrument (gdpo,i,k) imprecisely estimated when std errors are clustered, and it also changes sign 
+*also* coef on price level instrument flips sign from before to after 1990s...
 
 
 *NOTES:
