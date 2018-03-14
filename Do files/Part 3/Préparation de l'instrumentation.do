@@ -364,6 +364,14 @@ foreach n of numlist 1965/2013 {
 	prep_instr `n'
 }
 
+*erase temporary files left after preparatory step
+foreach n of numlist 2011/2013 {
+	erase temp_`n'.dta
+}
+capture erase tmp_pwt90_1963.dta
+capture erase tmp_pwt90_1964.dta
+capture erase tmp_pwt90_2014.dta
+
 *only run on gdpo (not i or k)
 *local instr gdpo i k
 local instr gdpo
