@@ -1,3 +1,6 @@
+*March 19th, 2018*
+*adjusted to work on liza laptop
+
 *Sept 10th, 2015*
 
 *This file combines unit value data with lagged unit values and info on price level changes from PWT
@@ -20,6 +23,12 @@ if strmatch("`c(username)'","*daudin*")==1 {
 if "`c(hostname)'" =="ECONCES1" {
 	global dir "/Users/liza/Documents/LIZA_WORK"
 	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
+
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 }
 
 /*
@@ -62,7 +71,12 @@ foreach pays of local pays_a_tester  {
 capture program drop calc_ms
 program calc_ms
 	args year
-	use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+	if strmatch("`c(username)'","*daudin*")==1 {
+		use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+	}
+	if "`c(hostname)'" =="LAmacbook.local" {
+		use prepar_cepii_`year', clear
+	}
 	
 	replace iso_o="BEL" if iso_o=="BLX"
 	*En effet, BEL et LUX commencent en 1999 dans WITS : c'est toujours BLX avant
