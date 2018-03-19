@@ -158,7 +158,7 @@ use temp_mod_`year', clear
 joinby iso_o year using tmp_pwt90_`year', unmatched(master)
 drop _merge
 save temp_mod_`year', replace
-erase tmp_pwt90_`year'.dta
+*erase tmp_pwt90_`year'.dta
 erase temp_`i'.dta
 clear
 end
@@ -368,9 +368,6 @@ foreach n of numlist 1965/2013 {
 foreach n of numlist 2011/2013 {
 	erase temp_`n'.dta
 }
-capture erase tmp_pwt90_1963.dta
-capture erase tmp_pwt90_1964.dta
-capture erase tmp_pwt90_2014.dta
 
 *only run on gdpo (not i or k)
 *local instr gdpo i k
