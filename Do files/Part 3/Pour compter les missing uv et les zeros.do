@@ -98,7 +98,20 @@ foreach agg of num 5(-1)1 {
 		/*je ne garde que les premières observations de chaque catégorie d'intérêt*/
 		bysort iso_o sitc_agg`agg': keep if _n==1
 		
+		describe
+		
 		fillin iso_o iso_d sitc_agg`agg'
+		
+		
+		fillin iso_o iso_d sitc_agg`agg'
+		
+		tab _fillin
+		
+		describe 
+		
+		blif
+		
+		
 		
 		
 		/*Je rajoute qqch pour compter le nbr de zéros*/
@@ -113,12 +126,18 @@ foreach agg of num 5(-1)1 {
 *this corresponds logically to nb of obs where _fillin==1
 *why not compute nb imputed simply from _fillin stats by iso_o?
 		
+		
+	
+		
+		
 		/*Puis je collapse pour calculer le nombre d'observations et de zéros*/
 		collapse (sum) pour_compter_`agg' pour_compter_ssuv_`agg' /*
 		*/ pour_compter_sscommerce_`agg' /*
 		*/ (mean) commerce_paire_avec_uv_agg`agg'  /*
 		*/ commerce_paire commerce_destination commerce_origine,	/*
 		*/by(iso_o iso_d)
+		
+		
 		
 		
 		
@@ -131,6 +150,7 @@ foreach agg of num 5(-1)1 {
 **propor_ssuv_`agg' corresponds to nb of obs with lacking uv out of total nb obs per iso_o iso_d
 *this also includes non-zero trade per pair where uv is lacking
 		generate propor_sscommerce_`agg' =/* */pour_compter_sscommerce_`agg'/pour_compter_`agg'
+		label var propor_sscommerce_`agg' "share of ztf"
 **propor_sscommerce_`agg' corresponds to nb of imputed obs out of total nb obs per iso_o iso_d
 *this corresponds to zero trade and therefore lacking uv	
 		capture append using "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'"
