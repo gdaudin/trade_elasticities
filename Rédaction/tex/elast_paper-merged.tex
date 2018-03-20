@@ -641,7 +641,7 @@ To deal with missing uv, we impute prices from similar products using a stepwise
 .
 
 The stepwise price imputation procedure is as follows. The relative price of each source in the destination is constructed at the highest disaggregation level for each product and quantity unit in which the source is active, the \textit{4'-digit} level. We then proceed level by level for aggregation: the relative price of the composite sectoral good of the source is constructed at the 4-digit level using the weighted average relative price observed at the 4'-digit level, with destination-specific weights for each variety of the 4'-digit good the source is active in%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z Given relative prices constructed at the 4-digit level, destination-specific weights are used to aggregate these up to the 3-digit level, and so on until the relative price for the composite good is constructed using relative prices at the 1-digit level. Given relative prices constructed at the 4-digit level, destination-specific weights are used to aggregate these up to the 3-digit level, and so on until the relative price for the composite good is constructed using relative prices at the 1-digit level.
-. If no price is available at the 4-digit level, we move at the 3-digit level, etc. As \ref{fig:missing_uv}, that procedure allows reduce considerably the share of trade without unit values. This improves the estimation of prices if one assumes that missing destination-specific relative prices at the 4'-digit can be approximated by the mean observed destination-specific relative price among the corresponding 4-digit group (and similarly at each aggregation level). 
+. If no price is available at the 4-digit level, we move at the 3-digit level, etc. As Figure \ref{fig:missing_uv} shows, that procedure allows to reduce considerably the share of trade without unit values. This improves the estimation of prices if one assumes that missing destination-specific relative prices at the 4'-digit can be approximated by the mean observed destination-specific relative price among the corresponding 4-digit group (and similarly at each aggregation level). 
 
 \subsection{ Zero trade flows\label{mark-2.2.}}
 
@@ -650,7 +650,7 @@ Zero trade flows (ztf) are a prevalent feature of the data even though under mod
 We assume that this information is missing because the underlying trade flow is positive but so small that it does not pass the threshold applied by the data collecting authorities (in UN COMTRADE this threshold corresponds to 1000 USD). Such flows, if recorded, would not substantially modify the distribution of observed market shares in the destination (the left hand side of equation {\ref{eqn:nlestimation}) because they are an order of magnitude smaller than observed trade.
 
 We use the same stepwise price imputation for zero trade flows as in the case of missing unit values. This is problematic because statistically unobserved trade values logically correspond to a higher cif price than the maximum observed price in the destination across all sources and sectors while by construction we postulate that unobserved relative prices in ztf sectors are equal to a weighted average relative price across sectors in which trade is observed.
-\footnote{An alternative method consists in imputing unobserved relative prices with some arbitrary price above the maximum observed in the destination. As ztf constitute 85-90\% of all 4-digit trade flows, this method is problematic because results are driven by imputed rather than effectively observed prices.
+\footnote{An alternative method consists in imputing unobserved relative prices with some arbitrary price above the maximum observed in the destination. As ztf constitute 85-90\% of all 4-digit trade flows, this method is problematic because results are driven by imputed rather than observed prices.
 }
 
 This assumption would not bias our estimate if the underestimation factor were constant across exporters. This scalar would cancel out across sources, and the estimated substitutability parameter would correspond to the true parameter. {\hyperref[ref-005]{Table 2}} shows it is not the case. The share of ztf is strongly decreasing in market share, i.e. the underestimation factor is larger for small exporters (though they already have higher prices). As a result, for a given observed distribution of market shares, the underlying dispersion in relative prices of the composite good is greater than the observed dispersion in relative prices. This means that the estimated parameter $(1-\tilde{\sigma })$ overestimates the true substitutability parameter $\sigma$.
@@ -721,7 +721,7 @@ According the preceding discussion, this is a lower bound on the increase in the
 
 \textbf{Figure 7: Estimated $(1-\tilde{\sigma })$ }
 
-\includegraphics[width=1\textwidth]{image5.emf} 
+\includegraphics[width=1\textwidth]{image5.png} 
 
 \subsection{Robustness checks\label{mark-2.3.}}
 
