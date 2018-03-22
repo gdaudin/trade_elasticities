@@ -661,32 +661,10 @@ This assumption would not bias our estimate if the underestimation factor were c
  
 CETTE TABLE EST À VÉRIFIER / REPRODUIRE POUR LA BONNE PÉRIODE.
 
-\textbf{ \label{ref-005}Table 2: Proportion of zero trade flows as a function of market share}
-\begin{table}
-\begin{tabularx}{\textwidth}{
-p{\dimexpr 0.15\linewidth-2\tabcolsep}
-p{\dimexpr 0.2\linewidth-2\tabcolsep}
-p{\dimexpr 0.2\linewidth-2\tabcolsep}
-p{\dimexpr 0.03\linewidth-2\tabcolsep}
-p{\dimexpr 0.2\linewidth-2\tabcolsep}
-p{\dimexpr 0.2\linewidth-2\tabcolsep}
-p{\dimexpr 0.01\linewidth-2\tabcolsep}}
-\multicolumn{7}{l}{ depvar: Share of ZTF} \\
- & (1) & (2) & & (3) & \multicolumn{2}{l}{(4)} \\
- & & & & & \multicolumn{2}{l}{} \\
-ms & -0.0401\textbf{***} & -0.2446\textbf{***} & & -0.0427\textbf{***} & \multicolumn{2}{l}{-0.2573\textbf{***}} \\
- & (0.0001) & (0.0134) & & (0.0001) & \multicolumn{2}{l}{(0.013)} \\
-year & -0.0029\textbf{***} & -0.0020\textbf{***} & & -0.0033\textbf{***} & \multicolumn{2}{l}{-0.0024\textbf{***}} \\
- & (0.0000) & (0.0001) & & (0.0000) & \multicolumn{2}{l}{(0.000)} \\
-\textit{ms}*\textit{year} & & 0.0001\textbf{***} & & & \multicolumn{2}{l}{0.0001\textbf{***}} \\
- & & (0.0000) & & & \multicolumn{2}{l}{(0.000)} \\
-constant & 5.3474\textbf{***} & 3.5852\textbf{***} & & 6.0976\textbf{***} & \multicolumn{2}{l}{4.2515\textbf{***}} \\
- & (0.0335) & (0.1372) & & (0.0366) & \multicolumn{2}{l}{(0.134)} \\
- & & & & \multicolumn{3}{l}{} \\
-Destination FE & NO & NO & & YES & \multicolumn{2}{l}{YES} \\
-Observations & 657001 & 657001 & & 657001 & \multicolumn{2}{l}{657001} \\
 
-\end{tabularx}
+\begin{table}
+\textbf{ \label{ref-005}Table 2: Proportion of zero trade flows as a function of market share}
+\input{ztfpois_5digit.tex}
 
 \end{table}
 
@@ -696,20 +674,10 @@ Notes: The share of ZTF is computed at the SITC 4-digit level. The estimation is
 
 \textbf{Table 3: Predicted share of ztf for exporters with different market share, 4-digit level \label{ref-006}}
 
-\begin{table}
-\begin{tabularx}{\textwidth}{
-p{\dimexpr 0.22\linewidth-2\tabcolsep}
-p{\dimexpr 0.19\linewidth-2\tabcolsep}
-p{\dimexpr 0.19\linewidth-2\tabcolsep}
-p{\dimexpr 0.19\linewidth-2\tabcolsep}
-p{\dimexpr 0.22\linewidth-2\tabcolsep}}
-year & ms=0.02\% & ms=1\% & ms=10\% & ms=28.7\% \\
-1962 & 0.95 & 0.80 & 0.72 & 0.69 \\
-2009 & 0.83 & 0.71 & 0.65 & 0.62 \\
 
-\end{tabularx}
 
-\end{table}
+\input{zdesc5.tex}
+
 
 Columns (1) and (4) correspond to the mean and to 2 st. deviations above the mean in the distribution of log market share. Columns (2) and (3) correspond to the mean and to 2 st. deviations above the mean in the distribution of market share. 
 

@@ -8,6 +8,10 @@
 **the ms variable should be correct while i am no longer certain that the proportion of zeros variable is
 **so I construct it from what I think I understand about variables in the data
 
+/* Les zéros "missing trade" viennent de tous petits marchés qui n'importent que un seul produit ou d'un seul partenaire.
+Voir ANT (Antilles Hollandaises) en 1962
+*/
+
 set mem 500M
 set matsize 800
 set more off
@@ -24,6 +28,7 @@ set more off
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+	global dirgit "$dir/Git/trade_elasticities"
 	cd "$dir/Résultats/Troisième partie/zéros"
 
 }
@@ -97,19 +102,24 @@ gen interaction=ln_ms*year
 *gen ln_ztfshare_`1'=ln(propor_ssuv_`1')
 poisson propor_ssuv_`1' ln_ms year, robust 
 estimates store Basic`1'
-outreg2 ln_ms year using ztfpois_`1'digit, addnote(The proportion of zeros is computed at the SITC `1'-digit level.) title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) replace
+outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", addnote(The proportion of zeros is computed at the SITC `1'-digit level.) title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) replace
 poisson propor_ssuv_`1' ln_ms year interaction, robust 
 estimates store Binter`1'
-outreg2 ln_ms year interaction using ztfpois_`1'digit, title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) append 
+outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) append 
 *outreg2 ln_ms year interaction using ztfpois_corr`1', addnote(The proportion of zeros is computed at the SITC `1'-digit level.) title("Proportion of zeros as a function of market share") tex(frag) bdec(4) replace
 **with destination fixed effects
 keep iso_d iso_o propor_ssuv_`1' ln_ms year interaction
 xi: poisson propor_ssuv_`1' ln_ms year I.iso_d, robust 
 estimates store Fixed`1'
-outreg2 ln_ms year using ztfpois_`1'digit, title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) append 
+outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
+			title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) append ///
+			drop (*iso_d*)
 xi: poisson propor_ssuv_`1' ln_ms year interaction I.iso_d, robust 
 estimates store Feinter`1'
-outreg2 ln_ms year interaction using ztfpois_`1'digit, addnote(The proportion of zeros is computed at the SITC `1'-digit level.) title("Proportion of zeros as a function of market share") tex(frag) bdec(4) append 
+outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
+			addnote(The proportion of zeros is computed at the SITC `1'-digit level.) ///
+			title("Proportion of zeros as a function of market share") tex(frag) bdec(4) append  ///
+			drop (*iso_d*)
 *outreg2 ln_ms year interaction [Basic Binter Fixed Feinter] using ztfpois_`1'digit, addtext(Destination FE, YES) addnote(The proportion of zeros is computed at the SITC `1'-digit level, estimation in poisson.) title("Proportion of zeros at the 4-digit level") tex(frag) bdec(4) replace
 
 ***Compute predicted evolution of proportion of zero trade flows for exporters with different ms
@@ -160,8 +170,8 @@ zdescpois 5
 
 **outsheet tables of predicted ztf in .tex format
 use zdescpois5, clear
-mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc4) 
-outtable using zdesc5, mat(zdesc5) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) caption("Predicted share of ztf for exporters with different market share, 4'-digit level") center
+mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc5) 
+outtable using "$dirgit/Rédaction/tex/zdesc5", mat(zdesc5) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) caption("Predicted share of ztf for exporters with different market share, 4'-digit level") center
 /*
 use zdescpois1, clear
 mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc1) 
