@@ -52,7 +52,7 @@ args year
 
 
 
-
+*foreach agg of num 5 {
 foreach agg of num 5(-1)1 {
 	use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
 	
@@ -158,10 +158,11 @@ foreach agg of num 5(-1)1 {
 
 /*Puis on met ensemble les calculs pour les différents niveaux d'agrégation*/
 
-foreach agg of numlist 1(1)5 {
+*foreach agg of num 5 {
+foreach agg of numlist 5(-1)1 {
 	use "$dir/Résultats/Troisième partie/zéros/Blouk_`year'_zeros`agg'.dta", clear
 	generate year = `year'	
-	if `agg'!=1 {
+	if `agg'!=5 {
 		merge 1:1 iso_o iso_d year  using "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta"
 		drop _merge
 	}
@@ -172,6 +173,7 @@ end
 
 *********************************
 
+*foreach year of num 1962 (1) 1964 {
 foreach year of num 1962(1)2013 {
 	compter_zeros `year'
 	use  "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta", clear
@@ -186,7 +188,8 @@ foreach year of num 1962(1)2013 {
 ************EXEMPLE REGRESSION:
 gen real_ms=commerce_paire/commerce_destination
 gen interaction=real_ms*year
-reg propor_comm_ssuv_agg`agg' real_ms year interaction
+reg propor_ssuv_`agg' real_ms year
+reg propor_ssuv_`agg' real_ms year interaction
 
 ***comme prevu, cela donne coef negatif sur year et real_ms et coef_positif sur interaction
 **donc, avec le temps part des zeros en bilateral diminue
