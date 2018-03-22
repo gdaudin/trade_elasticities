@@ -1,0 +1,16 @@
+	(1)
+VARIABLES	propor_ssuv_5
+	
+ln_ms	-0.126***
+	(0.010)
+year	-0.002***
+	(0.000)
+interaction	0.000***
+	(0.000)
+Constant	4.042***
+	(0.101)
+	
+Observations	749,686
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	
+The proportion of zeros is computed at the SITC disp-digit level.	

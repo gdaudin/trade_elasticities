@@ -100,25 +100,29 @@ gen real_ms=commerce_paire/commerce_destination
 gen ln_ms=ln(real_ms)
 gen interaction=ln_ms*year
 *gen ln_ztfshare_`1'=ln(propor_ssuv_`1')
+local disp`1' `1'
+if `1'==5 local disp`1' 4'
+label var propor_ssuv_`1' "Share of ztf at disp`1' level"
+label var ln_ms "ln(market share)"
 poisson propor_ssuv_`1' ln_ms year, robust 
 estimates store Basic`1'
-outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", addnote(The proportion of zeros is computed at the SITC `1'-digit level.) title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) replace
+outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", addnote(The proportion of zeros is computed at the SITC disp`1'-digit level.) /*title("Proportion of zeros at the `1'-digit level as a function of market share")*/ tex(frag) bdec(3) sdec(3) replace
 poisson propor_ssuv_`1' ln_ms year interaction, robust 
 estimates store Binter`1'
-outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) append 
+outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", /*title("Proportion of zeros at the `1'-digit level as a function of market share")*/ tex(frag) bdec(3) sdec(3) append 
 *outreg2 ln_ms year interaction using ztfpois_corr`1', addnote(The proportion of zeros is computed at the SITC `1'-digit level.) title("Proportion of zeros as a function of market share") tex(frag) bdec(4) replace
 **with destination fixed effects
 keep iso_d iso_o propor_ssuv_`1' ln_ms year interaction
 xi: poisson propor_ssuv_`1' ln_ms year I.iso_d, robust 
 estimates store Fixed`1'
 outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
-			title("Proportion of zeros at the `1'-digit level as a function of market share") tex(frag) bdec(4) sdec(4) append ///
+			title("Proportion of zeros at the disp`1'-digit level as a function of market share") tex(frag) bdec(3) sdec(3) append ///
 			drop (*iso_d*)
 xi: poisson propor_ssuv_`1' ln_ms year interaction I.iso_d, robust 
 estimates store Feinter`1'
 outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
-			addnote(The proportion of zeros is computed at the SITC `1'-digit level.) ///
-			title("Proportion of zeros as a function of market share") tex(frag) bdec(4) append  ///
+			addnote(The proportion of zeros is computed at the SITC disp`1'-digit level.) ///
+			/*title("Proportion of zeros as a function of market share")*/ tex(frag) sdec(3) bdec(3) append  ///
 			drop (*iso_d*)
 *outreg2 ln_ms year interaction [Basic Binter Fixed Feinter] using ztfpois_`1'digit, addtext(Destination FE, YES) addnote(The proportion of zeros is computed at the SITC `1'-digit level, estimation in poisson.) title("Proportion of zeros at the 4-digit level") tex(frag) bdec(4) replace
 
