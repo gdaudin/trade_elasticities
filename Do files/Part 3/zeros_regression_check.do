@@ -24,7 +24,7 @@ set more off
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
-	cd "$dir/Data/For Third Part/"
+	cd "$dir/Résultats/Troisième partie/zéros"
 
 }
 
@@ -41,7 +41,8 @@ if "`c(hostname)'" =="ECONCES1" {
 
 capture program drop zdesc
 program zdesc
-use "$dir/Résultats/Troisième partie/zéros/Nbrdezeros.dta", clear
+use Nbrdezeros.dta, clear
+
 **pour_compter_`agg': gives tot nb obs after fillin
 **pour_compter_ssuv_`agg': gives tot nb obs after fillin with lacking uv (this includes lacking uv for zero and non zero trade)
 **pour_compter_sscommerce_`agg': gives tot nb obs after fillin with lacking uv and trade value (corresponds to nb obs where _fillin=1)
@@ -78,27 +79,18 @@ egen couple=group(iso_d year)
 *outreg2 ln_ms year interaction using ztf_corr`1'_morefe, addnote(The proportion of zeros is computed at the SITC `1'-digit level, destination and destination-year fixed effects included.) title("Proportion of zeros, with fixed effects") tex(frag) bdec(4) replace
 clear
 end
-zdesc 4
-zdesc 1
+*zdesc 5
+*zdesc 1
 
 ************POISSON******************
 **The problem with the above is that I drop observations where there are no 0s which is problematic, particularly at 1-digit level
 *so I redo the same thing but in poisson
-set mem 500M
-set matsize 1000
-set more off
-*on my laptop:
-global dir "C:\Documents and Settings\Liza\My Documents\My Dropbox\SITC_Rev1_adv_query_2011"
-*global dir "G:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*at OFCE:
-*global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*global dir "D:\ARCHANSKAIA\My Dropbox\SITC_Rev1_adv_query_2011"
-*at ScPo:
-*global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-cd "$dir\Résultats Guillaume"
+
+
 capture program drop zdescpois
 program zdescpois
-use Nbrdezerosv3, clear
+use Nbrdezeros.dta, clear
+
 gen real_ms=commerce_paire/commerce_destination
 gen ln_ms=ln(real_ms)
 gen interaction=ln_ms*year
@@ -163,16 +155,21 @@ reshape long expmean exptwostdv exponepct exptenpct, i(digit) j(year)
 save zdescpois`1', replace
 clear
 end
-zdescpois 4
-zdescpois 1
+zdescpois 5
+*zdescpois 1
 
 **outsheet tables of predicted ztf in .tex format
-use zdescpois4, clear
+use zdescpois5, clear
 mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc4) 
-outtable using zdesc4, mat(zdesc4) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) caption("Predicted share of ztf for exporters with different market share, 4-digit level") center
+outtable using zdesc5, mat(zdesc5) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) caption("Predicted share of ztf for exporters with different market share, 4'-digit level") center
+/*
 use zdescpois1, clear
 mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc1) 
 outtable using zdesc1, mat(zdesc1) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) caption("Predicted share of ztf for exporters with different market share, highest aggregation level") center
+*/
+
+
+
 
 ***NOTES:
 **descriptive stats on ms overall: mean real_ms: mean.009; median .0003; stdv .0372
