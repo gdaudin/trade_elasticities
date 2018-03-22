@@ -32,7 +32,7 @@ if "`c(hostname)'" =="ECONCES1" {
 
 
 *******************
-**Pour compter les zero
+**Pour compter les ztf et les muv
 ********************
 
 
@@ -76,7 +76,7 @@ foreach agg of num 5(-1)1 {
 	vallist iso_d
 	foreach pays_dest in `r(list)' {
 		
-		preserve
+		*preserve
 		/*keep iso_o iso_d sitc_agg`agg' uv_`year'*/
 		keep if iso_d=="`pays_dest'"
 		
@@ -98,36 +98,31 @@ foreach agg of num 5(-1)1 {
 		/*je ne garde que les premières observations de chaque catégorie d'intérêt*/
 		bysort iso_o sitc_agg`agg': keep if _n==1
 		
-		describe
-		
-		fillin iso_o iso_d sitc_agg`agg'
 		
 		
 		fillin iso_o iso_d sitc_agg`agg'
 		
-		tab _fillin
 		
-		describe 
 		
-		blif
 		
 		
 		
 		
 		/*Je rajoute qqch pour compter le nbr de zéros*/
 		gen pour_compter_`agg' 				= 1
-**pour_compter_`agg' gives total nb observations after fillin
+		label var pour_compter_`agg' 	 "Number of potential trade flows (only in pre-existing sectors and partners for a reporter)" 
+		**pour_compter_`agg' gives total nb observations after fillin
 		gen pour_compter_ssuv_`agg' 		= 1 if uv_`year'==.
+		label var pour_compter_ssuv_`agg' "Number of trade flows without uv (including without trade)"
+		**pour_compter_`agg' gives total nb observations after fillin
 **pour_compter_ssuv_`agg' gives total nb observations after fillin with lacking uv
 *this includes lacking uv for existing trade but also lacking trade and uv
 		gen pour_compter_sscommerce_`agg'	= 1 /*
 			*/ if uv_`year'==. & value_`year'==.
+		label var pour_compter_sscommerce_`agg' "ztf Number of trade flows without value (only in pre-existing sectors and partners for a reporter)"	
 **pour_compter_sscommerce_`agg' gives tot nb obs after fillin with lacking uv and trade value
 *this corresponds logically to nb of obs where _fillin==1
 *why not compute nb imputed simply from _fillin stats by iso_o?
-		
-		
-	
 		
 		
 		/*Puis je collapse pour calculer le nombre d'observations et de zéros*/
