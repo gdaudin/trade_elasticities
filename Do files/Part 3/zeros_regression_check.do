@@ -42,7 +42,7 @@ if "`c(hostname)'" =="ECONCES1" {
 
 
 
-
+/*
 
 capture program drop zdesc
 program zdesc
@@ -86,6 +86,8 @@ clear
 end
 *zdesc 5
 *zdesc 1
+*/
+
 
 ************POISSON******************
 **The problem with the above is that I drop observations where there are no 0s which is problematic, particularly at 1-digit level
@@ -109,7 +111,7 @@ label var interaction  "ln(market share)*year/100"
 
 
 ****Les régressions
-/*
+
 poisson propor_ssuv_`1' ln_ms year, robust 
 estimates store Basic`1'
 outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
@@ -129,17 +131,21 @@ estimates store Fixed`1'
 outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
 			/*title("Proportion of zeros at the disp`1'-digit level as a function of market share")*/ label ///
 			tex(frag) bdec(3) sdec(3) append ///
-			drop (*iso_d*)
+			drop (*iso_d*) ///
+			addtext(Destination FE, YES)
+			
 xi: poisson propor_ssuv_`1' ln_ms year interaction I.iso_d, robust 
 estimates store Feinter`1'
 outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
 			addnote(The proportion of zeros is computed at the SITC `disp`1'' level.) label ///
 			/*title("Proportion of zeros as a function of market share")*/ tex(frag) bdec(3) sdec(3) append  ///
-			drop (*iso_d*)
+			drop (*iso_d*) ///
+			addtext(Destination FE, YES)
+			
 *outreg2 ln_ms year interaction [Basic Binter Fixed Feinter] using ztfpois_`1'digit, addtext(Destination FE, YES) addnote(The proportion of zeros is computed at the SITC `1'-digit level, estimation in poisson.) title("Proportion of zeros at the 4-digit level") tex(frag) bdec(4) replace
 
 capture erase "$dirgit/Rédaction/tex/ztfpois_`1'digit.txt"
-*/
+
 
 ***Compute predicted evolution of proportion of zero trade flows for exporters with different ms
 **look at predicted values of ztf for mean exporter (has 0.0002 ms)
@@ -199,7 +205,9 @@ replace exponepct=round(exponepct,0.01)
 replace exptenpct=round(exptenpct,0.01)
 
 texsave using "$dirgit/Rédaction/tex/zdesc5", frag varlabel replace ///
-		title(Predicted share of ztf for exporters with different market share, 4'-digit level)
+		title(Predicted share of ztf for exporters with different market share, 4'-digit level) ///
+		footnote(Notes: This is based on the regression in column (2))
+
 
 
 *outtable using "$dirgit/Rédaction/tex/zdesc5", mat(zdesc5) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) ///
@@ -212,7 +220,7 @@ outtable using zdesc1, mat(zdesc1) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9
 */
 
 
-
+/*
 
 ***NOTES:
 **descriptive stats on ms overall: mean real_ms: mean.009; median .0003; stdv .0372
@@ -220,9 +228,12 @@ outtable using zdesc1, mat(zdesc1) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9
 **but in ln_ms: mean ln_ms=-8.51(approx. .02%), and 2 stdv above corresponds to ln_ms=-1.25(approx 28.65%)
 **therefore I compute descriptive stats on these 4 market share values: min=.02%, 1%, 10%, max=28.7%)
 
+
 ***DOING GRAPHS ON LOG SCALES BUT WITH UNDERLYING VALUES OF VARs:
 **to do a graph on logscale, but displaying real values of variable
 *do some regression:
+
+
 local 1 4
 xi: reg ln_ztfshare_`1' ln_ms year interaction I.iso_d, robust 
 predict ln_ztfhat1
