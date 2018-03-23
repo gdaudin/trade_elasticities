@@ -1,13 +1,12 @@
-\begin{tabular}{lcccc}
-\multicolumn{5}{c}{Proportion of zeros at the disp5-digit level as a function of market share} \\ \hline
+\begin{tabular}{lcccc} \hline
  & (1) & (2) & (3) & (4) \\
-VARIABLES & propor\_ssuv\_5 & propor\_ssuv\_5 & propor\_ssuv\_5 & propor\_ssuv\_5 \\ \hline
+VARIABLES & Share of ztf & Share of ztf & Share of ztf & Share of ztf \\ \hline
  &  &  &  &  \\
-ln\_ms & -0.033*** & -0.126*** & -0.035*** & -0.154*** \\
+ln(market share) & -0.033*** & -0.126*** & -0.035*** & -0.154*** \\
  & (0.000) & (0.010) & (0.000) & (0.010) \\
 year & -0.003*** & -0.002*** & -0.003*** & -0.003*** \\
  & (0.000) & (0.000) & (0.000) & (0.000) \\
-interaction &  & 0.000*** &  & 0.000*** \\
+ln(market share)*year/100 &  & 0.005*** &  & 0.006*** \\
  &  & (0.000) &  & (0.000) \\
 Constant & 4.844*** & 4.042*** & 5.638*** & 4.614*** \\
  & (0.024) & (0.101) & (0.027) & (0.098) \\
@@ -15,5 +14,5 @@ Constant & 4.844*** & 4.042*** & 5.638*** & 4.614*** \\
  Observations & 749,686 & 749,686 & 749,686 & 749,686 \\ \hline
 \multicolumn{5}{c}{ Robust standard errors in parentheses} \\
 \multicolumn{5}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
-\multicolumn{5}{c}{ The proportion of zeros is computed at the SITC disp5-digit level.} \\
+\multicolumn{5}{c}{ The proportion of zeros is computed at the SITC 4'-digit level.} \\
 \end{tabular}

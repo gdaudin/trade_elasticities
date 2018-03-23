@@ -46,6 +46,7 @@
 \usepackage{relsize} %newly added package to use command \mathlarger{}
 \usepackage{mathtools} %newly added package to use command \mathrlap{}
 \usepackage{tabularx}
+\usepackage{booktabs}
 \usepackage{caption}
 
 \makeatletter
@@ -663,20 +664,19 @@ CETTE TABLE EST À VÉRIFIER / REPRODUIRE POUR LA BONNE PÉRIODE.
 
 
 \begin{table}
-\textbf{ \label{ref-005}Table 2: Proportion of zero trade flows as a function of market share}
+\textbf{ \label{ref-005}Table 2: Proportion of zero trade flows as a function of market share (4' digits)}
 \input{ztfpois_5digit.tex}
 
 \end{table}
 
 Notes: The share of ZTF is computed at the SITC 4-digit level. The estimation is conducted in PPML in order to include observations where ztf=0. The log of the market share is used in the estimation. Destination fixed effects are included in (3) and (4). Robust standard errors are in parentheses. *** p{\textless}0.01.
 
- 
-
-\textbf{Table 3: Predicted share of ztf for exporters with different market share, 4-digit level \label{ref-006}}
 
 
+%\textbf{Table 3: Predicted share of ztf for exporters with different market share, 4'-digit level \label{ref-006}}
 
-\input{zdesc5.tex}
+\input{zdesc5.tex}\label{ref-006}
+
 
 
 Columns (1) and (4) correspond to the mean and to 2 st. deviations above the mean in the distribution of log market share. Columns (2) and (3) correspond to the mean and to 2 st. deviations above the mean in the distribution of market share. 

@@ -102,70 +102,84 @@ gen interaction=ln_ms*year
 *gen ln_ztfshare_`1'=ln(propor_ssuv_`1')
 local disp`1' `1'
 if `1'==5 local disp`1' 4'
-label var propor_ssuv_`1' "Share of ztf at disp`1' level"
+label var propor_ssuv_`1' "Share of ztf"
 label var ln_ms "ln(market share)"
+replace interaction = interaction/100
+label var interaction  "ln(market share)*year/100"
+
+
+****Les régressions
+/*
 poisson propor_ssuv_`1' ln_ms year, robust 
 estimates store Basic`1'
-outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", addnote(The proportion of zeros is computed at the SITC disp`1'-digit level.) /*title("Proportion of zeros at the `1'-digit level as a function of market share")*/ tex(frag) bdec(3) sdec(3) replace
+outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
+			addnote(The proportion of zeros is computed at the SITC `disp`1''-digit level.) ///
+			/*title("Proportion of zeros at the `1'-digit level as a function of market share")*/ label ///
+			tex(frag) bdec(3) sdec(3) replace
 poisson propor_ssuv_`1' ln_ms year interaction, robust 
 estimates store Binter`1'
-outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", /*title("Proportion of zeros at the `1'-digit level as a function of market share")*/ tex(frag) bdec(3) sdec(3) append 
+outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
+			/*title("Proportion of zeros at the `1'-digit level as a function of market share")*/ label ///
+			tex(frag) bdec(3) sdec(3) append 
 *outreg2 ln_ms year interaction using ztfpois_corr`1', addnote(The proportion of zeros is computed at the SITC `1'-digit level.) title("Proportion of zeros as a function of market share") tex(frag) bdec(4) replace
 **with destination fixed effects
 keep iso_d iso_o propor_ssuv_`1' ln_ms year interaction
 xi: poisson propor_ssuv_`1' ln_ms year I.iso_d, robust 
 estimates store Fixed`1'
 outreg2 ln_ms year using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
-			title("Proportion of zeros at the disp`1'-digit level as a function of market share") tex(frag) bdec(3) sdec(3) append ///
+			/*title("Proportion of zeros at the disp`1'-digit level as a function of market share")*/ label ///
+			tex(frag) bdec(3) sdec(3) append ///
 			drop (*iso_d*)
 xi: poisson propor_ssuv_`1' ln_ms year interaction I.iso_d, robust 
 estimates store Feinter`1'
 outreg2 ln_ms year interaction using "$dirgit/Rédaction/tex/ztfpois_`1'digit.tex", ///
-			addnote(The proportion of zeros is computed at the SITC disp`1'-digit level.) ///
-			/*title("Proportion of zeros as a function of market share")*/ tex(frag) sdec(3) bdec(3) append  ///
+			addnote(The proportion of zeros is computed at the SITC `disp`1'' level.) label ///
+			/*title("Proportion of zeros as a function of market share")*/ tex(frag) bdec(3) sdec(3) append  ///
 			drop (*iso_d*)
 *outreg2 ln_ms year interaction [Basic Binter Fixed Feinter] using ztfpois_`1'digit, addtext(Destination FE, YES) addnote(The proportion of zeros is computed at the SITC `1'-digit level, estimation in poisson.) title("Proportion of zeros at the 4-digit level") tex(frag) bdec(4) replace
 
+capture erase "$dirgit/Rédaction/tex/ztfpois_`1'digit.txt"
+*/
+
 ***Compute predicted evolution of proportion of zero trade flows for exporters with different ms
 **look at predicted values of ztf for mean exporter (has 0.0002 ms)
-drop _I*
+capture drop _I*
 *estimates restore Binter`1'
 poisson propor_ssuv_`1' ln_ms year interaction, robust 
-mfx, at(-8.51 1962 -16696.62)
-scalar define expmean1962=e(Xmfx_y)
-**predicted ztf: .948
-mfx, at(-8.51 2009 -17096.59)
-scalar define expmean2009=e(Xmfx_y)
-**predicted ztf: .825
-**look at predicted values of ztf for exporter 2 std dev above mean (has 0.2865 ms)
-mfx, at(-1.25 1962 -2452.5328)
-scalar define exptwostdv1962=e(Xmfx_y)
-**predicted ztf: .692
-mfx, at(-1.25 2009 -2511.2836)
-scalar define exptwostdv2009=e(Xmfx_y)
-**predicted ztf: .625
-**look at predicted values of ztf for exporter at 1% ms
-mfx, at(-4.605 1962 -9035.3439)
-**predicted ztf: .80
-scalar define exponepct1962=e(Xmfx_y)
-mfx, at(-4.605 2009 -9251.7869)
-**predicted ztf: .71
-scalar define exponepct2009=e(Xmfx_y)
-**look at predicted values of ztf for exporter at 10% ms
-mfx, at(-2.303 1962 -4517.672)
-**predicted ztf: .724
-scalar define exptenpct1962=e(Xmfx_y)
-mfx, at(-2.303 2009 -4625.8935)
-**predicted ztf: .651
-scalar define exptenpct2009=e(Xmfx_y)
+
+foreach year in 1962 1987 2013 {
+	summ ln_ms if year==`year'
+	local ln_ms_mean = r(mean)
+	local ln_ms_twostdv = r(mean)+2*r(sd)
+	local ln_ms_onepct = ln(0.01)
+	local ln_ms_tenpct = ln(0.1)
+	
+	foreach example in mean twostdv onepct tenpct {
+	
+		local interaction = `year'*`ln_ms_`example''/100
+		mfx, at(`ln_ms_`example'' `year' `interaction')
+		scalar define exp`example'`year'=e(Xmfx_y)
+		local name `name' exp`example'`year'		
+	}
+	
+}
+
 clear
 set obs 1
-local name expmean1962 expmean2009 exptwostdv1962 exptwostdv2009 exponepct1962 exponepct2009 exptenpct1962 exptenpct2009
+
 foreach n of local name {
 	gen `n'=`n'
 }
 gen digit=`1'
 reshape long expmean exptwostdv exponepct exptenpct, i(digit) j(year)
+label var expmean "At mean"
+label var exptwostdv "At meand and 2sd"
+label var exponepct "At ln(0.01)"
+label var exptenpct "At ln(0.1)"
+
+format exp* %9.2f
+
+
 save zdescpois`1', replace
 clear
 end
@@ -175,7 +189,22 @@ zdescpois 5
 **outsheet tables of predicted ztf in .tex format
 use zdescpois5, clear
 mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc5) 
-outtable using "$dirgit/Rédaction/tex/zdesc5", mat(zdesc5) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) caption("Predicted share of ztf for exporters with different market share, 4'-digit level") center
+
+matrix colnames  zdesc5 = "At_mean" "At_mean_2sd" "At ln(1\%)" "At ln(10\%)"
+drop digit
+
+replace expmean=round(expmean,0.01)
+replace exptwostdv=round(exptwostdv,0.01)
+replace exponepct=round(exponepct,0.01)
+replace exptenpct=round(exptenpct,0.01)
+
+texsave using "$dirgit/Rédaction/tex/zdesc5", frag varlabel replace ///
+		title(Predicted share of ztf for exporters with different market share, 4'-digit level)
+
+
+*outtable using "$dirgit/Rédaction/tex/zdesc5", mat(zdesc5) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) ///
+				/*caption("Predicted share of ztf for exporters with different market share, 4'-digit level")*/ center
+capture erase "$dirgit/Rédaction/tex/zdesc5.txt"
 /*
 use zdescpois1, clear
 mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc1) 
