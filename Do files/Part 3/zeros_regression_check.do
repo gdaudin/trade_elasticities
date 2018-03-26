@@ -152,18 +152,29 @@ capture erase "$dirgit/Rédaction/tex/ztfpois_`1'digit.txt"
 capture drop _I*
 *estimates restore Binter`1'
 poisson propor_ssuv_`1' ln_ms year interaction, robust 
+gen ms=exp(ln_ms)
+summ ln_ms
+local ln_ms_mean = r(mean)
+local ln_ms_mean_twostdv = r(mean)+2*r(sd)
+	
+summ ms
+local ms_mean = ln(r(mean))
+local ms_mean_twostdv = ln(r(mean)+2*r(sd))
+	
+global exp_ln_ms					=round(exp(`ln_ms_mean'),0.001)
+global exp_ln_ms_mean_twostdv	=round(exp(`ln_ms_mean_twostdv'),0.001)
+global exp_ms_mean 				= round(exp(`ms_mean'),0.001)
+global exp_ms_mean_twostdv 		= round(exp(`ms_mean_twostdv'),0.001)
 
 foreach year in 1962 1987 2013 {
-	summ ln_ms if year==`year'
-	local ln_ms_mean = r(mean)
-	local ln_ms_twostdv = r(mean)+2*r(sd)
-	local ln_ms_onepct = ln(0.01)
-	local ln_ms_tenpct = ln(0.1)
+
 	
-	foreach example in mean twostdv onepct tenpct {
 	
-		local interaction = `year'*`ln_ms_`example''/100
-		mfx, at(`ln_ms_`example'' `year' `interaction')
+	
+	foreach example in ln_ms_mean ln_ms_mean_twostdv ms_mean ms_mean_twostdv {
+	
+		local interaction = `year'*``example''/100
+		mfx, at(``example'' `year' `interaction')
 		scalar define exp`example'`year'=e(Xmfx_y)
 		local name `name' exp`example'`year'		
 	}
@@ -177,11 +188,7 @@ foreach n of local name {
 	gen `n'=`n'
 }
 gen digit=`1'
-reshape long expmean exptwostdv exponepct exptenpct, i(digit) j(year)
-label var expmean "At mean"
-label var exptwostdv "At meand and 2sd"
-label var exponepct "At ln(0.01)"
-label var exptenpct "At ln(0.1)"
+reshape long expln_ms_mean expln_ms_mean_twostdv expms_mean expms_mean_twostdv, i(digit) j(year)
 
 format exp* %9.2f
 
@@ -194,19 +201,28 @@ zdescpois 5
 
 **outsheet tables of predicted ztf in .tex format
 use zdescpois5, clear
-mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc5) 
+*mkmat year expln_ms_mean  expms_mean expms_mean_twostdv expln_ms_mean_twostdv, matrix(zdesc5) 
 
-matrix colnames  zdesc5 = "At_mean" "At_mean_2sd" "At ln(1\%)" "At ln(10\%)"
+order year expln_ms_mean expln_ms_mean_twostdv expms_mean expms_mean_twostdv 
+
+*matrix colnames  zdesc5 = "year" "ms=$exp_ln_ms\%" "ms=$exp_ms_mean\%)" "ms=$exp_ms_mean_twostdv\%)" "ms=$exp_ln_ms_mean_twostdv\%"
 drop digit
 
-replace expmean=round(expmean,0.01)
-replace exptwostdv=round(exptwostdv,0.01)
-replace exponepct=round(exponepct,0.01)
-replace exptenpct=round(exptenpct,0.01)
+label var expln_ms_mean "ms=$exp_ln_ms%"
+label var expln_ms_mean_twostdv "ms=$exp_ms_mean%"
+label var expms_mean "ms=$exp_ms_mean_twostdv%"
+label var expms_mean_twostdv "ms=$exp_ln_ms_mean_twostdv%"
+
+replace expln_ms_mean=round(expln_ms_mean,0.01)
+replace expln_ms_mean_twostdv=round(expln_ms_mean_twostdv,0.01)
+replace expms_mean=round(expms_mean,0.01)
+replace expms_mean_twostdv=round(expms_mean_twostdv,0.01)
 
 texsave using "$dirgit/Rédaction/tex/zdesc5", frag varlabel replace ///
 		title(Predicted share of ztf for exporters with different market share, 4'-digit level) ///
-		footnote(Notes: This is based on the regression in column (2))
+		footnote(Notes: This is based on the regression in column (2). ///
+				Columns (1) and (4) correspond to the mean and to 2 st. deviations above the mean in the distribution of log market share. ///
+				Columns (2) and (3) correspond to the mean and to 2 st. deviations above the mean in the distribution of market share. )
 
 
 
