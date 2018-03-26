@@ -98,6 +98,8 @@ capture program drop zdescpois
 program zdescpois
 use Nbrdezeros.dta, clear
 
+/*
+
 gen real_ms=commerce_paire/commerce_destination
 gen ln_ms=ln(real_ms)
 gen interaction=ln_ms*year
@@ -149,34 +151,38 @@ capture erase "$dirgit/Rédaction/tex/ztfpois_`1'digit.txt"
 
 ***Compute predicted evolution of proportion of zero trade flows for exporters with different ms
 **look at predicted values of ztf for mean exporter (has 0.0002 ms)
-capture drop _I*
+
+*/
+
+use Nbrdezeros.dta, clear
+gen real_ms=commerce_paire/commerce_destination
+gen ln_ms=ln(real_ms)
+gen interaction=ln_ms*year
 *estimates restore Binter`1'
 poisson propor_ssuv_`1' ln_ms year interaction, robust 
-gen ms=exp(ln_ms)
-summ ln_ms
-local ln_ms_mean = r(mean)
-local ln_ms_mean_twostdv = r(mean)+2*r(sd)
+
+summ real_ms, det
+local ln_ms_1 = ln(`r(p25)')
+local ln_ms_2 = ln(`r(p50)')
+local ln_ms_3 = ln(`r(p75)')
 	
-summ ms
-local ms_mean = ln(r(mean))
-local ms_mean_twostdv = ln(r(mean)+2*r(sd))
-	
-global exp_ln_ms					=round(exp(`ln_ms_mean'),0.001)
-global exp_ln_ms_mean_twostdv	=round(exp(`ln_ms_mean_twostdv'),0.001)
-global exp_ms_mean 				= round(exp(`ms_mean'),0.001)
-global exp_ms_mean_twostdv 		= round(exp(`ms_mean_twostdv'),0.001)
+global col1		= round(exp($ln_ms_1)*100,0.001)
+global col2		= round(exp($ln_ms_2)*100,0.001)
+global col3 	= round(exp($ln_ms_3)*100,0.001)
+
+
+
+local name
 
 foreach year in 1962 1987 2013 {
 
+	foreach i in 1 2 3  {
 	
-	
-	
-	foreach example in ln_ms_mean ln_ms_mean_twostdv ms_mean ms_mean_twostdv {
-	
-		local interaction = `year'*``example''/100
-		mfx, at(``example'' `year' `interaction')
-		scalar define exp`example'`year'=e(Xmfx_y)
-		local name `name' exp`example'`year'		
+		local interaction = `year'*`ln_ms_`i''	
+		
+		mfx, at($ln_ms_`i' `year' `interaction')
+		scalar define exp`i'`year'=e(Xmfx_y)
+		local name `name' exp`i'`year'		
 	}
 	
 }
@@ -188,47 +194,46 @@ foreach n of local name {
 	gen `n'=`n'
 }
 gen digit=`1'
-reshape long expln_ms_mean expln_ms_mean_twostdv expms_mean expms_mean_twostdv, i(digit) j(year)
+reshape long exp1 exp2 exp3, i(digit) j(year)
 
 format exp* %9.2f
 
 
 save zdescpois`1', replace
 clear
-end
-zdescpois 5
+
 *zdescpois 1
 
 **outsheet tables of predicted ztf in .tex format
 use zdescpois5, clear
-*mkmat year expln_ms_mean  expms_mean expms_mean_twostdv expln_ms_mean_twostdv, matrix(zdesc5) 
 
-order year expln_ms_mean expln_ms_mean_twostdv expms_mean expms_mean_twostdv 
 
-*matrix colnames  zdesc5 = "year" "ms=$exp_ln_ms\%" "ms=$exp_ms_mean\%)" "ms=$exp_ms_mean_twostdv\%)" "ms=$exp_ln_ms_mean_twostdv\%"
 drop digit
 
-label var expln_ms_mean "ms=$exp_ln_ms%"
-label var expln_ms_mean_twostdv "ms=$exp_ms_mean%"
-label var expms_mean "ms=$exp_ms_mean_twostdv%"
-label var expms_mean_twostdv "ms=$exp_ln_ms_mean_twostdv%"
+label var exp1 "ms=$col1%"
+label var exp2 "ms=$col2%"
+label var exp3 "ms=$col3%"
 
-replace expln_ms_mean=round(expln_ms_mean,0.01)
-replace expln_ms_mean_twostdv=round(expln_ms_mean_twostdv,0.01)
-replace expms_mean=round(expms_mean,0.01)
-replace expms_mean_twostdv=round(expms_mean_twostdv,0.01)
+replace exp1=round(exp1,0.01)
+replace exp2=round(exp2,0.01)
+replace exp3=round(exp3,0.01)
+
+
+
 
 texsave using "$dirgit/Rédaction/tex/zdesc5", frag varlabel replace ///
 		title(Predicted share of ztf for exporters with different market share, 4'-digit level) ///
 		footnote(Notes: This is based on the regression in column (2). ///
-				Columns (1) and (4) correspond to the mean and to 2 st. deviations above the mean in the distribution of log market share. ///
-				Columns (2) and (3) correspond to the mean and to 2 st. deviations above the mean in the distribution of market share. )
+				Column (1) corresponds to the first quartile -- column (2) to the median and column (3) to the third quartile)
 
 
 
 *outtable using "$dirgit/Rédaction/tex/zdesc5", mat(zdesc5) replace norowlab f(%9.0f %9.2f %9.2f %9.2f %9.2f) ///
 				/*caption("Predicted share of ztf for exporters with different market share, 4'-digit level")*/ center
 capture erase "$dirgit/Rédaction/tex/zdesc5.txt"
+
+end
+zdescpois 5
 /*
 use zdescpois1, clear
 mkmat year expmean exponepct exptenpct exptwostdv, matrix(zdesc1) 
