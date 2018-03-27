@@ -41,8 +41,8 @@ if "`c(hostname)'" =="ECONCES1" {
 
 
 
-
 /*
+
 
 capture program drop zdesc
 program zdesc
@@ -98,7 +98,7 @@ capture program drop zdescpois
 program zdescpois
 use Nbrdezeros.dta, clear
 
-/*
+
 
 gen real_ms=commerce_paire/commerce_destination
 gen ln_ms=ln(real_ms)
@@ -152,7 +152,7 @@ capture erase "$dirgit/Rédaction/tex/ztfpois_`1'digit.txt"
 ***Compute predicted evolution of proportion of zero trade flows for exporters with different ms
 **look at predicted values of ztf for mean exporter (has 0.0002 ms)
 
-*/
+
 
 use Nbrdezeros.dta, clear
 gen real_ms=commerce_paire/commerce_destination
@@ -161,14 +161,14 @@ gen interaction=ln_ms*year
 *estimates restore Binter`1'
 poisson propor_ssuv_`1' ln_ms year interaction, robust 
 
-summ real_ms, det
+summ real_ms if year==1962, det
 local ln_ms_1 = ln(`r(p25)')
 local ln_ms_2 = ln(`r(p50)')
 local ln_ms_3 = ln(`r(p75)')
 	
-global col1		= round(exp($ln_ms_1)*100,0.001)
-global col2		= round(exp($ln_ms_2)*100,0.001)
-global col3 	= round(exp($ln_ms_3)*100,0.001)
+global col1		= round(exp(`ln_ms_1')*100,0.01)
+global col2		= round(exp(`ln_ms_2')*100,0.01)
+global col3 	= round(exp(`ln_ms_3')*100,0.01)
 
 
 
@@ -180,9 +180,10 @@ foreach year in 1962 1987 2013 {
 	
 		local interaction = `year'*`ln_ms_`i''	
 		
-		mfx, at($ln_ms_`i' `year' `interaction')
+		mfx, at(`ln_ms_`i'' `year' `interaction')
 		scalar define exp`i'`year'=e(Xmfx_y)
-		local name `name' exp`i'`year'		
+		local name `name' exp`i'`year'
+		display "mfx, at(`ln_ms_`i'' `year' `interaction')"
 	}
 	
 }
@@ -224,7 +225,7 @@ replace exp3=round(exp3,0.01)
 texsave using "$dirgit/Rédaction/tex/zdesc5", frag varlabel replace ///
 		title(Predicted share of ztf for exporters with different market share, 4'-digit level) ///
 		footnote(Notes: This is based on the regression in column (2). ///
-				Column (1) corresponds to the first quartile -- column (2) to the median and column (3) to the third quartile)
+				Column (1) corresponds to the first quartile in 1962-- column (2) to the median in 1962 and column (3) to the third quartile in 1962)
 
 
 
