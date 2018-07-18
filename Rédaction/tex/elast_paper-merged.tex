@@ -568,7 +568,7 @@ The UN COMTRADE bilateral trade database covers the majority of countries over 1
 \[{{X}_{ij}}={{\left( \frac{{{P}_{ij}}}{{{P}_{j}}} \right)}^{-(\sigma -1)}}{{Y}_{j}}\]
 where ${X}_{ij}$ is the cif value of the exports from i to j, ${{P}_{ij}}$ is the cif price of the good shipped from i to j and ${{P}_{j}}$ is the price index in the destination and ${{Y}_{j}}$ total import demand in the destination. The exponent $\left( \sigma -1 \right)$ captures substitutability of country-composite goods across frameworks. It is also the aggregate trade elasticity $\zeta $ in the Armington framework.
 Briging this equation to the data is difficult, however, as we do not observe aggregate prices, but unit values at the SITC 4-digit category level. Still, the distance puzzle concerns an elasticity estimated on aggregate trade data. As shown by (Imbs et Méjean 2013) this parameter cannot generally be mimicked by a theoretically grounded weighted average of sector-specific trade elasticities. Hence, we need an estimation procedure that works directly with aggregate data.
-Define aggregate imports from source country $i$ to destination country $j$  as the sum of imports from each sector $k$ where a sector corresponds to a SITC 4-digit category: ${{X}_{ij}}=\sum\limits_{k}{{{X}_{k,ij}}}$. Given CES utility at the intersectoral level, sectoral demand in country  in sector  for imported goods is given by: 
+Define aggregate imports from source country $i$ to destination country $j$  as the sum of imports from each sector $k$ where a sector corresponds to a SITC 4-digit category: ${{X}_{ij}}=\sum\limits_{k}{{{X}_{k,ij}}}$. Given CES utility at the intersectoral level, sectoral demand in country  in sector  for imported goods is given by: 
 \[\begin{array}{*{35}{l}}
    {{Y}_{k,j}} & = & {{\left( \frac{{{P}_{k,j}}}{{{\beta }_{k}}{{P}_{j}}} \right)}^{1-\sigma }}{{Y}_{j}}  \\
 \end{array}\]
@@ -613,7 +613,7 @@ Notice that we only have non-zero observations, as ${{p}_{k,ij}}$ is only observ
 This yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $\footnote{Because of the way the procedure nl works in STATA, instead of minimizing $\sum\limits_{i,j}{{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$, it minimizes $\sum\limits_{i,j}{{{n}_{ij}}{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$ where ${{n}_{ij}}$ is the number of 4-digit sectors in which imports from $i$ to $j$ are recorded. As a result, we have to weight the regression by $1/{{n}_{ij}}\ $ to make its results comparable to those in part one.
 }. 
 
-\section{ \label{ref-003}Evolution of the Armington trade elasticity in 1963-2009\label{mark-2.}}
+\section{ \label{ref-003}Evolution of the Armington trade elasticity in 1963-2013\label{mark-2.}}
 
 
 
@@ -631,7 +631,7 @@ We assume that information on quantities is missing due to imperfections in the 
 \caption{Trade with missing unit values}
 \includegraphics[width=1\textwidth]{Graph_missing_uv.pdf}
 \label{fig:missing_uv}
-\caption*{The way to read this graph is : In 1962, 10\% of trade is in a 3-digit bilateral trade category that does not mention at least one unit value}
+\caption*{The way to read this graph is : In 1962, 10\% of trade is in a 3-digit bilateral trade category that does not mention at least one unit value}
 \end{figure}
 
 
