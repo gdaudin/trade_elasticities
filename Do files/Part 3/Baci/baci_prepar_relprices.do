@@ -231,7 +231,7 @@ gen double uv_share=value_`year'/tot_valueuv_`year'
 replace uv_share=uv_`year'*uv_share
 by iso_d product, sort: egen sect_price_`year'=total(uv_share) if uv_`year'!=.
 drop uv_share
-save baci_forestim_`year', replace
+save "$dir/Data/For Third Part/baci_forestim_`year'.dta", replace
 clear	
 end
 
@@ -243,7 +243,7 @@ capture program drop synt
 program synt
 args year
 
-use baci_forestim_`year', clear
+use "$dir/Data/For Third Part/baci_forestim_`year'.dta", clear
 drop if sect_price_`year'==.
 by iso_d product sect_price_`year', sort: drop if _n!=1
 keep product iso_d sect_price_`year' share_taken 
@@ -267,7 +267,7 @@ capture program drop imp
 program imp
 args year
 
-use baci_forestim_`year', clear
+use "$dir/Data/For Third Part/baci_forestim_`year'.dta", clear
 gen ms=value_`year'/tot_value_`year'
 preserve
 keep if uv_`year'==. 
