@@ -15,29 +15,54 @@
 
 *the iso_o-iso_d list matches previous un comtrade list: 225 countries
 
+
+
+
+
+
+****************************************
+*set directory*
+****************************************
+set more off
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
+
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+}
+
+import delimited "$dir/Data/Baci/country_code_baci92.csv",  encoding(UTF-8) clear varname(1) stringcols(_all)
+save "$dir/Data/Baci/country_code_baci92.dta", replace
+cd "$dir/Data/Baci"
+
+
 ****************************************
 *prepare data files*
 ****************************************
 set mem 500M
 set matsize 800
 set more off
-*on my laptop:
-*global dir "G:\LIZA_WORK\GUILLAUME_DAUDIN"
-*at OFCE:
-global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN"
-*at ScPo:
-*global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN"
-cd "$dir\baci"
 
-**insheet data and look at variables
-*insheet using "baci92_`1'.csv", clear
 
 **prepare data files 
 **keep lacking quantity data in the preparatory files because I will need them later
 capture program drop prepar
 program prepar
+args year
 
-insheet using "baci92_`1'.csv", clear
+insheet using "$dir/Data/Baci/baci92_`year'.csv", clear
 drop if hs6==.
 drop if v==.
 replace q=. if q<0 
@@ -83,18 +108,13 @@ by j, sort: egen double tot_dest_full=total(value)
 
 local name uv value tot_pair_full tot_dest_full
 foreach n of local name {
-	rename `n' `n'_`1'
+	rename `n' `n'_`year'
 }
 
-save baci_prepar_`1', replace
+save baci_prepar_`year', replace
 clear
 end
 
-*prepar 1995
-
-foreach i of numlist 1995(1)2010 {
-	prepar `i' 
-}
 
 **REMEMBER: relatively to sitc4 data: only one quantity unit here
 **VALUE is total value per product per pair (tot_pair_product in sitc4 data)
@@ -105,16 +125,17 @@ foreach i of numlist 1995(1)2010 {
 capture program drop countries_baci
 program countries_baci
 *at OFCE:
-use "$dir\COMTRADE_Stata_data\SITC_Rev1_4digit_leafs\rolling\wits_cepii_corresp_d_91_06", clear
-rename ccode_cepii_d iso3
-joinby iso3 using country_codes_baci, unmatched(both)
+use "$dir/Data/For Appendix/cepii_wits_country_list.dta", clear
+rename iso_d iso3
+joinby iso3 using country_code_baci92.dta, unmatched(both)
 **234 match
 **3 in master: Czechoslovakia; DDR; USSR: not a problem b/c no longer there in 1995-2010 data
 **70 obs do not correspond to an iso3 code: "other", "not elsewhere mentioned": dropped
 **1 obs corresponds to world (000): dropped
 drop if _merge==1
 drop if iso3==""
-keep iso3 _merge in_baci country code
+rename i code
+keep iso3 _merge country code
 sort _merge country
 drop if code=="000"
 **eliminate doubles in iso3 due to wits nomenclature changes
@@ -132,7 +153,7 @@ save baci_corresp, replace
 *therefore, the next file drops non-merged codes
 use baci_corresp, clear
 drop if _merge==2
-drop _merge in_baci country
+drop _merge country
 destring(code), gen(i)
 destring(code), gen(j)
 drop code
@@ -146,7 +167,7 @@ rename iso3 iso_o
 save baci_corresp_i, replace
 clear
 end
-countries_baci
+
 
 ***********************
 ***build data files for estimation and 
@@ -154,12 +175,14 @@ countries_baci
 ***********************
 capture program drop sectoral
 program sectoral
-use baci_prepar_`1', clear
+args year
+
+use baci_prepar_`year', clear
 joinby i using baci_corresp_i, unmatched(none)
 joinby j using baci_corresp_j, unmatched(none)
 drop i j 
 drop if iso_o==iso_d
-drop if value_`1'==0
+drop if value_`year'==0
 rename hs6 product
 rename t year
 **variables: 
@@ -168,17 +191,17 @@ rename t year
 preserve
 keep year iso_o iso_d tot*
 by iso_o iso_d, sort: drop if _n!=1
-save baci_tot_`1', replace
+save baci_tot_`year', replace
 restore
 drop tot*
 **"tot_value_`i': total imports by destination by product  
-by iso_d product, sort: egen tot_value_`1'=total(value_`1')
+by iso_d product, sort: egen tot_value_`year'=total(value_`year')
 **"tot_value_uv_`i': total imports by destination by product, where only obs. with existing uv taken into account 
-by iso_d product, sort: egen tot_valueuv_`1'=total(value_`1') if uv_`1'!=.
+by iso_d product, sort: egen tot_valueuv_`year'=total(value_`year') if uv_`year'!=.
 **share_taken: tells how much of any product*qty_unit combination is accounted for by non-imputed uv
-gen double share_taken=tot_valueuv_`1'/tot_value_`1' 
+gen double share_taken=tot_valueuv_`year'/tot_value_`year' 
 **drop those obs. where share_taken <.25 of total value
-drop tot_value_`1' tot_valueuv_`1'
+drop tot_value_`year' tot_valueuv_`year'
 capture assert share_taken>=.25
 if _rc!=0 {
 	preserve
@@ -202,45 +225,35 @@ erase tmp_unit.dta
 
 ****compute sectoral prices******
 **this variable gives share of each exporter within each product where uv is available
-by iso_d product, sort: egen tot_value_`1'=total(value_`1')
-by iso_d product, sort: egen tot_valueuv_`1'=total(value_`1') if uv_`1'!=.
-gen double uv_share=value_`1'/tot_valueuv_`1'
-replace uv_share=uv_`1'*uv_share
-by iso_d product, sort: egen sect_price_`1'=total(uv_share) if uv_`1'!=.
+by iso_d product, sort: egen tot_value_`year'=total(value_`year')
+by iso_d product, sort: egen tot_valueuv_`year'=total(value_`year') if uv_`year'!=.
+gen double uv_share=value_`year'/tot_valueuv_`year'
+replace uv_share=uv_`year'*uv_share
+by iso_d product, sort: egen sect_price_`year'=total(uv_share) if uv_`year'!=.
 drop uv_share
-save baci_forestim_`1', replace
+save baci_forestim_`year', replace
 clear	
 end
 
-foreach n of numlist 1995(1)2010 {
-	sectoral `n'
-}
 
 ***********
 **construct separate file which keeps sectoral prices: hs6*destination (annual files)
 ***********
 capture program drop synt
 program synt
-use baci_forestim_`1', clear
-drop if sect_price_`1'==.
-by iso_d product sect_price_`1', sort: drop if _n!=1
-keep product iso_d sect_price_`1' share_taken 
+args year
+
+use baci_forestim_`year', clear
+drop if sect_price_`year'==.
+by iso_d product sect_price_`year', sort: drop if _n!=1
+keep product iso_d sect_price_`year' share_taken 
 **share_taken is defined as share of trade for which uv is available for this product
-rename share_taken share_taken_`1' 
-save sectorprices_`1', replace
+rename share_taken share_taken_`year' 
+save sectorprices_`year', replace
 clear
 end 
 
-foreach n of numlist 1995(1)2010 {
-	synt `n'
-}
 
-**erase intermediate files
-foreach n of numlist 1995(1)2010 {
-	erase "baci_prepar_`n'.dta"
-	erase "baci92_`n'.csv"
-}
-erase tmp_impute1_toappend.dta
 
 ***NEXT FILE: constructs hierarchically aggregated prices, 
 *market shares, and runs benchmark estimation
@@ -252,10 +265,12 @@ erase tmp_impute1_toappend.dta
 **impute uv for lacking uv: qty_unit is known but no quantity present
 capture program drop imp
 program imp
-use baci_forestim_`1', clear
-gen ms=value_`1'/tot_value_`1'
+args year
+
+use baci_forestim_`year', clear
+gen ms=value_`year'/tot_value_`year'
 preserve
-keep if uv_`1'==. 
+keep if uv_`year'==. 
 keep product iso_d iso_o ms
 rename iso_o partner
 rename ms partner_ms
@@ -263,13 +278,13 @@ save tmp_impute1, replace
 restore
 preserve
 joinby product iso_d using tmp_impute1, unmatched(none)
-drop if uv_`1'==.
+drop if uv_`year'==.
 gen diff_ms=abs(ms-partner_ms)
 by iso_d product, sort: egen min_diff=min(abs(ms-partner_ms))
 **impute known uv when min_diff in ms less than 25 percentage points
 keep if diff_ms==min_diff
 keep if min_diff<.25
-keep product iso_d partner uv_`1'
+keep product iso_d partner uv_`year'
 by iso_d partner product, sort: drop if _n!=1
 joinby iso_d partner product using tmp_impute1, unmatched(none)
 rename partner iso_o
@@ -279,22 +294,51 @@ restore
 erase tmp_impute1.dta
 merge 1:1 iso_d iso_o product using tmp_impute1_toappend, update 
 erase tmp_impute1_toappend.dta
-drop tot_valueuv_`1'
+drop tot_valueuv_`year'
 drop _merge
 **"tot_value_uv_`i': total imports by destination by product, where only obs. with existing uv taken into account after uv imputation
-by iso_d product, sort: egen tot_valueuv_`1'=total(value_`1') if uv_`1'!=.
+by iso_d product, sort: egen tot_valueuv_`year'=total(value_`year') if uv_`year'!=.
 **this variable gives share of each exporter within each product where uv is available
-gen double uv_share=value_`1'/tot_valueuv_`1'
-replace uv_share=uv_`1'*uv_share
-by iso_d product qty_unit, sort: egen sect_price_`1'=total(uv_share) if uv_`1'!=.
+gen double uv_share=value_`year'/tot_valueuv_`year'
+replace uv_share=uv_`year'*uv_share
+by iso_d product qty_unit, sort: egen sect_price_`year'=total(uv_share) if uv_`year'!=.
 drop ms partner_ms
-save baci_imp_`1', replace
+save baci_imp_`year', replace
 clear	
 end
 
-foreach n of numlist 1995(1)2010 {
-	imp `n'
-}
+
 
 ******************
 ******************
+
+*prepar 1995
+
+countries_baci
+
+foreach i of numlist 1995(1)2016 {
+	prepar `i' 
+}
+
+
+foreach n of numlist 1995(1)2016 {
+	sectoral `n'
+}
+
+foreach n of numlist 1995(1)2016 {
+	synt `n'
+}
+
+/*
+
+foreach n of numlist 1995(1)2016 {
+	imp `n'
+}
+*/
+
+**erase intermediate files
+foreach n of numlist 1995(1)2016 {
+	erase "baci_prepar_`n'.dta"
+	erase "baci92_`n'.csv"
+}
+erase tmp_impute1_toappend.dta

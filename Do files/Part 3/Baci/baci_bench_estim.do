@@ -1,22 +1,33 @@
 set mem 500M
 set matsize 800
 set more off
-*on my laptop:
-global dir "G:\LIZA_WORK\GUILLAUME_DAUDIN"
-*at OFCE:
-*global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN"
-*at ScPo:
-*global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN"
-*GD
-*global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
-cd "$dir\baci"
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+
+}
+
+
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
+
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+}
+
 
 capture program drop bench
 program bench
-use baci_tot_`1', clear
+args year
+use baci_tot_`year', clear
 gen double ms=tot_pair_full/tot_dest_full
 keep year iso_o iso_d ms
-joinby iso_o iso_d year using baci_relprice_hier_`1', unmatched(none)
+joinby iso_o iso_d year using baci_relprice_hier_`year', unmatched(none)
 gen double ln_price=ln(`2')
 xi: poisson ms i.iso_o i.iso_d ln_price,  robust iterate(100) from(ln_price=-1)
 capture generate ic=e(ic)
@@ -31,7 +42,7 @@ capture generate double /*
 */cl_elast_`2'=coef_elast-1.96*se_elast_`2'
 capture generate double /* 
 */cu_elast_`2'=coef_elast+1.96*se_elast_`2'
-if `1'==1995 {
+if `year'==1995 {
 	save baci_bench_estim, replace
 }
 else {
