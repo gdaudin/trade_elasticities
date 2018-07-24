@@ -31,29 +31,29 @@ When the market share is not "effective", the one attributed should be the strai
 ****************************************
 *set directory*
 ****************************************
-clear all
-set mem 2g
-set matsize 800
+
+****************************************
+*set directory*
+****************************************
 set more off
-*on my laptop:
-*global dir "G:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*at OFCE:
-global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*at ScPo:
-*global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*cd "$dir\SITC_Rev1_adv_query_2011"
-*GD
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
-cd "$dir"
+
+display "`c(username)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+
+}
 
 
-*local type prepar_full
-*foreach t of local type {
-*	foreach n of numlist 1962(1)2009 {
-*		rel_price_aggr `n' "`t'"
-*	}
-*}
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
 
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+}
 
 
 ****************************************************************************************************************************************************************
@@ -69,7 +69,7 @@ args year sample
 *e.g. rel_price 1962 prepar_full
 
 
-use "$dir/Data/For Third Part/`sample'_`year'", clear
+use "$dir/Data/For Third Part/prepar_`sample'_`year'", clear
 drop if iso_o==iso_d
 drop if value_`year'==0
 
@@ -152,7 +152,7 @@ drop uv_share
 gen double rel_price_5=uv_`year'/sect_price_`year'
 
 
-save "$dir/Prix relatifs_`year'", replace
+save "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'", replace
 
 end
 
@@ -170,7 +170,7 @@ args year
 
 *e.g. rel_price_agg 1962
 
-use "$dir/Résultats pour 3e partie/Prix relatifs_`year'", clear
+use "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'", clear
 
 /*Pour pouvoir jouer avec plus tard*/
 tostring product, gen(sitc4) usedisplayformat
@@ -223,7 +223,7 @@ foreach agg of numlist 3(-1)0 {
 generate year= `year'
 *erase temp_pour_calcul_prix_relatifs_A
 *erase temp_pour_calcul_prix_relatifs_B
-save "$dir/Prix relatifs par agrégation hiérarchique_`year'", replace
+save "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs par agrégation hiérarchique_`sample'_`year'", replace
 
 end
 
@@ -240,7 +240,7 @@ args year hypo
 
 *e.g. rel_price_imput 1962 100 where the imputed price is 100 times the mean price
 
-use "$dir/Résultats pour la 3e partie/Prix relatifs/Prix relatifs_`year'", clear
+use "$dir/Résultats pour la 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'", clear
 
 
 /*Je développe le cube pour pouvoir y mettre tous les prix imputés, mais je le fais pays destination par pays destination*/
@@ -250,7 +250,7 @@ use "$dir/Résultats pour la 3e partie/Prix relatifs/Prix relatifs_`year'", clea
 vallist iso_d
 capture erase "$dir/Blouk_`year'_`hypo'"
 foreach pays_dest in `r(list)' {
-	use "$dir/Résultats pour la 3e partie/Prix relatifs/Prix relatifs_`year'",/*
+	use "$dir/Résultats pour la 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'",/*
 	*/clear
 	/*Je fais un fillin pour que tous les secteurs où les importateurs n'ont pas de prix apparaissent*/
 	keep iso_o iso_d product qty_unit value_`year' rel_price_5
@@ -284,14 +284,14 @@ rename rel_price_5 rel_price_imput_`hypo'
 
 generate year = `year'
 
-save "$dir/Prix relatifs par imputation_`year'_imput`hypo'", replace
+save "$dir/Résultats pour la 3e partie/Prix relatifs/Prix relatifs par imputation_`sample'_`year'_imput`hypo'", replace
 capture erase "$dir/Blouk_`year'_`hypo'"
 
 end
 
 ************************************************************
 
-
+/*
 
 ************************************************************************************
 ********************
@@ -304,7 +304,7 @@ args year hypo_imput
 
 /*e.g. rel_price_aggr_imput 1962 100 where the imputed price is 100 times the mean price*/
 
-use "$dir/Résultats pour la 3e partie/Prix relatifs/Prix relatifs_`year'", clear
+use "$dir/Résultats pour la 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'", clear
 
 
 /*Je commence par calculer par agrégation*/
@@ -434,7 +434,7 @@ end
 
 
 
-
+*/
 
 
 
@@ -445,10 +445,27 @@ end
 ************************************************************
 
 
+foreach year of num 1995/*(1)2016*/ {
+	rel_price `year' baci
+}
 
-*foreach year of num 1962(1)2009 {
-*	rel_price `year' prepar_full
-*}
+
+foreach year of num 1995/*(1)2016*/ {
+	rel_price_aggr `year' baci
+}
+
+
+
+
+foreach year of num 1962/*(1)2013*/ {
+	rel_price `year' cepii
+}
+
+foreach year of num 1962/*(1)2013*/ {
+	rel_price `year' cepii
+}
+
+
 
 
 *foreach year of num 1962(1)2009 {
