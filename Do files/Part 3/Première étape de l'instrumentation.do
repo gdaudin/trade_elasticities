@@ -1,3 +1,6 @@
+*August 28th, 2018*
+*adjusted to keep results file in .dta format and do recap graph
+
 *March 19th, 2018*
 *adjusted to work on liza laptop
 
@@ -192,13 +195,17 @@ end
 ***********************************************************
 *run different specifications: save coefs and std errors 
 ***********************************************************
+*modif ici pour garder coefs et std_errors dans fichier .dta
+
 capture program drop first_stage_instr
 program first_stage_instr
 	syntax, year(integer) liste_instr(string) /*instr*/
 
 	*years: 1963-2013
 	*instr: x
-	*exemple : first_stage_instr, year(1965) liste_inst(x)
+	*exemple : first_stage_instr, year(1965) liste_instr(x)
+*local year 1965 
+*local liste_instr gdpo
 	
 	use temp_mod_`year', clear
 	*clean data: restrict to dest-product groups where at least 5 suppliers observed \& to dest where at least 50 products observed
@@ -249,18 +256,28 @@ program first_stage_instr
 	
 	
 	encode prod_unit, generate (prod_unit_num)
-	
+
 	foreach lag of numlist `laglist' {
-	
 		local var_explicatives
 		foreach instr of local liste_instr {
 				local var_explicatives `var_explicatives' ln_rel_`instr'_lag`lag'
 		}
-		
-		
-		
+
 		gen explained = ln_uv - ln_uv_lag_`lag'
 		reg explained `var_explicatives' /*, noconstant*/ 
+		
+		preserve
+		keep in 1
+		keep year
+		foreach v of local var_explicatives {
+			gen coef_`v'=_b[`v']
+			ge se_`v'=_se[`v']
+			if `lag'!=1 {
+				joinby year using tmp_coefs_`liste_instr'_`year', unmatched(none)
+			}
+			save tmp_coefs_`liste_instr'_`year', replace
+		}
+		restore
 		
 		predict explained_predict
 		gen ln_uv_`liste_instr'_`lag'lag = explained_predict + ln_uv_lag_`lag'
@@ -327,6 +344,44 @@ foreach year of numlist 1963/2013 {
 	}
 }
 
+** keep all estimated coefs in one file (per instrument: gdpo, i)
+local liste_instr gdpo i
+foreach instr of local liste_instr {
+	foreach year of numlist 1963/2013 {
+		use tmp_coefs_`instr'_`year', clear
+		if `year'!=1963 {
+			append using tmp_coefs_`instr'
+		}
+		save tmp_coefs_`instr', replace
+		erase tmp_coefs_`instr'_`year'.dta
+	}
+}
 
+*recap graph: scheme s2mono 
+local liste_instr gdpo i
+foreach instr of local liste_instr {
+	use tmp_coefs_`instr', clear
+	foreach lag of numlist 1/3 {
+		gen low_`lag'=coef_ln_rel_`instr'_lag`lag'-2*se_ln_rel_`instr'_lag`lag'
+		gen high_`lag'=coef_ln_rel_`instr'_lag`lag'+2*se_ln_rel_`instr'_lag`lag'
+		if "`instr'"=="gdpo" {
+			graph twoway (rarea low_`lag' high_`lag' year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected coef_ln_rel_`instr'_lag`lag' year, lwidth(medthin) lpattern(solid) msymbol(smcircle_hollow) msize(small)) (fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)),/*
+			*/ legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("lag `lag' [GDP]") scheme(s2mono) saving(`instr'`lag')
+		}
+		if "`instr'"=="i"  {
+			graph twoway (rarea low_`lag' high_`lag' year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected coef_ln_rel_`instr'_lag`lag' year, lwidth(medthin) lpattern(solid) msymbol(smcircle_hollow) msize(small)) (fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)),/*
+			*/ legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("lag `lag' [I]") scheme(s2mono) saving(`instr'`lag')
+		}
+	}
+}
+graph combine gdpo1.gph gdpo2.gph gdpo3.gph i1.gph i2.gph i3.gph, iscale(.5) scheme(s2mono) rows(2) ycommon xcommon note("Note: [GDP] stands for GDP deflator, [I] stands for investment price index",justification(center))
+graph export firststage.eps, replace
 
+local liste_instr gdpo i
+foreach instr of local liste_instr {
+	foreach lag of numlist 1/3 {
+		erase `instr'`lag'.gph
+	}
+}
 
+**alternative: use scheme(s1color); order legend differently (pass-through, then CI, then fit?)
