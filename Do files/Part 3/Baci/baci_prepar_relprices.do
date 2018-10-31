@@ -67,6 +67,7 @@ drop if hs6==.
 drop if v==.
 replace q=. if q<0 
 replace q=. if  q==0
+drop if q==.
 **0 for q corresponds to small share of obs in the data, but it is there
 **does 0 mean very small quantity? I set such obs. to missing
 **an alternative would be to set it to very small number, and get high uv: not done here
