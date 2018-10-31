@@ -113,10 +113,23 @@ foreach n of local name {
 
 gen qty_unit="ton"
 
+rename i iso_o
+label var iso_o "Variable name for convenience. This is not an iso code"
+
+rename j iso_d
+label var iso_d "Variable name for convenience. This is not an iso code"
+
+rename hs6 product
+label var product "In hs6"
+
+rename t year
+
 save "$dir/Data/For Third Part/prepar_baci_`year'.dta", replace
 clear
 end
 
+
+/*
 
 **REMEMBER: relatively to sitc4 data: only one quantity unit here
 **VALUE is total value per product per pair (tot_pair_product in sitc4 data)
@@ -310,13 +323,13 @@ clear
 end
 
 
-
+*/
 ******************
 ******************
 
 *prepar 1995
 
-countries_baci
+*countries_baci
 
 foreach i of numlist 1995(1)2016 {
 	prepar `i' 
