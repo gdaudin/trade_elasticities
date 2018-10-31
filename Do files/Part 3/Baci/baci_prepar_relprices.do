@@ -71,6 +71,22 @@ replace q=. if  q==0
 **does 0 mean very small quantity? I set such obs. to missing
 **an alternative would be to set it to very small number, and get high uv: not done here
 
+rename hs6 product
+label var product "In hs6"
+
+
+****Reduce the precision to move to 4 digits (and approx 1,200 products)
+tostring product, gen(product_str)
+replace product_str="0"+product_str if strlen(product_str)==5
+replace product_str="00"+product_str if strlen(product_str)==4
+replace product_str=substr(product_str,1,4)
+destring product_str, replace
+replace product=product_str
+drop product_str
+label var product "In hs4"
+collapse (sum) v q, by(t product i j)
+
+
 *****************
 **compute unit_value per product (based only on trade_value for non_zero quantity)
 **in this database: no changes in uv through this procedure
@@ -79,24 +95,24 @@ assert uv!=. if q!=.
 
 local name v q
 foreach n of local name {
-	by i j hs6, sort: egen double tot_`n'=total(`n') if q!=.
+	by i j product, sort: egen double tot_`n'=total(`n') if q!=.
 }
 gen double uv_share=v/tot_v
 
 replace uv_share=uv*uv_share
-by i j hs6, sort: egen uv_final=total(uv_share) if q!=.
+by i j product, sort: egen uv_final=total(uv_share) if q!=.
 
 drop q tot_q uv_share uv tot_v
 rename uv_final uv
 
-**check that unique observation per i j hs6 
+**check that unique observation per i j product 
 *in this database: value corresponds to total value by pair for product
 *because there is one quantity unit per product in this data
 *and also: no cases where some uv is missing and some accounted for
-by i j hs6, sort: assert _N==1
-*by i j hs6, sort: egen double tot_pair_product=total(v)
-*sort i j hs6 tot_pair_product uv
-*by i j hs6, sort: drop if _n!=1
+by i j product, sort: assert _N==1
+*by i j product, sort: egen double tot_pair_product=total(v)
+*sort i j product tot_pair_product uv
+*by i j product, sort: drop if _n!=1
 *rename tot_pair_product value
 rename v value
 
@@ -119,8 +135,7 @@ label var iso_o "Variable name for convenience. This is not an iso code"
 rename j iso_d
 label var iso_d "Variable name for convenience. This is not an iso code"
 
-rename hs6 product
-label var product "In hs6"
+
 
 rename t year
 
