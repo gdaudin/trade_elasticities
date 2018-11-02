@@ -80,11 +80,11 @@ label var product "In hs6"
 tostring product, gen(product_str)
 replace product_str="0"+product_str if strlen(product_str)==5
 replace product_str="00"+product_str if strlen(product_str)==4
-replace product_str=substr(product_str,1,4)
+replace product_str=substr(product_str,1,3)
 destring product_str, replace
 replace product=product_str
 drop product_str
-label var product "In hs4"
+label var product "In hs3"
 collapse (sum) v q, by(t product i j)
 
 
