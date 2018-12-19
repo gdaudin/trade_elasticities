@@ -39,12 +39,12 @@ timer on 1
 
 
 ****************************************
-*Calcul market share et prix
+*Preparation des données
 ****************************************
 
 *"prep_`type'_`year'.dta" files store for each sample 
-capture program drop calc_ms
-program calc_ms
+capture program drop prepar_data
+program prepar_data
 args sample year
 *e.g. calc_ms prepar_cepii 1970 instrumented...
 
@@ -54,7 +54,15 @@ args sample year
 display "`year'"
 
 /*On va chercher les données*/
-if "`sample'" != "instrumented" use "$dir/Data/For Third Part/`sample'_`year'", clear
+if "`sample'" == "prepar_cepii" | "`sample'" == "prepar_baci" use "$dir/Data/For Third Part/`sample'_`year'", clear
+if "`sample'" == "prepar_cepii_superbal" {
+	use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+	merge m:1 iso_o iso_d using "$dir/Résultats/Première partie/Coverage/superbal_list_1962.dta", keep(match)
+}	
+	
+	
+	
+	
 if "`sample'" == "instrumented" {
 	use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
 	rename value value_`year'
@@ -348,7 +356,7 @@ capture save "$dir/temp_result"
 foreach year of num 2008(2)2008 {
 	display "`year'"
 	display
-	calc_ms prepar_cepii `year'
+	prepar_data prepar_cepii `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
@@ -363,7 +371,7 @@ capture save "$dir/temp_result"
 foreach year of num 1995(2)2016 {
 	display "`year'"
 	display
-	calc_ms prepar_baci `year'
+	prepar_data prepar_baci `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
@@ -371,7 +379,7 @@ foreach year of num 1995(2)2016 {
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
 */
-
+/*
 ****************************************************************************
 *******************************Lancer les programmes sur les données instrumentées
 clear
@@ -381,7 +389,7 @@ capture save "$dir/temp_result"
 foreach year of num 1963(2)2013 {
 	display "`year'"
 	display
-	calc_ms  instrumented `year'
+	prepar_data  instrumented `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
@@ -390,6 +398,29 @@ use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_instrumented", replace
 
 ****************************************************************************
+*/
+
+
+****************************************************************************
+*******************************Lancer les programmes sur le superbal
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1962(1)2013 {
+	display "`year'"
+	display
+	prepar_data prepar_cepii_superbal `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_instrumented", replace
+
+****************************************************************************
+
+
 
 
 *twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
