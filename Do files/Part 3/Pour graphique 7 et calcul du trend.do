@@ -108,8 +108,7 @@ foreach i of varlist one_minus_sigma {
 	display `i'_p[_N]/`i'_p[1]
 }
 
-*total change: +25.8% over 1995-2016 (but here: using uneven years only)
-
+*total change in estimated parameter: +25.8% over 1995-2016
 		
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(small)) (lfit one_minus_sigma year), /*
 */ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
