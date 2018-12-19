@@ -27,7 +27,7 @@ global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *cd "$dir\SITC_Rev1_adv_query_2011"
 *GD
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities local/"
+global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
 cd "$dir"
 
 
