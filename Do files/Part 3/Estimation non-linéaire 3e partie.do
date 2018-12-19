@@ -27,7 +27,7 @@ global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 *cd "$dir\SITC_Rev1_adv_query_2011"
 *GD
-global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
 cd "$dir"
 
 
@@ -329,7 +329,8 @@ end
 
 *blouk
 
-*********************************Lancer les programmes
+*********************************Lancer les programmes pour cepii
+/*
 clear
 set obs 1
 gen year=.
@@ -338,6 +339,21 @@ foreach year of num 2008(2)2008 {
 	display "`year'"
 	display
 	calc_ms prepar_cepii `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+*/
+*******************************Lancer les programmes pour baci
+
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1995(2)2016 {
+	display "`year'"
+	display
+	calc_ms prepar_baci `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
