@@ -54,11 +54,13 @@ args sample year
 display "`year'"
 
 /*On va chercher les données*/
+
 if "`sample'" == "prepar_cepii" | "`sample'" == "prepar_baci" use "$dir/Data/For Third Part/`sample'_`year'", clear
 if "`sample'" == "prepar_cepii_superbal" {
 	use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
 	merge m:1 iso_o iso_d using "$dir/Résultats/Première partie/Coverage/superbal_list_1962.dta", keep(match)
 }	
+
 if "`sample'" == "instrumented" {
 	use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
 	rename value value_`year'
@@ -66,11 +68,13 @@ if "`sample'" == "instrumented" {
 }
 
 
+
 if "`sample'" == "prepar_cepii_calc" {
 	use "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_cepii_`year'.dta"", clear
 	replace uv_`year' = rel_price
 	label var uv_`year' "Attention il s'agit des prix relatifs calculés"
 }
+
 
 drop if iso_o==iso_d
 drop if value_`year'==0
@@ -365,6 +369,8 @@ foreach year of num 2008(2)2008 {
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
 }
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_baseline", replace
 */
 *******************************Lancer les programmes pour baci
 /*
@@ -383,7 +389,8 @@ foreach year of num 1995(2)2016 {
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
 */
-/*
+
+
 ****************************************************************************
 *******************************Lancer les programmes sur les données instrumentées
 clear
