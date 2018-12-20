@@ -39,14 +39,14 @@ timer on 1
 
 
 ****************************************
-*Calcul market share et prix
+*Preparation des données
 ****************************************
 
 *"prep_`type'_`year'.dta" files store for each sample 
-capture program drop calc_ms
-program calc_ms
+capture program drop prepar_data
+program prepar_data
 args sample year
-*e.g. calc_ms prepar_cepii 1970
+*e.g. calc_ms prepar_cepii 1970 instrumented...
 
 
 *capture erase "$dir/ms"
@@ -54,16 +54,33 @@ args sample year
 display "`year'"
 
 /*On va chercher les données*/
-use "$dir/Data/For Third Part/`sample'_`year'", clear
+if "`sample'" == "prepar_cepii" | "`sample'" == "prepar_baci" use "$dir/Data/For Third Part/`sample'_`year'", clear
+if "`sample'" == "prepar_cepii_superbal" {
+	use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+	merge m:1 iso_o iso_d using "$dir/Résultats/Première partie/Coverage/superbal_list_1962.dta", keep(match)
+}	
+if "`sample'" == "instrumented" {
+	use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
+	rename value value_`year'
+	gen uv_`year'=exp(ln_uv_gdpo_1lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
+}
+
+
+if "`sample'" == "prepar_cepii_calc" {
+	use "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_cepii_`year'.dta"", clear
+	replace uv_`year' = rel_price
+	label var uv_`year' "Attention il s'agit des prix relatifs calculés"
+}
+
 drop if iso_o==iso_d
 drop if value_`year'==0
 
 *keep if iso_d=="USA"
 
 /*Pour pouvoir jouer avec plus tard*/
+capture drop sitc4 prod_unit
+
 tostring product, gen(sitc4) usedisplayformat
-
-
 generate prod_unit = sitc4+"_"+qty_unit
 
 
@@ -78,6 +95,7 @@ drop _fillin tot_fillin
 */
 
 *bys iso_d iso_o : egen uv_presente = total(uv_`year')
+capture drop uv_presente
 generate uv_presente= uv_`year'
 drop if uv_presente==0
 
@@ -218,6 +236,10 @@ timer on 2
 	
 	
 	*****Calcul des ms
+	
+	capture drop tot_import tot_import_export tot_export tot_trade ms_pays lnms_pays ms_tot tot_import_secteur ms_secteur
+	
+	
 	*Par pays expt chez un import
 	rename value_`year' value
 	bys iso_d : egen tot_import=total(value)
@@ -338,14 +360,14 @@ capture save "$dir/temp_result"
 foreach year of num 2008(2)2008 {
 	display "`year'"
 	display
-	calc_ms prepar_cepii `year'
+	prepar_data prepar_cepii `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
 }
 */
 *******************************Lancer les programmes pour baci
-
+/*
 clear
 set obs 1
 gen year=.
@@ -353,16 +375,83 @@ capture save "$dir/temp_result"
 foreach year of num 1995(2)2016 {
 	display "`year'"
 	display
-	calc_ms prepar_baci `year'
+	prepar_data prepar_baci `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
 }
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
+*/
+/*
+****************************************************************************
+*******************************Lancer les programmes sur les données instrumentées
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1963(2)2013 {
+	display "`year'"
+	display
+	prepar_data  instrumented `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_instrumented", replace
+
+****************************************************************************
+*/
+
+/*
+****************************************************************************
+*******************************Lancer les programmes sur le superbal
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1962(1)2013 {
+	display "`year'"
+	display
+	prepar_data prepar_cepii_superbal `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_superbal", replace
+*/
+****************************************************************************
+
+
+****************************************************************************
+*******************************Lancer les programmes sur le prix_calc
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1962(1)2013 {
+	display "`year'"
+	display
+	prepar_data prepar_cepii_calc `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_prix_calc", replace
+
+****************************************************************************
+
+
+
+
+
 
 *twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
 *twoway (line coef_sigma year, sort) (lfit coef_sigma year, sort)
+
 
 
 timer off 1

@@ -1,4 +1,12 @@
-/* v1 GD October 20, 2011
+/* 
+Change in 2018 : mainly vocabulary / directory change
+The "imputed" method is not very interesting
+u.v. is always missing when qty_unit=="N.Q.", and sometimes missing (much rarer) when qty_unit is something else.
+Le premier .do passe tout en prix relatifs par secteur, ce qui ne change rien à l'estimation
+
+
+
+v1 GD October 20, 2011
 Based on estim_elast_aggrLA.v1.1.do
 Two changes :
 - We keep only programming relevant to relative price computation
@@ -39,7 +47,7 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 
 }
 
@@ -62,11 +70,11 @@ if "`c(hostname)'" =="LAmacbook.local" {
 *prepare files at each aggregation level*
 ****************************************
 *"prep_`type'_`year'.dta" files store for each sample 
-capture program drop rel_price
-program rel_price
+capture program drop price_rel
+program price_rel
 args year sample
 
-*e.g. rel_price 1962 prepar_full
+*e.g. prepar_price 1962 prepar_full
 
 
 use "$dir/Data/For Third Part/prepar_`sample'_`year'", clear
@@ -86,10 +94,10 @@ format product %04.0f
 
 *********First, do the representative uv coverage
 /*
-keeping only representative uv (share_taken>.5, no uv imputation)
+keeping only representative uv (share_taken>.2, no uv imputation)
 the variable share_taken indicates how much of total value is included in the sectoral price
 *uv_`year': uv by product*qty_unit for country iso_o in country iso_d 
-*value_`sample': trade value by product*qty_unit for country iso_o in country iso_d
+*value_`year': trade value by product*qty_unit for country iso_o in country iso_d
 
 *" tot_value_`i': total imports by destination by product*quantity unit 
 */
@@ -100,21 +108,23 @@ by iso_d product qty_unit, sort: egen tot_value_`year'=total(value_`year')
 
 by iso_d product qty_unit, sort: egen tot_valueuv_`year'=total(value_`year') if uv_`year'!=.
 
-/*share_taken: tells how much of any product*qty_unit combination is accounted for by non-imputed uv */
+/*share_taken: tells how much of any product*qty_unit combination includes documented uv in each market */
 
-gen double share_taken=tot_valueuv_`year'/tot_value_`year' if qty_unit!="N.Q."
+gen double share_taken=tot_valueuv_`year'/tot_value_`year'
 
 /*share_unit: share of each qty_unit within each product*destination*/
 by iso_d product, sort: egen tot_prod_dest_`year'=total(value_`year')
 
 gen double share_unit=tot_value_`year'/tot_prod_dest_`year'
 
-/*share_unit is always equal to 1 in 1962-1991 which means that for a given destination, all trade in this product is measured in the same qty_unit with all partners but not in 1992, nor in 2000-2009: for same destination sometimes a lot in N.Q., sometimes some value in another measurement unit I drop those where share of N.Q. >.75 of total destination imports in that product */
+/*share_unit is always equal to 1 in 1962-1991 which means that for a given destination, all trade in this product is 
+measured in the same qty_unit with all partners but not in 1992, nor in 2000-2009: for same destination sometimes a lot in N.Q., 
+sometimes some value in another measurement unit I drop those where share of N.Q. >.75 of total destination imports in that product */
 /*qty_token est l'unité de quantité*/
 
 preserve
 keep if share_taken==. 
-keep if qty_token==1 & share_unit>.75
+keep if qty_unit=="N.Q." & share_unit>.75
 by iso_d product, sort: drop if _n!=1
 keep iso_d product
 gen holder=0
@@ -128,12 +138,12 @@ drop holder
 drop share_unit
 erase tmp_unit.dta
 
-/*I drop those where share_taken<.25 (sectoral price would not be representative)*/
+/*I drop those where share_taken<.2 (sectoral price would not be representative)*/
 
 drop if share_taken<.2
 drop share_taken
-**check that there is no uv when qty_token==1
-drop if uv_`year'!=. & qty_token==1
+**check that there is no uv when qty_unit=="N.Q."
+drop if uv_`year'!=. & qty_unit=="N.Q."
 drop if uv_`year'==.
 **sectoral prices by product*qty_unit are constructed using uv in raw data file (no imputation)
 
@@ -141,7 +151,7 @@ drop if uv_`year'==.
 **compute relative and mean price at max disaggregation
 ********************
 
-**this variable gives share of each exporter within each product*qty_unit where *uv is available
+**this variable gives the share of each exporter within each product*qty_unit where *uv is available
 /*Puis cela sert à mesure le prix moyen product*qty_unit*/
 gen double uv_share=value_`year'/tot_valueuv_`year'
 replace uv_share=uv_`year'*uv_share
@@ -150,9 +160,9 @@ drop uv_share
 
 **relative price by product*qty_unit (ou agrégation "5")
 gen double rel_price_5=uv_`year'/sect_price_`year'
+keep rel_price_5 iso_d product iso_o qty_unit tot_dest_full
 
-
-save "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'", replace
+save "$dir/Résultats/Troisième partie/Prix calculés/prix_rel_`sample'_`year'", replace
 
 end
 
@@ -161,75 +171,58 @@ end
 
 
 *******************
-**compute aggregated prices using relative price with hierarchical method
+**compute aggregated prices using relative price with stepwise method
 ********************
 
-capture program drop rel_price_aggr
-program rel_price_aggr
-args year 
+capture program drop rel_price_step
+program rel_price_step
+args year sample
 
-*e.g. rel_price_agg 1962
+*e.g. rel_price_step 1962
 
-use "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'", clear
+use "$dir/Data/For Third Part/prepar_`sample'_`year'", clear
+merge 1:1 iso_d product iso_o qty_unit using  "$dir/Résultats/Troisième partie/Prix calculés/prix_rel_`sample'_`year'"
+assert _merge!=2
+drop _merge
 
 /*Pour pouvoir jouer avec plus tard*/
 tostring product, gen(sitc4) usedisplayformat
 
+
+***IMPORTANT ***les prix des secteurs doivent être pondéré par la part des produits dans la consommation du marché importateur
+
+
 /*Calcul de tot_dest_trade by sitc_agg`agg' included in computation of relative price*/
 by iso_d product qty_unit, sort: egen tot_value_`year'_agg5=total(value_`year')
+gen weight = tot_value_`year'_agg5/tot_dest_full_`year'
+gen prix_pond = rel_price_5*weight
+
+gen missing_uv=0
+replace missing_uv=1 if rel_price_5==.
+
+
 foreach agg of numlist 0(1)4 {
 	/*Identifier les biens de la même agrégation*/
 	gen sitc_agg`agg'=substr(sitc4,1,`agg')
-	by iso_d sitc_agg`agg', sort: /*
-	*/ egen tot_value_`year'_agg`agg'=total(value_`year')
+	bys iso_d iso_o sitc_agg`agg' missing_uv: egen tot_weight`agg'=total(weight)
+	bys iso_d iso_o sitc_agg`agg' missing_uv: egen tot_prix_pond`agg'=total(prix_pond)
+	gen prix_moy_`agg'= tot_prix_pond`agg'/ tot_weight`agg' if missing_uv==0
+	bys iso_d iso_o sitc_agg`agg' : egen prix_calc_`agg'=max(prix_moy_`agg')
 }
 
-
-
-save temp_pour_calcul_prix_relatifs_A, replace
-
+gen rel_price=rel_price_5
 foreach agg of numlist 4(-1)0 {
-
-	/*Identifier l'agrégation précédente (par uv si `agg'==4)*/
-	local agg_before = `agg'+1
-
-	/*Un premier collapse pour calculer le prix relatif par produit (agg) / origi / destination*/
-	collapse tot_value_`year'_agg`agg' (mean)/* 
-		*/rel_price_`agg_before'/*
-		*/[iw=tot_value_`year'_agg`agg_before'], /*
-		*/by(iso_o iso_d sitc_agg0-sitc_agg`agg')
-	rename rel_price_`agg_before' rel_price_`agg'
-	save temp_pour_calcul_prix_relatifs_B, replace
-	preserve
-
-
-	/*Puis un deuxième collapse pour calculer le prix relatif agrégé par origine / destination (pas par produits !)*/
-	collapse (mean) rel_price_`agg' [iw=tot_value_`year'_agg`agg'],/*
-	*/by(iso_o iso_d) 
-	save temp_pour_calcul_prix_relatifs_result_agg`agg', replace
-	restore
+	replace rel_price=prix_calc_`agg' if rel_price==. 
 }
 
-/*Puis on merge les données calculées pour chaque niveau d'agrégation*/
-use  temp_pour_calcul_prix_relatifs_result_agg4, clear
-foreach agg of numlist 3(-1)0 {
-	merge 1:1 iso_o iso_d using /*
-	*/ temp_pour_calcul_prix_relatifs_result_agg`agg'
-*	erase "temp_pour_calcul_prix_relatifs_result_agg`agg'"	
-	drop _merge
-}
 
-/*Et on sauve le fichier final pour cette année*/
-generate year= `year'
-*erase temp_pour_calcul_prix_relatifs_A
-*erase temp_pour_calcul_prix_relatifs_B
-save "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs par agrégation hiérarchique_`sample'_`year'", replace
+save "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_`sample'_`year'.dta", replace
 
 end
 
 ************************************************************
 
-
+/*
 *******************
 **compute aggregated prices using imputed prices
 ********************
@@ -438,15 +431,34 @@ end
 
 
 
-
+*/
 
 ************************************************************
 ***Fait tourner les programmes
 ************************************************************
 
 
+
+foreach year of num 1962(1)2013 {
+	price_rel `year' cepii
+}
+
+
+foreach year of num 1962(1)2013 {
+	rel_price_step `year' cepii
+}
+
+
+
+
+/*
+
+
+
+
+
 foreach year of num 1995/*(1)2016*/ {
-	rel_price `year' baci
+	prepar_price `year' baci
 }
 
 
@@ -457,12 +469,9 @@ foreach year of num 1995/*(1)2016*/ {
 
 
 
-foreach year of num 1962/*(1)2013*/ {
-	rel_price `year' cepii
-}
 
 foreach year of num 1962/*(1)2013*/ {
-	rel_price `year' cepii
+	prepar_price `year' cepii
 }
 
 
