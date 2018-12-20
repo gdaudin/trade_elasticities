@@ -114,7 +114,7 @@ if strmatch("`c(hostname)'","LAmacbook.local")==1 {
 }
 
 	drop if iso_o==iso_d
-	drop if value_`year'==0
+	
 
 
 *keep if iso_d=="USA"
@@ -139,7 +139,7 @@ drop _fillin tot_fillin
 *bys iso_d iso_o : egen uv_presente = total(uv_`year')
 	capture drop uv_presente
 	generate uv_presente= uv_`year'
-	drop if uv_presente<=0
+	
 
 	save "$dir/temp_`year'", replace
 
@@ -244,9 +244,28 @@ timer on 2
  
 	use "$dir/temp_`year'", clear
 	
-	***Pour restreindre
-	*keep if substr(prod_unit,1,1)=="0"
+*******Pour restreindre 
+
+	drop if value_<=0
+
+	***********MS
+		*****On enlève quand la part dans le commerce mondiale est inférieure à 1 pour mille
+	
+	capture drop tot_import tot_import_export tot_export tot_trade ms_pays lnms_pays ms_tot tot_import_secteur ms_secteur
+	
+	
+	*Par pays expt chez un import
+	rename value_`year' value
+	bys iso_o : egen tot_export = total(value)
+	egen tot_trade = total(value)
+	generate ms_tot = tot_export/tot_trade
+	drop if ms_tot < (1/1000)
+
+
+	****UV trop faibles ou fortes
+	
 	*************************
+	drop if uv_presente<=0 | uv_presente==.
 	
 	bys prod_unit iso_d: egen c_95_uv = pctile(uv_presente),p(95)
 	bys prod_unit iso_d: egen c_05_uv = pctile(uv_presente),p(05)
@@ -276,15 +295,15 @@ timer on 2
 	codebook prod_unit iso_o iso_d
 	
 */
+
+
+
 	
+*********Calcul des ms définitifs
 	
-	*****Calcul des ms
-	
-	capture drop tot_import tot_import_export tot_export tot_trade ms_pays lnms_pays ms_tot tot_import_secteur ms_secteur
-	
+	capture drop tot_export tot_trade ms_tot
 	
 	*Par pays expt chez un import
-	rename value_`year' value
 	bys iso_d : egen tot_import=total(value)
 	bys iso_d iso_o : egen tot_import_export = total(value)
 	bys iso_o : egen tot_export = total(value)
@@ -295,14 +314,6 @@ timer on 2
 	
 	*Par exportateur dans de commerce mondial
 	generate ms_tot = tot_export/tot_trade
-
-	*On enlève les tout petits exportateurs
-	drop if ms_tot < (1/1000)
-	drop tot_import tot_trade
-	bys iso_d : egen tot_import=total(value)
-	egen tot_trade = total(value)
-	replace ms_tot = tot_export/tot_trade
-	
 
 
 	*Par secteur chez un importateur
