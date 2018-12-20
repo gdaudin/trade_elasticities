@@ -1,4 +1,10 @@
-/* v1 GD October 20, 2011
+/* 
+Change in 2018 : mainly vocabulary / directory change
+The "imputed" method is not very interesting
+
+
+
+v1 GD October 20, 2011
 Based on estim_elast_aggrLA.v1.1.do
 Two changes :
 - We keep only programming relevant to relative price computation
@@ -39,7 +45,7 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 
 }
 
@@ -62,11 +68,11 @@ if "`c(hostname)'" =="LAmacbook.local" {
 *prepare files at each aggregation level*
 ****************************************
 *"prep_`type'_`year'.dta" files store for each sample 
-capture program drop rel_price
-program rel_price
+capture program drop prepar_price
+program prepar_price
 args year sample
 
-*e.g. rel_price 1962 prepar_full
+*e.g. prepar_price 1962 prepar_full
 
 
 use "$dir/Data/For Third Part/prepar_`sample'_`year'", clear
@@ -109,7 +115,9 @@ by iso_d product, sort: egen tot_prod_dest_`year'=total(value_`year')
 
 gen double share_unit=tot_value_`year'/tot_prod_dest_`year'
 
-/*share_unit is always equal to 1 in 1962-1991 which means that for a given destination, all trade in this product is measured in the same qty_unit with all partners but not in 1992, nor in 2000-2009: for same destination sometimes a lot in N.Q., sometimes some value in another measurement unit I drop those where share of N.Q. >.75 of total destination imports in that product */
+/*share_unit is always equal to 1 in 1962-1991 which means that for a given destination, all trade in this product is 
+measured in the same qty_unit with all partners but not in 1992, nor in 2000-2009: for same destination sometimes a lot in N.Q., 
+sometimes some value in another measurement unit I drop those where share of N.Q. >.75 of total destination imports in that product */
 /*qty_token est l'unité de quantité*/
 
 preserve
@@ -128,7 +136,7 @@ drop holder
 drop share_unit
 erase tmp_unit.dta
 
-/*I drop those where share_taken<.25 (sectoral price would not be representative)*/
+/*I drop those where share_taken<.2 (sectoral price would not be representative)*/
 
 drop if share_taken<.2
 drop share_taken
@@ -152,7 +160,7 @@ drop uv_share
 gen double rel_price_5=uv_`year'/sect_price_`year'
 
 
-save "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'", replace
+save "$dir/Résultats/Troisième partie/Prix calculés/prepar_prix_`sample'_`year'", replace
 
 end
 
@@ -170,7 +178,7 @@ args year
 
 *e.g. rel_price_agg 1962
 
-use "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs_`sample'_`year'", clear
+use "$dir/Résultats/Troisième partie/Prix calculés/prepar_prix_`sample'_`year'", clear
 
 /*Pour pouvoir jouer avec plus tard*/
 tostring product, gen(sitc4) usedisplayformat
@@ -223,7 +231,7 @@ foreach agg of numlist 3(-1)0 {
 generate year= `year'
 *erase temp_pour_calcul_prix_relatifs_A
 *erase temp_pour_calcul_prix_relatifs_B
-save "$dir/Résultats pour 3e partie/Prix relatifs/Prix relatifs par agrégation hiérarchique_`sample'_`year'", replace
+save "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_`sample'_`year'", replace
 
 end
 
@@ -445,8 +453,21 @@ end
 ************************************************************
 
 
+
+foreach year of num 1962/*(1)2013*/ {
+	prepar_price `year' cepii
+}
+
+
+
+/*
+
+
+
+
+
 foreach year of num 1995/*(1)2016*/ {
-	rel_price `year' baci
+	prepar_price `year' baci
 }
 
 
@@ -457,12 +478,9 @@ foreach year of num 1995/*(1)2016*/ {
 
 
 
-foreach year of num 1962/*(1)2013*/ {
-	rel_price `year' cepii
-}
 
 foreach year of num 1962/*(1)2013*/ {
-	rel_price `year' cepii
+	prepar_price `year' cepii
 }
 
 
