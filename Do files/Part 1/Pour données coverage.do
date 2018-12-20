@@ -30,12 +30,17 @@ if strmatch("`c(username)'","*daudin*")==1 {
 
 }
 
-
 if "`c(hostname)'" =="ECONCES1" {
 *	global dir "/Users/liza/Documents/LIZA_WORK"
 *	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
 	global dir "Y:\ELAST_NONLIN"
 	cd "$dir"
+}
+
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 }
 
 
@@ -68,6 +73,10 @@ if strmatch("`c(username)'","*daudin*")==1 {
 if "`c(hostname)'" =="ECONCES1"  {
 	use cepii-4D-`i', clear
 }	
+if "`c(hostname)'" =="LAmacbook.local"  {
+	use cepii-4D-`i', clear
+}	
+
 drop iso_o iso_d
 rename cepii_o iso_o 
 rename cepii_d iso_d	
@@ -141,6 +150,10 @@ if strmatch("`c(username)'","*daudin*")==1 {
 if "`c(hostname)'" =="ECONCES1"  {
 	use cepii-4D-`i', clear
 }	
+if "`c(hostname)'" =="LAmacbook.local"  {
+	use cepii-4D-`i', clear
+}	
+
 drop iso_o iso_d
 rename cepii_o iso_o 
 rename cepii_d iso_d	
