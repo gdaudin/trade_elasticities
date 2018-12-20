@@ -395,6 +395,25 @@ end
 
 *blouk
 
+
+****************************************************************************
+*******************************Lancer les programmes sur le superbal
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1962(1)2013 {
+	display "`year'"
+	display
+	prepar_data prepar_cepii_superbal `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_superbal", replace
+
+
 *********************************Lancer les programmes pour sitc (COMTRADE)
 /*
 clear
@@ -454,24 +473,8 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_in
 */
 
 
-****************************************************************************
-*******************************Lancer les programmes sur le superbal
-clear
-set obs 1
-gen year=.
-capture save "$dir/temp_result"
-foreach year of num 1962(1)2013 {
-	display "`year'"
-	display
-	prepar_data prepar_cepii_superbal `year'
-	reg_nlin `year'
-*	erase "$dir/temp_`year'_result.dta"
-	erase "$dir/temp_`year'.dta"
-}
-use "$dir/temp_result", clear
-save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_superbal", replace
 
-*/
+/*
 ****************************************************************************
 
 
