@@ -1,3 +1,4 @@
+*Dec 2018 version: cosmetic changes to $dir
 *Sept 12 version: should work on both computers and use cepii names
 
 **This file works with data extracted from UN COMTRADE via WITS interface (bulk download procedure)
