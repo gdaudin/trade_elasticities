@@ -140,6 +140,41 @@ drop _fillin tot_fillin
 	capture drop uv_presente
 	generate uv_presente= uv_`year'
 	
+	
+	
+	
+if "`sample'" != "instrumented" {
+	*******Pour restreindre 
+
+	drop if value_<=0
+
+	***********MS
+		*****On enlève quand la part dans le commerce mondiale est inférieure à 1 pour mille
+	
+	capture drop tot_import tot_import_export tot_export tot_trade ms_pays lnms_pays ms_tot tot_import_secteur ms_secteur
+	
+	
+	*Par pays expt chez un import
+	rename value_`year' value
+	bys iso_o : egen tot_export = total(value)
+	egen tot_trade = total(value)
+	generate ms_tot = tot_export/tot_trade
+	drop if ms_tot < (1/1000)
+
+
+	****UV trop faibles ou fortes
+	
+	*************************
+	drop if uv_presente<=0 | uv_presente==.
+	
+	bys prod_unit iso_d: egen c_95_uv = pctile(uv_presente),p(95)
+	bys prod_unit iso_d: egen c_05_uv = pctile(uv_presente),p(05)
+	bys prod_unit iso_d: egen c_50_uv = pctile(uv_presente),p(50)
+	drop if uv_presente < c_05_uv | uv_presente > c_95_uv
+	drop if uv_presente < c_50_uv/100 | uv_presente > c_50_uv*100
+
+
+}	
 
 	save "$dir/temp_`year'", replace
 
@@ -244,60 +279,6 @@ timer on 2
  
 	use "$dir/temp_`year'", clear
 	
-*******Pour restreindre 
-
-	drop if value_<=0
-
-	***********MS
-		*****On enlève quand la part dans le commerce mondiale est inférieure à 1 pour mille
-	
-	capture drop tot_import tot_import_export tot_export tot_trade ms_pays lnms_pays ms_tot tot_import_secteur ms_secteur
-	
-	
-	*Par pays expt chez un import
-	rename value_`year' value
-	bys iso_o : egen tot_export = total(value)
-	egen tot_trade = total(value)
-	generate ms_tot = tot_export/tot_trade
-	drop if ms_tot < (1/1000)
-
-
-	****UV trop faibles ou fortes
-	
-	*************************
-	drop if uv_presente<=0 | uv_presente==.
-	
-	bys prod_unit iso_d: egen c_95_uv = pctile(uv_presente),p(95)
-	bys prod_unit iso_d: egen c_05_uv = pctile(uv_presente),p(05)
-	bys prod_unit iso_d: egen c_50_uv = pctile(uv_presente),p(50)
-	drop if uv_presente < c_05_uv | uv_presente > c_95_uv
-	drop if uv_presente < c_50_uv/100 | uv_presente > c_50_uv*100
-*	drop if uv_presente>=.
-	
-	***Pour faire un plus petit sample
-	*En ne gardant que 10 ou 20% des produits et des pays
-/*	local limite 50
-	bys prod_unit : egen total_product = total(value_`year')
-	bys iso_d : egen total_iso_d = total(value_`year')
-	bys iso_o : egen total_iso_o = total(value_`year')
-	
-	egen threshold_product = pctile (total_product),p(`limite')
-	egen threshold_iso_d = pctile (total_iso_d),p(`limite')
-	egen threshold_iso_o = pctile (total_iso_o),p(`limite')
-	
-	
-	drop if total_iso_d <= threshold_iso_d
-	drop if total_iso_o <= threshold_iso_o
-	drop if total_product <= threshold_product
-	
-	drop total_product total_iso_d total_iso_o  threshold_product threshold_iso_d threshold_iso_o 
-	
-	codebook prod_unit iso_o iso_d
-	
-*/
-
-
-
 	
 *********Calcul des ms définitifs
 	
@@ -406,7 +387,7 @@ end
 
 *blouk
 
-
+/*
 ****************************************************************************
 *******************************Lancer les programmes sur le superbal
 clear
@@ -424,9 +405,30 @@ foreach year of num 1962(1)2013 {
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_superbal", replace
 
+*/
+
+
+*******************************Lancer les programmes pour baci
+
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1995(1)2016 {
+	display "`year'"
+	display
+	prepar_data prepar_baci `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
+
+
 
 *********************************Lancer les programmes pour sitc (COMTRADE)
-/*
+
 clear
 set obs 1
 gen year=.
@@ -442,27 +444,32 @@ foreach year of num 1962(1)2013 {
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_baseline", replace
 
-*/
-*******************************Lancer les programmes pour baci
-/*
+
+
+
+****************************************************************************
+*******************************Lancer les programmes sur le prix_calc
 clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 1995(1)2016 {
+foreach year of num 1962(1)2013 {
 	display "`year'"
 	display
-	prepar_data prepar_baci `year'
+	prepar_data prepar_cepii_calc `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
 }
 use "$dir/temp_result", clear
-save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
-*/
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_prix_calc", replace
+
+
+
 
 /*
->>>>>>> feature/estimation_instrumentee
+/*
+
 ****************************************************************************
 *******************************Lancer les programmes sur les données instrumentées
 clear
@@ -486,27 +493,6 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_in
 
 
 /*
-****************************************************************************
-
-
-****************************************************************************
-*******************************Lancer les programmes sur le prix_calc
-clear
-set obs 1
-gen year=.
-capture save "$dir/temp_result"
-foreach year of num 1962(1)2013 {
-	display "`year'"
-	display
-	prepar_data prepar_cepii_calc `year'
-	reg_nlin `year'
-*	erase "$dir/temp_`year'_result.dta"
-	erase "$dir/temp_`year'.dta"
-}
-use "$dir/temp_result", clear
-save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_prix_calc", replace
-
-
 
 
 *twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
