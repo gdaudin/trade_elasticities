@@ -59,15 +59,19 @@ if "`sample'" == "prepar_cepii_superbal" {
 	use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
 	merge m:1 iso_o iso_d using "$dir/Résultats/Première partie/Coverage/superbal_list_1962.dta", keep(match)
 }	
-	
-	
-	
-	
 if "`sample'" == "instrumented" {
 	use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
 	rename value value_`year'
 	gen uv_`year'=exp(ln_uv_gdpo_1lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
 }
+
+
+if "`sample'" == "prepar_cepii_calc" {
+	use "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_cepii_`year'.dta"", clear
+	replace uv_`year' = rel_price
+	label var uv_`year' "Attention il s'agit des prix relatifs calculés"
+}
+
 drop if iso_o==iso_d
 drop if value_`year'==0
 
@@ -430,7 +434,7 @@ capture save "$dir/temp_result"
 foreach year of num 1962(1)2013 {
 	display "`year'"
 	display
-	prepar_data prepar_cepii_imputed `year'
+	prepar_data prepar_cepii_calc `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
