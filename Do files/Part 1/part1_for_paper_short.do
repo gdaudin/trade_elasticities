@@ -76,7 +76,7 @@ foreach s of local sample {
 }
 grc1leg2 full.gph superbal.gph, ycommon xcommon title("The sample composition effect") cols(2) scheme(s1mono)
 graph export "sample_composition_effect_`1'.eps", replace
-graph export "$dir/Git/trade_elasticites/Rédaction/tex/sample_composition_effect_`1'.eps", replace
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/sample_composition_effect_`1'.eps", replace
 erase full.gph 
 erase superbal.gph 
 erase basic.dta
@@ -114,12 +114,14 @@ foreach s of local sample {
 *growth rate: 
 *0.265% per year for full sample (sign. at 1%): 14.5% increase in coef 
 *0.331% per year for superbal sample (sign at 1%): 18.4% increase in coef (using 1965 increases growth rate to .495% per year)
-	quietly graph twoway (scatter estim_`s' ci_`s'_high ci_`s'_low year, msymbol(smcircle smcircle_hollow smcircle_hollow) mcolor(gs4 gs8 gs8)) /*
-	*/ (line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)), legend(order(1 2 4) label(1 "coef_estim") /*
-	*/ label(2 "conf_int") label(4 "geometric fit")) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s')
+	quietly graph twoway (rarea ci_`s'_high ci_`s'_low year, fintensity(inten20) lpattern(dot) lwidth(thin)) /*
+	*/ (connected estim_`s' year, msize(vsmall)) /*
+	*/ (line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)), legend(order(2 1 3) label(2 "coef_estim") /*
+	*/ label(1 "conf_int") label(3 "geometric fit")) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s') scheme(s1mono)
 }
-quietly graph combine full.gph superbal.gph, ycommon xcommon title("The product composition effect (world)")
+grc1leg2 full.gph superbal.gph, ycommon xcommon title("The product composition effect (world)") cols(2) scheme(s1mono)
 graph export "product_composition_effect_world_`1'.eps", replace
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/product_composition_effect_world_`1'.eps", replace
 erase full.gph 
 erase superbal.gph 
 erase basic.dta
@@ -154,12 +156,14 @@ foreach s of local sample {
 *growth rate: 
 *0.40% per year for full sample (sign. at 1%): 22.7% increase in coef [explains 87% of tot variation]
 *0.54% per year for superbal sample (sign at 1%): 31.4% increase in coef (using 1965 increases growth rate to .61% per year)
-	graph twoway (scatter estim_`s' ci_`s'_high ci_`s'_low year, msymbol(smcircle smcircle_hollow smcircle_hollow) mcolor(gs4 gs8 gs8)) /*
+	graph twoway (rarea ci_`s'_high ci_`s'_low year, fintensity(inten20) lpattern(dot) lwidth(thin)) /*
+	*/ (connected estim_`s' year, msize(vsmall)) /*
 	*/ (line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)), legend(order(1 2 4) label(1 "coef_estim") /*
-	*/ label(2 "conf_int") label(4 "geometric fit")) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s')
+	*/ label(2 "conf_int") label(4 "geometric fit")) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s') scheme(s1mono)
 }
-graph combine full.gph superbal.gph, ycommon xcommon title("The product composition effect (country)")
+grc1leg2  full.gph superbal.gph, ycommon xcommon title("The product composition effect (country)") cols(2) scheme(s1mono)
 graph export "product_composition_effect_country_`1'.eps", replace
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/product_composition_effect_country_`1'.eps", replace
 erase full.gph 
 erase superbal.gph 
 erase basic.dta
