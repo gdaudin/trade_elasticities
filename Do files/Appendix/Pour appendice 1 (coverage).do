@@ -27,7 +27,7 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/2017 OFCE Substitution Elasticities local"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 	cd "$dir/Data/COMTRADE_2015_lite"
 
 }
@@ -604,3 +604,4 @@ foreach y of local year {
 	cover `y'
 	recip `y'
 }
+annual
