@@ -117,6 +117,7 @@ label values _fillin _fillin
 scalar define nba_9313=pairs_year[1]
 scalar define nbia_9313=pairs_year[2]
 **same thing but without subperiods
+if strmatch("`c(username)'","*daudin*")==1 {
 	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta", clear
 }
 if "`c(hostname)'" =="ECONCES1"  {
@@ -180,7 +181,7 @@ graph twoway (spike nb_active year, lcolor(blue) lpattern(dot) xtitle("year" " "
 */ (line share_period year, lcolor(blue) cmissing(n) yaxis(2)), /*
 */ legend(order (2 1 3) label(1 "# active pairs") label(2 "share of potential pairs") label(3 "share of active pairs in subperiod")) /*
 */ yscale(axis(1) range (0 30)) ylabel(0(5)30, axis(1)) yscale(axis(1) range (0 1)) ylabel(0(0.2)1, axis(2)) scheme(s1mono)
-graph export "$dir/Git/trade_elasticities/Rédaction/tex/part1_active_pairs.eps, as(eps) preview(on) replace
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/part1_active_pairs.eps", as(eps) preview(on) replace
 clear
 end
 active
