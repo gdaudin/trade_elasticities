@@ -16,7 +16,7 @@ clear all
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 	cd "$dir"
 
 }
@@ -38,7 +38,7 @@ capture program drop active
 program active
 if strmatch("`c(username)'","*daudin*")==1 {
 *replace e dans resultats et premiere par e avec accent
-	use "$dir/Résultats/Première partie/cov_per_year_pair.dta", clear
+	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta", clear
 }
 if "`c(hostname)'" =="ECONCES1"  {
 	use cov_per_year_pair, clear
@@ -75,7 +75,7 @@ foreach n of numlist 1962(1)2013 {
 **create nb potential pairs in 1963-1990
 if strmatch("`c(username)'","*daudin*")==1 {
 *replace e dans resultats et premiere par e avec accent
-	use "$dir/Résultats/Première partie/cov_per_year_pair.dta", clear
+	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta", clear
 }
 if "`c(hostname)'" =="ECONCES1"  {
 	use cov_per_year_pair, clear
@@ -98,7 +98,7 @@ scalar define nbia_6290=pairs_year[2]
 **same for 1993-2009
 if strmatch("`c(username)'","*daudin*")==1 {
 *replace e dans resultats et premiere par e avec accent
-	use "$dir/Résultats/Première partie/cov_per_year_pair.dta", clear
+	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta", clear
 }
 if "`c(hostname)'" =="ECONCES1"  {
 	use cov_per_year_pair, clear
@@ -117,7 +117,8 @@ label values _fillin _fillin
 scalar define nba_9313=pairs_year[1]
 scalar define nbia_9313=pairs_year[2]
 **same thing but without subperiods
-	use "$dir/Résultats/Première partie/cov_per_year_pair.dta", clear
+if strmatch("`c(username)'","*daudin*")==1 {
+	use "$dir/Résultats/Première partie/Coverage/cov_per_year_pair.dta", clear
 }
 if "`c(hostname)'" =="ECONCES1"  {
 	use cov_per_year_pair, clear
@@ -179,8 +180,8 @@ graph twoway (spike nb_active year, lcolor(blue) lpattern(dot) xtitle("year" " "
 */ (line share_year year, lcolor(red) yaxis(2) r1title("share" " ")) /*
 */ (line share_period year, lcolor(blue) cmissing(n) yaxis(2)), /*
 */ legend(order (2 1 3) label(1 "# active pairs") label(2 "share of potential pairs") label(3 "share of active pairs in subperiod")) /*
-*/ yscale(axis(1) range (0 30)) ylabel(0(5)30, axis(1)) yscale(axis(1) range (0 1)) ylabel(0(0.2)1, axis(2))
-graph export part1_active_pairs.eps, as(eps) preview(on) replace
+*/ yscale(axis(1) range (0 30)) ylabel(0(5)30, axis(1)) yscale(axis(1) range (0 1)) ylabel(0(0.2)1, axis(2)) scheme(s1mono)
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/part1_active_pairs.eps", as(eps) preview(on) replace
 clear
 end
 active

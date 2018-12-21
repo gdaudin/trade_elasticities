@@ -27,7 +27,7 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	global dir "~/Documents/Recherche/2017 OFCE Substitution Elasticities local"
 	cd "$dir/Data/COMTRADE_2015_lite"
 
 }
@@ -84,8 +84,8 @@ rename test_rep nb_years
 bys iso_o iso_d : keep if _n==1
 drop year tot_pair
 
-histogram nb_years, width(5) xtitle("Number of years") title("Pair presence in `1'-2013") fract 
-graph export nb_years_pair_presence_`1'_13.eps, replace
+histogram nb_years, width(5) xtitle("Number of years") title("Pair presence in `1'-2013") fract  scheme(s1mono)
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/nb_years_pair_presence_`1'_13.eps", replace
 
 *--------------------------------------------------------------------------------
 **construct superbalanced sample defined from some year `1' until 2013**
@@ -472,9 +472,9 @@ twoway (connected cov_bal_to_full year, ytitle("Share of total trade", axis(1)) 
 */(spike tot_full year, lcolor(gs4) lpattern(shortdash) yaxis(2) ytitle("Trillions of USD", axis(2)) yscale(titlegap(medsmall) axis(2)) ylabel(0(2.5)15, angle(horizontal) grid glwidth(vthin) glcolor(bluishgray) axis(2))) , /*
 */title("Trade coverage: stable pairs")/* 
 */legend(label(1 "Balanced") label(2 "Superbalanced") label(3 "Square") label(4 "Trade in full sample [right scale]")) /*
-*/ yscale(axis(2) range (0 15)) ylabel(0(3)15, axis(2)) yscale(axis(2) range (0 1)) ylabel(0(0.2)1, axis(1))
+*/ yscale(axis(2) range (0 15)) ylabel(0(3)15, axis(2)) yscale(axis(2) range (0 1)) ylabel(0(0.2)1, axis(1)) scheme(s1mono)
 
-graph export trade_coverage_`1'.eps, replace
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/trade_coverage_`1'.eps", replace
 clear
 erase coverage.dta
 end
@@ -588,8 +588,8 @@ twoway (connected cov_recip62 year, ytitle("Coverage reciprocal trade") ylabel(.
 */ (connected cov_recip65 year, ytitle("Coverage reciprocal trade") ylabel(.4(.1)1, angle(horizontal) grid glwidth(vthin) glcolor(bluishgray)) lcolor(red) lwidth(medium) msymbol(point) mcolor(red)) /*
 */ (connected cov_recipannual year, lpattern(solid) lcolor(black) lwidth(medthick) msymbol(point) mcolor(black)), /*
 */title("Reciprocal trade share")/* 
-*/legend(label(1 "Reciprocal 1962") label(2 "Reciprocal 1965") label(3 "Reciprocal annual"))
-graph export recip_coverage_62_65.eps, replace
+*/legend(label(1 "Reciprocal 1962") label(2 "Reciprocal 1965") label(3 "Reciprocal annual")) scheme(s1mono)
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/recip_coverage_62_65.eps", replace
 end
 *RUN PROGRAM
 *annual
