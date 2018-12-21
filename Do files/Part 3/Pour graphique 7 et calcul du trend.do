@@ -18,7 +18,7 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
 	cd "$dir/Résultats/Troisième partie/"
 
 }
@@ -73,13 +73,13 @@ foreach i of varlist one_minus_sigma {
 		
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(small)) /*
 	*/ (lfit one_minus_sigma year), /*
-	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
+	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
 graph export graph7_without2008.eps, replace
 restore
 
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) /*
 	*/ (lfit one_minus_sigma year), /*
-	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
+	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
 graph export graph7_with2008.eps, replace
 graph dir
 
@@ -113,11 +113,11 @@ foreach i of varlist one_minus_sigma {
 *total change in estimated parameter: +25.8% over 1995-2016
 		
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(small)) (lfit one_minus_sigma year), /*
-*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
+*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
 graph export graph8_without2011.eps, replace
 restore
 
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) (lfit one_minus_sigma year), /*
-*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
+*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
 graph export graph8_with2011.eps, replace
 *graph dir

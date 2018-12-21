@@ -18,7 +18,7 @@ set matsize 800
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 	cd "$dir/Résultats/Première Partie"
 
 }
@@ -69,15 +69,19 @@ foreach s of local sample {
 *growth rate: 
 *0.087% per year for full sample (sign. at 10%): 4.5% increase in coef (marg significant)
 *0.33% per year for superbal sample (sign at 1%): 18.2% increase in coef (using 1965 increases growth rate to .47% per year)
-	quietly graph twoway (scatter estim_`s' ci_`s'_high ci_`s'_low year, msymbol(smcircle smcircle_hollow smcircle_hollow) mcolor(gs4 gs8 gs8)) /*
-	*/ (line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)), legend(order(1 2 4) label(1 "coef_estim") /*
-	*/ label(2 "conf_int") label(4 "geometric fit")) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s')
+	quietly graph twoway  (rarea ci_`s'_high ci_`s'_low year, fintensity(inten20) lpattern(dot) lwidth(thin)) /*
+	*/ (connected estim_`s' year, msize(vsmall)) /*
+	*/ (line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)), legend(order(2 1 3) label(2 "coef_estim") /*
+	*/ label(1 "conf_int") label(3 "geometric fit") row(1)) xtitle(year) ytitle(distance elasticity) title("`s' sample") saving(`s', replace) scheme(s1mono)
 }
-quietly graph combine full.gph superbal.gph, ycommon xcommon title("The sample composition effect")
+grc1leg2 full.gph superbal.gph, ycommon xcommon title("The sample composition effect") cols(2) scheme(s1mono)
 graph export "sample_composition_effect_`1'.eps", replace
+graph export "$dir/Git/trade_elasticites/Rédaction/tex/sample_composition_effect_`1'.eps", replace
 erase full.gph 
 erase superbal.gph 
 erase basic.dta
+
+
 
 *product composition: world bundle
 use part1_ppml_full_nofta_`1'_current, clear
