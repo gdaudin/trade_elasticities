@@ -25,7 +25,7 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 	cd "$dir/Data/COMTRADE_2015_lite"
 
 }
@@ -59,16 +59,14 @@ set more off
 *cd "$dir\SITC_Rev1_wits_bulk\wits_june_2011"
 
 clear
-*delete previously constructed files if rerun:
-capture erase cov_per_year.dta
-capture erase cov_per_year_pair.dta
+
 
 
 foreach i of numlist 1962(1)2013 {
 	display "--cov_per_year--------`i'---------------------"
 if strmatch("`c(username)'","*daudin*")==1 {
 	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
-	cd "~/Documents/Recherche/OFCE Substitution Elasticities/Résultats/Première partie/Coverage"
+	cd "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/Résultats/Première partie/Coverage"
 }
 if "`c(hostname)'" =="ECONCES1"  {
 	use cepii-4D-`i', clear
@@ -76,6 +74,10 @@ if "`c(hostname)'" =="ECONCES1"  {
 if "`c(hostname)'" =="LAmacbook.local"  {
 	use cepii-4D-`i', clear
 }	
+
+*delete previously constructed files if rerun:
+capture erase cov_per_year.dta
+capture erase cov_per_year_pair.dta
 
 drop iso_o iso_d
 rename cepii_o iso_o 
@@ -138,7 +140,8 @@ drop if iso_o==iso_d
 	save cov_per_year, replace
 	clear
 }
-**comparison cov_per_year_pair: list pairs per year, total trade per pair, share of trade with uv per pair (I do not take unattributed when some attributed and some not)
+**comparison cov_per_year_pair: list pairs per year, total trade per pair, share of trade with uv per pair 
+* (I do not take unattributed when some attributed and some not)
 
 
 foreach i of numlist 1962(1)2013 {
