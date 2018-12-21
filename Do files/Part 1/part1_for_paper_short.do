@@ -172,8 +172,11 @@ end
 
 *RUN PROGRAM:
 basic 1962
+
 *variant for first year of instrumented data (1965-2013)
-basic 1965
+
+
+*basic 1965
 
 **NOTES:
 *country bundle fixing enhances distance puzzle by more; sample effects matter more here
