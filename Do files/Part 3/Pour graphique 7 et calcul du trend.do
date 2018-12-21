@@ -71,13 +71,15 @@ foreach i of varlist one_minus_sigma {
 
 				
 		
-twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(small)) (lfit one_minus_sigma year), /*
-*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
+twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(small)) /*
+	*/ (lfit one_minus_sigma year), /*
+	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
 graph export graph7_without2008.eps, replace
 restore
 
-twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) (lfit one_minus_sigma year), /*
-*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
+twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) /*
+	*/ (lfit one_minus_sigma year), /*
+	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s2mono)
 graph export graph7_with2008.eps, replace
 graph dir
 
