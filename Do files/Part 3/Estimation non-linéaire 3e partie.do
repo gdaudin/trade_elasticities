@@ -341,7 +341,7 @@ bys iso_d iso_o	: replace weight = 1/_N
 	drop if uv_presente>=.
 	display "nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
 *	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o', iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
-	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
+	capture nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
 	
 	
 	
@@ -414,7 +414,7 @@ clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 1995(1)2016 {
+foreach year of num 2012(1)2016 {
 	display "`year'"
 	display
 	prepar_data prepar_baci `year'
