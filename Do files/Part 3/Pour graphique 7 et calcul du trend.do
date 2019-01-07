@@ -4,7 +4,7 @@
 ** baseline (sitc)
 ** baci (hs4)
 ** instrumented (sitc)
-** imputed (sitc)
+** superbal (sitc)
 
 
 
@@ -121,3 +121,31 @@ twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth
 */ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
 graph export graph8_with2011.eps, replace
 *graph dir
+
+** superbal
+
+use "Résultats 1ere regression 3e partie_superbal.dta", clear
+drop if year==.
+
+generate one_minus_sigma = 1-sigma_est
+
+
+generate double cl_elast=-exp(ln(sigma_est-1)-1.96*ecart_type_lnsigmaminus1)
+generate double cu_elast=-exp(ln(sigma_est-1)+1.96*ecart_type_lnsigmaminus1)
+bys year : keep if _n==1
+
+foreach i of varlist one_minus_sigma { 
+	quietly generate ln_`i' = ln(abs(`i'))
+	regress ln_`i' year
+	quietly predict ln_`i'_p
+	quietly generate `i'_p= -exp(ln_`i'_p)
+	drop ln_`i'_p ln_`i'
+	display "`i': total change in superbal"
+	display `i'_p[_N]/`i'_p[1]
+}
+
+*total change in estimated parameter: +67.7% over 1962-2013
+		
+twoway  (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) (lfit one_minus_sigma year), /*
+*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
+graph export graph9_superbal.eps, replace
