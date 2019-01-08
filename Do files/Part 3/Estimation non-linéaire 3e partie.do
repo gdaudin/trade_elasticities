@@ -39,8 +39,8 @@ if "`c(hostname)'" =="LAmacbook.local" {
 
 ****************************************************************************************************************************************************************
 capture log using "logs/`c(current_time)' `c(current_date)'"
-timer clear 1
-timer on 1
+*timer clear 1
+*timer on 1
 
 
 
@@ -274,8 +274,8 @@ capture program drop reg_nlin
 program reg_nlin
 	args year
 *exemple : reg_nlin 2009
-timer clear 2
-timer on 2
+timer clear 1
+timer on 1
  
 	use "$dir/temp_`year'", clear
 	
@@ -364,8 +364,8 @@ bys iso_d iso_o	: replace weight = 1/_N
 	generate date = "`c(current_time)' `c(current_date)'"
 	
 	
-	timer off 2
-	timer list 2
+	timer off 1
+	timer list 1
 	generate time=r(t2)
 	generate ordinateur="Lysandre"
 	drop iso_o_*
@@ -444,9 +444,6 @@ foreach year of num 1962(1)2013 {
 }
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_baseline", replace
-
-timer off 1
-timer list 1
 
 
 log close
