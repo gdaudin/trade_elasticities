@@ -409,7 +409,7 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_su
 
 
 *******************************Lancer les programmes pour baci
-
+/*
 clear
 set obs 1
 gen year=.
@@ -426,6 +426,7 @@ use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
 
 
+*/
 
 *********************************Lancer les programmes pour sitc (COMTRADE)
 
@@ -444,11 +445,16 @@ foreach year of num 1962(1)2013 {
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_baseline", replace
 
+timer off 1
+timer list 1
 
+
+log close
 
 
 ****************************************************************************
 *******************************Lancer les programmes sur le prix_calc
+/*
 clear
 set obs 1
 gen year=.
@@ -465,9 +471,6 @@ use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_prix_calc", replace
 
 
-
-
-/*
 /*
 
 ****************************************************************************
