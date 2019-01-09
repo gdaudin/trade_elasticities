@@ -84,17 +84,19 @@ program calc_ms
 	replace iso_o="BEL" if iso_o=="BLX"
 	*En effet, BEL et LUX commencent en 1999 dans WITS : c'est toujours BLX avant
 	*Par contre, toujours DEU
-	
+
+* same steps for data cleaning as in estimation non-lineaire 3e partie 
 	drop if iso_o==iso_d
-	drop if value_`year'==0
+*eliminate negative and 0 trade values
+	drop if value_`year'<=0
+	
 	tostring product, gen(sitc4) usedisplayformat
 	generate prod_unit=sitc4+"_"+qty_unit
 	gen double uv_presente=uv_`year'
-	drop if uv_presente<=0
+*	drop if uv_presente<=0
 	
-	*!*here I take up piece of reg_nlin file: cropping data before instrumenting
 	
-	*first eliminate small exporters:
+*eliminate small exporters:
 	rename value_`year' value
 	bys iso_d: egen tot_import = total(value)
 	bys iso_d iso_o: egen tot_import_export = total(value)
@@ -105,16 +107,18 @@ program calc_ms
 	gen double lnms_pays = ln(tot_import_export / tot_import)
 	*par exportateur dans commerce mondial
 	gen double ms_tot = tot_export/tot_trade
-	*enlever ptts exportateurs: 22103 obs in 1967
+	*enlever ptts exportateurs: 
 	drop if ms_tot<(1/1000)
 	drop tot_import tot_trade
 	
-	*second crop unit values in each market by product and measurement unit:
-	bys prod_unit iso_d: egen double c_95_uv = pctile(uv_presente), p(95)
-	bys prod_unit iso_d: egen double c_05_uv = pctile(uv_presente), p(05)
-	bys prod_unit iso_d: egen double c_50_uv = pctile(uv_presente), p(50)
+****UV trop faibles ou fortes
 	
-	*in 1967 drops 8800 and 366 obs respectively
+	*************************
+	drop if uv_presente<=0 | uv_presente==.
+	
+	bys prod_unit iso_d: egen c_95_uv = pctile(uv_presente),p(95)
+	bys prod_unit iso_d: egen c_05_uv = pctile(uv_presente),p(05)
+	bys prod_unit iso_d: egen c_50_uv = pctile(uv_presente),p(50)
 	drop if uv_presente < c_05_uv | uv_presente > c_95_uv
 	drop if uv_presente < c_50_uv/100 | uv_presente > c_50_uv*100
 	
