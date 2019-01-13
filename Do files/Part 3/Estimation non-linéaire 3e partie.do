@@ -283,6 +283,8 @@ timer on 1
 *********Calcul des ms définitifs
 	
 	capture drop tot_export tot_trade ms_tot
+*for instrumented files: additional variables already defined
+	capture drop tot_import tot_import_export ms_pays lnms_pays tot_import_secteur ms_secteur
 	
 	*Par pays expt chez un import
 	bys iso_d : egen tot_import=total(value)
