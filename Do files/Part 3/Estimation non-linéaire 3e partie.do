@@ -78,7 +78,7 @@ if strmatch("`c(username)'","*daudin*")==1 {
 
 
 	if "`sample'" == "prepar_cepii_calc" {
-		use "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_cepii_`year'.dta"", clear
+		use "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_cepii_`year'.dta", clear
 		replace uv_`year' = rel_price
 		label var uv_`year' "Attention il s'agit des prix relatifs calculés"
 	}
@@ -120,7 +120,8 @@ if strmatch("`c(hostname)'","LAmacbook.local")==1 {
 *keep if iso_d=="USA"
 
 /*Pour pouvoir jouer avec plus tard*/
-	capture drop sitc4 prod_unit
+	capture drop sitc4
+	capture drop prod_unit
 
 	tostring product, gen(sitc4) usedisplayformat
 	generate prod_unit = sitc4+"_"+qty_unit
@@ -211,7 +212,7 @@ program nlnonlin
 	generate double `sigma' = exp(`lnsigmaminus1')+1
 	
 	tempvar fe_iso_o
-*	generate double `fe_iso_o' =1 if iso_o_1==1
+*	generate double `fe_iso_o' =1 if iso_o_1==1g
 	generate double `fe_iso_o' =.
 	
 	local n=2
@@ -335,6 +336,7 @@ timer on 1
 
 	
 display "`initial_iso_o'"
+capture drop weight
 gen weight=0
 bys iso_d iso_o	: replace weight = 1/_N
 *Cela de manière 
@@ -428,7 +430,7 @@ use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
 
 
-*/
+
 
 *********************************Lancer les programmes pour sitc (COMTRADE)
 
@@ -450,10 +452,10 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_ba
 
 log close
 
-
+*/
 ****************************************************************************
 *******************************Lancer les programmes sur le prix_calc
-/*
+
 clear
 set obs 1
 gen year=.
