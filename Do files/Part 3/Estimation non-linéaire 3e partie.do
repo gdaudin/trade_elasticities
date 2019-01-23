@@ -21,6 +21,7 @@ set matsize 800
 set more off
 
 display "`c(username)'"
+display "`c(hostname)'"
 if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
 	cd "$dir"
@@ -37,6 +38,11 @@ if "`c(hostname)'" =="LAmacbook.local" {
 	cd "$dir/sitcrev1_4dgt_light_1962_2013_in2018"
 }
 
+*for laptopEC Liza 
+if "`c(hostname)'" =="L184355620" {
+	global dir "P:\ECFIN Public\Orbis\trade"
+	cd "$dir"
+}
 ****************************************************************************************************************************************************************
 capture log using "logs/`c(current_time)' `c(current_date)'"
 *timer clear 1
@@ -87,7 +93,7 @@ if strmatch("`c(username)'","*daudin*")==1 {
 
 }
 
-if strmatch("`c(hostname)'","LAmacbook.local")==1 {
+if strmatch("`c(hostname)'","LAmacbook.local")==1 | strmatch("`c(hostname)'","L184355620")==1 {
 /*On va chercher les données*/
 	if "`sample'" == "prepar_cepii" | "`sample'" == "prepar_baci" use "`sample'_`year'", clear
 	if "`sample'" == "prepar_cepii_superbal" {
@@ -177,7 +183,13 @@ if "`sample'" != "instrumented" {
 
 }	
 
+if strmatch("`c(hostname)'","L184355620")==1 {
+
+	save "temp_`year'", replace
+}
+else {
 	save "$dir/temp_`year'", replace
+}
 
 
 end 
@@ -278,7 +290,14 @@ program reg_nlin
 timer clear 1
 timer on 1
  
+if strmatch("`c(hostname)'","L184355620")==1 {
+
+	use "temp_`year'", clear
+}
+
+else {
 	use "$dir/temp_`year'", clear
+}
 	
 	
 *********Calcul des ms définitifs
@@ -374,12 +393,23 @@ bys iso_d iso_o	: replace weight = 1/_N
 	generate ordinateur="Lysandre"
 	drop iso_o_*
 		
-	save "$dir/temp_`year'_result", replace
-	keep if _n==1
-	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
-	append using "$dir/temp_result"
-	save "$dir/temp_result", replace
-	
+	if strmatch("`c(hostname)'","L184355620")==1 {
+		save "temp_`year'_result", replace
+		keep if _n==1
+		keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
+		append using "temp_result"
+		save "temp_result", replace
+	}
+
+	else {
+		save "$dir/temp_`year'_result", replace
+		keep if _n==1
+		keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
+		append using "$dir/temp_result"
+		save "$dir/temp_result", replace
+
+	}
+		
 
 	
 end
@@ -418,7 +448,7 @@ clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 2012(1)2016 {
+foreach year of num 1995(1)2016 {
 	display "`year'"
 	display
 	prepar_data prepar_baci `year'
@@ -428,7 +458,7 @@ foreach year of num 2012(1)2016 {
 }
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
-
+*/
 
 
 
@@ -452,10 +482,10 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_ba
 
 log close
 
-*/
+
 ****************************************************************************
 *******************************Lancer les programmes sur le prix_calc
-
+/*
 clear
 set obs 1
 gen year=.
@@ -473,7 +503,7 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_pr
 
 
 /*
-
+/*
 ****************************************************************************
 *******************************Lancer les programmes sur les données instrumentées
 clear
