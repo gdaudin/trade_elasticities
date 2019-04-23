@@ -43,7 +43,8 @@ capture log using "logs/`c(current_time)' `c(current_date)'"
 ** baseline
 
 use "Résultats 1ere regression 3e partie.dta", clear
-
+*variant when using estimation by Liza and by Guillaume
+*use "Résultats 1ere regression 3e partie_baseline_combined.dta", clear
 
 generate one_minus_sigma = 1-sigma_est
 
@@ -53,8 +54,8 @@ generate one_minus_sigma = 1-sigma_est
 bys year : keep if _n==1
 
 
-preserve
-drop if year == 2008
+*preserve
+*drop if year == 2008
 
 
 foreach i of varlist one_minus_sigma { 
@@ -71,16 +72,26 @@ foreach i of varlist one_minus_sigma {
 
 				
 		
+/*
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(small)) /*
 	*/ (lfit one_minus_sigma year), /*
 	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
 graph export graph7_without2008.eps, replace
-restore
+*/
+*restore
 
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) /*
 	*/ (lfit one_minus_sigma year), /*
 	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
+graph export "1ere regression 3e partie.eps", replace
+
+*variant with same scale on all graphs:
+/*
+twoway   (rarea cl_elast cu_elast year, ylabel(-1.5(.5)0) fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) /*
+	*/ (lfit one_minus_sigma year), /*
+	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
 graph export graph7_with2008.eps, replace
+*/
 graph dir
 
 ** baci
