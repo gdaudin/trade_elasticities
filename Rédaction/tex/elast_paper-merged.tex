@@ -984,7 +984,7 @@ Third, we check whether the results are robust to switching to a higher quality 
 We conclude with an interpretation of the distance puzzle through the lens of the Armington framework by decomposing the estimated annualized change in the distance coefficient into the part attributable to the estimated annualized change in the trade elasticity and the residual annualized change attributable to the evolution of the elasticity of trade costs to distance $ \rho $. 
 %Under the assumption of model independence, this decomposition of the movement in the distance coefficient across the two elasticities is expected to carry over to an alternative microfoundation of the gravity model.
 
-\subsection{Results}
+\subsection{Results}\label{subsec:baseline}
 
 The baseline estimation of equation (\ref{eqn:nlestimation}) is carried out on annual cross-sections of the UN COMTRADE dataset after minimal cleaning. 
 We work with the data at the 4-digit level, and we consider as separate goods trade flows with quantities measured in different units (kg,l,items). 
@@ -1003,12 +1003,16 @@ This corresponds to an annual increase of .4\% per year.\footnote{The coefficien
 
 %\textbf{Figure 5: Estimated $(1-\sigma)$}
 %\includegraphics[width=1\textwidth]%{1ere_regression_3e_partie.eps} \label{fig_baseline}
-\begin{figure}[h!]
+\begin{figure}[H]
 \caption{Estimated $(1-\sigma)$ in the baseline\label{fig:baseline}}
 \begin{center}
 \setlength{\fboxrule}{1pt} %makes border lines thick
 \setlength{\fboxsep}{.1in} %increases distance to border
+<<<<<<< Updated upstream
 \fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.5in]{"1ere regression 3e partie_baseline".pdf}}
+=======
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 0mm, clip, height=2.7in]{"1ere regression 3e partie_baseline".pdf}}
+>>>>>>> Stashed changes
 \end{center}
 \end{figure}
 
@@ -1151,42 +1155,28 @@ Figure \ref{fig:reg_Baci} shows that our results hold: the elasticity parameter 
 This can be compared with the equivalent period in our original dataset: the increase in the absolute value of the estimated $\left(1-\sigma \right)$ is much steeper: 1.18\% a year instead of 0.4\%.
 This finding supports the idea that our benchmark estimation likely provides a lower bound on the increase in the aggregate trade elasticity.
 
-%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z noteLA: Ici je ne dis rien sur le biais lie aux flux zeros.
-%Mais j'ai fait la verification (voir fichier 'ztfpois\ s\ do4(4)digit\ s\ do4(b)aci.tex' dans le repertoire) et le biais lie au fait que les prix sont sous-estimes davantage pour les petits exportateurs et que le nombre de zeros se reduit plus vite pour les petits est toujours present.
-%Toutefois, lorsqu'on inclut a la fois la ms et l'interaction, les deux variables sont significatives a 5\% dans la specification avec les effets fixes et ils ne sont plus significatives dans la specification sans les effets fixes.
-%e ne sais pas si du coup nous pourrions argumenter que le biais lie aux zeros a un moindre impact sur l'evolution du parametre estime dans baci.
-%0 Gaulier2010 provide a detailed description of the methodology used in constructing BACI.
-%noteLA: Ici je ne dis rien sur le biais lie aux flux zeros.
-%Mais j'ai fait la verification (voir fichier 'ztfpois\ s\ do4( noteLA: Ici je ne dis rien sur le biais lie aux flux zeros.
-%Mais j'ai fait la verification (voir fichier 'ztfpois\ s\ do4( 4 4 )digit\ s\ do4( )digit\ s\ do4( b b )aci.tex' dans le repertoire) et le biais lie au fait que les prix sont sous-estimes davantage pour les petits exportateurs et que le nombre de zeros se reduit plus vite pour les petits est toujours present.
-%Toutefois, lorsqu'on inclut a la fois la ms et l'interaction, les deux variables sont significatives a 5\% dans la specification avec les effets fixes et ils ne sont plus significatives dans la specification sans les effets fixes.
-%Je ne sais pas si du coup nous pourrions argumenter que le biais lie aux zeros a un moindre impact sur l'evolution du parametre estime dans baci.
-%)aci.tex' dans le repertoire) et le biais lie au fait que les prix sont sous-estimes davantage pour les petits exportateurs et que le nombre de zeros se reduit plus vite pour les petits est toujours present.
-%Toutefois, lorsqu'on inclut a la fois la ms et l'interaction, les deux variables sont significatives a 5\% dans la specification avec les effets fixes et ils ne sont plus significatives dans la specification sans les effets fixes.
-%Je ne sais pas si du coup nous pourrions argumenter que le biais lie aux zeros a un moindre impact sur l'evolution du parametre estime dans baci.
-%0 Gaulier2010 provide a detailed description of the methodology used in constructing BACI.
-
-\begin{figure}
+\begin{figure}[H]
 \caption{Estimated $(1-\sigma)$ , BACI database}
 \includegraphics[width=1\textwidth]{"1ere regression 3e partie_Baci".pdf}
 \label{fig:reg_Baci}
 \end{figure}
 
-\subsubsection{Price instrumenting%Guillaume DaudinGD2016-07-27T17:19:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-07-27T17:19:00Z 2016-07-27T17:19:00Z Je ne suis pas s\^{u}r que le terme {\flqq}instrument{\frqq} soit juste ici.
-Je ne suis pas s\^{u}r que le terme {\flqq}instrument{\frqq} soit juste ici.
- and the non-linear estimation of ${\upsigma}$\label{mark-2.3.2.}}
+\subsubsection{Estimation of $(1-\sigma)$ with instrumented prices \label{mark-2.3.2.}}
 
-Instrumenting procedure
+%Instrumenting procedure
 
-In equation {\hyperref[ref-002]{ }}, it is possible that the estimate of \$sigma \$ is downward-biased because of unobserved demand shifters that may be correlated with prices (Hummels et Schaur 2013).
-Specifically, whenever the supply curve has a finite slope, unobserved demand shocks will result in a simultaneous increase in the price and in the expenditure on sector \textit{k} products.
-Further, even if the supply curve is perfectly elastic, measurement error may lead to a downward bias in the estimate of \$ sigma \$.
+The estimate of $\sigma$ that we report in section \ref{subsec:baseline} may be downward-biased because of unobserved demand shifters that may be correlated with prices.
+%\cite{Hummels2013} have a nice discussion of sources of endogeneity in demand estimation.
+%The demand elasticity parameter estimated in the market share equation would then be subject to attenuation bias due to not controlling for potentially positive and finite supply elasticities. 
+Specifically, whenever the supply curve has a finite slope, unobserved demand shocks will result in a simultaneous increase in the price and in the expenditure on sector \textit{k} products.\footnote{\cite{Broda2006} find that supply elasticities are finite at the 4-digit level. Their findings differ from \cite{Magee2008} who find that the small country assumption may hold in the data.} 
+Moreover, even if the supply curve is perfectly elastic, measurement error may lead to a downward bias in the estimate of $\sigma$.
 This downward bias occurs whenever there is a systematic link between unobserved quality and observed unit values whereby higher observed unit values in sector \textit{k} are associated with higher underlying quality and, consequently, higher expenditure on sector \textit{k} products.\footnote{Another potential problem is linked to using per kg instead of per item prices.
-As discussed in (Hummels et Schaur 2013), unit values reflect product bulkiness, and bulkier products are more likely to be shipped via cheaper means of transportation.
-If products differ in bulkiness within the sector, unit value differences will overstate price differences and lead to a downward bias in the estimated elasticity.
-} 
+As discussed in \cite{Hummels2013}, unit values reflect product bulkiness, and bulkier products are more likely to be shipped via cheaper means of transportation.
+If exporter-specific sectoral goods differ in bulkiness, unit value differences will overstate price differences and lead to a downward bias in the estimated elasticity.} 
 
-To check whether unobserved demand shifters correlated with prices are a source of concern in the estimation, we need an instrument that adequately captures exporter-specific shocks to sector \textit{k} prices that are not demand-driven, such as exogenous shocks to the cost of inputs.
+%Attenuation bias would not impede analyzing the evolution of the substitutability parameter if only the level of the estimated parameter were affected. But as already shown in the seminal paper by \cite{Feenstra1994}, this attenuation bias also impacts the evolution of the parameter. 
+To check whether unobserved demand shifters correlated with prices are a source of concern in the estimation, in particular for evaluating the rate of change in the estimated parameter,\footnote{\cite{Feenstra1994} shows that the attenuation bias also affects the evolution of the estimated parameter.} we need an instrument that adequately captures exporter-specific shocks to sector \textit{k} prices that are not demand-driven, such as exogenous shocks to the cost of inputs.
+%We would like to use changes in the bilateral-specific real exchange rate. One possibility would be to use Producer Price Index (PPI) since it captures the evolution of prices faced by producers on the inputs' side. Unfortunately, we do not have PPI data for most countries and years in our sample. We therefore settle for an alternative exporter-specific price level indicator: the GDP price level in current US dollars as reported in the Penn World Tables for 189 countries in 1950-2009.\footnote{See (\cite{Heston 2011}). Our sample of countries does not coincide perfectly with the countries in the Penn World Tables. However, as it is the smallest exporters that drop out, the sample adjustment in terms of world trade coverage is minor.}
 We use adjusted past unit values as an instrument for current unit value.
 The adjustment is based on exporter-specific price shocks as measured by domestic price evolutions.
 Unfortunately, we do not have information on producer price indices at the SITC 4-digit level.
@@ -1256,22 +1246,7 @@ We thus estimate the following equation:
 
 \subsubsection{ Instrumenting: motivation and results (old)\label{mark-2.3.3.}}
 
-The results just presented are subject to caution if supply schedules are not horizontal.\footnote{(\cite{Broda2006}) find that supply elasticities are finite at the 4-digit level.
-On the other hand, (\cite{Magee2008}) find that the small country assumption may hold in the data in which case there would be no attenuation bias.
-} The demand elasticity parameter estimated in the market share equation would then be subject to attenuation bias due to not controlling for potentially positive and finite supply elasticities.
-This attenuation bias would not be problematic for analyzing the evolution of the substitutability parameter if only the level of the parameter were affected.
-The problem arises because, as shown by (R.
-\cite{Feenstra 1994}), the attenuation bias also impacts the evolution of the parameter.
 
-As explained in {\hyperref[ref-001]{2.3}}, our approach is different from the canonical one as we are keen on preserving the time dimension that is central to our analysis.
-We need an instrument that adequately captures exporter-specific shocks to the price of the composite good which are not demand-driven, such as exogenous shocks to inputs' prices.
-We would like to use changes in the bilateral-specific real exchange rate.
-One possibility would be to use Producer Price Index (PPI) since it captures the evolution of prices faced by producers on the inputs' side.
-Unfortunately, we do not have PPI data for most countries and years in our sample.
-We therefore settle for an alternative exporter-specific price level indicator: the GDP price level in current US dollars as reported in the Penn World Tables for 189 countries in 1950-2009.\footnote{See (\cite{Heston 2011}).
-Our sample of countries does not coincide perfectly with the countries in the Penn World Tables.
-However, as it is the smallest exporters that drop out, the sample adjustment in terms of world trade coverage is minor.
-}
 
 The instrumenting procedure is the following.
 First, we compute relative prices for exporter-specific composite goods in each destination market using the stepwise price imputation procedure (see {\hyperref[ref-004]{3.1}}).
