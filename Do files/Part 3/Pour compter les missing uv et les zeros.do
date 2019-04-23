@@ -184,7 +184,7 @@ quietly tab iso_d
 local nbr_dest=r(r)
 
 display "`year' -- ztf" 
-display %9.2f 1-_N/(`nbr_prod'*(`nbr_origin'-1)*`nbr_dest')
+display %9.3f 1-_N/(`nbr_prod'*(`nbr_origin'-1)*`nbr_dest')
 
 end
 
@@ -196,7 +196,7 @@ end
 
 
 *foreach year of num 1962 (1) 1964 {
-foreach year of num 1995(1)2013 {
+foreach year of num 1962(1)2013 {
 	compter_zeros_bis `year'
 }
 
