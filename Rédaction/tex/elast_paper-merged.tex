@@ -982,7 +982,92 @@ In this section we first discuss the issues of missing information and selection
 We conclude with an interpretation of the distance puzzle through the lens of the Armington framework by decomposing the estimated annualized change in the distance coefficient into the part attributable to the estimated annualized change in the trade elasticity and the residual annualized change attributable to the evolution of the elasticity of trade costs to distance $ \rho $. 
 %Under the assumption of model independence, this decomposition of the movement in the distance coefficient across the two elasticities is expected to carry over to an alternative microfoundation of the gravity model.
 
-\subsection{ \label{ref-004}The incidence of missing unit values\label{mark-2.1.}}
+
+
+\subsection{Results}
+
+{\hyperref[ref-007]{Figure 7}} presents the results on the evolution of $(1-\tilde{\sigma })$ obtained when equation \ref{eqn:nlestimation} is estimated in annual cross-sections of the COMTRADE dataset.
+2008 is obviously an outlier.
+However, even excluding 2008, the absolute value of trade elasticity has increased by 38\% from 1962 to 2013.
+This corresponds to an annual increase of .6\% per year.\footnote{The coefficient of the geometric fit is significant at 1\% level, the 95\% confidence interval is between 0.4\% and 0.9\% (not taking into account though the uncertainty around yearly estimates).
+}
+According the preceding discussion, this is a lower bound on the increase in the underlying substituability parameter.
+
+
+\textbf{Figure 7: Estimated $(1-\tilde{\sigma })$ }
+
+\includegraphics[width=1\textwidth]{image5.png} 
+
+
+
+
+\subsection{Robustness checks\label{mark-2.3.}}
+%phrase a mettre en lien avec la discussion des robustness checks (effets de composition)
+The magnitude of the trade elasticity measured on aggregate trade data could have evolved over 1962-2013 without any shock to the underlying heterogeneity, in particular through changes in the range of traded goods or because of time-sensitive aggregation issues linked to estimating a single parameter across sectors. 
+
+
+\subsubsection{ Zero trade flows\label{mark-2.2.}}
+
+A second difficulty arises when both quantity and trade data are missing.
+Zero trade flows (ztf) are a prevalent feature of the data even though under model assumptions some trade should be observed in every sector \textit{k} between all pairs \textit{ij}.\footnote{The share of observed SITC 4-digit flows relatively to the total number of potential SITC 4-digit bilateral trade flows increases from 10\% to 14\% in 1962-2009.}
+To resolve this contradiction, we assume that this information is missing because the underlying trade flow is positive but so small that it does not pass the threshold applied by the data collecting authorities (in UN COMTRADE this threshold corresponds to 1000 USD).
+Such flows, if recorded, would not substantially modify the distribution of observed market shares in the destination (the left hand side of equation {\ref{eqn:nlestimation}) because they are an order of magnitude smaller than observed trade.
+	Still, we have to make some assumption about their price to be able the effect of price on market shares.
+	
+	
+	This is only possible when zero trade flows are present in an existing bilateral relation.
+	In this case, we use the same stepwise price imputation for zero trade flows as in the case of missing unit values.
+	This is problematic because statistically unobserved trade values logically correspond to a higher cif price than the maximum observed price in the destination across all sources and sectors while by construction we postulate that unobserved relative prices in ztf sectors are equal to a weighted average relative price across sectors in which bilateral trade is observed.
+	\footnote{An alternative method consists in imputing unobserved relative prices with some arbitrary price above the maximum observed in the destination.
+		As ztf constitute 85-90\% of all 4-digit trade flows, this method is problematic because results are driven by imputed rather than observed prices.
+	}
+	
+	This assumption would not bias our estimate if the underestimation factor were constant across exporters.
+	This scalar would cancel out across sources, and the estimated substitutability parameter would correspond to the true parameter.
+	{\hyperref[ref-005]{Table 2}} shows it is not the case.
+	The share of ztf is strongly decreasing in market share, i.e.
+	the underestimation factor is larger for small exporters (though they already have higher prices).
+	As a result, for a given observed distribution of market shares, the underlying dispersion in relative prices of the composite good is greater than the observed dispersion in relative prices.
+	This means that the estimated parameter $(1-\tilde{\sigma })$ overestimates the true substitutability parameter $(1-\sigma)$.
+	
+	{\hyperref[ref-005]{Table 2}} shows that the reduction in the share of ztf proceeds at quicker pace in 1962-2013 for small exporters: the coefficient for the interaction term for the market share and year is significant and positive.
+	{\hyperref[ref-006]{Table 3}} presents the predicted share of ztf for four types of exporters in 1962 and 2013.
+	For a  small exporter with .01\% market share, the initial share of ztf is predicted to be .99, and it is reduced to .86 by 2009, i.e.
+	a 13 percentage point decrease.
+	Consider a large exporter, with a .6\% market share: its share of ztf is reduced from .86 to .76, a 10 percentage point decrease.
+	As the gap between the share of ztf for big and small exporters is reduced overtime, the overestimation bias of $(1-\tilde{\sigma })$ is progressively reduced.
+	
+	%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z noteLA: J'enleve la phrase qui suit parce que ce qui compte c'est l'\'{e}cart entre les deux et non pas le fait que les prix soient sous-estim\'{e}s pour les petits.
+	%Hence, the overestimation of the underling ${\sigma}$ by the estimated substitutability parameter ${\sigma}$ because of the under-estimation of small exporters' prices declines over time.' noteLA: J'enleve la phrase qui suit parce que ce qui compte c'est l'\'{e}cart entre les deux et non pas le fait que les prix soient sous-estim\'{e}s pour les petits.
+	%`Hence, the overestimation of the underling ${\sigma}$ by the estimated substitutability parameter ${\sigma}$ because of the under-estimation of small exporters' prices declines over time.' noteLA: J'enleve la phrase qui suit parce que ce qui compte c'est l'\'{e}cart entre les deux et non pas le fait que les prix soient sous-estim\'{e}s pour les petits.
+	%`Hence, the overestimation of the underling ${\sigma}$ by the estimated substitutability parameter ${\sigma}$ because of the under-estimation of small exporters' prices declines over time.' 
+	
+	
+	\begin{table}
+		\caption{ \label{ref-005} Proportion of zero trade flows as a function of market share (4' digits)}
+		\input{ztfpois_5digit.tex}
+		
+	\end{table}
+	
+	
+	%\textbf{Table 3: Predicted share of ztf for exporters with different market share, 4'-digit level \label{ref-006}}
+	
+	\input{zdesc5.tex}\label{ref-006}
+	
+	
+	
+	%Columns (1) and (4) correspond to the mean and to 2 st.
+	%deviations above the mean in the distribution of log market share.
+	%Columns (2) and (3) correspond to the mean and to 2 st.
+	%deviations above the mean in the distribution of market share.
+	
+	
+	Thus, the hypothesis we make on unobserved sectoral prices in ztf sectors will not always impede interpreting the evolution of the underlying substitutability parameter.
+	In particular, because the overestimation bias is reduced overtime, if it is found that the estimated parameter increases in absolute value, this evolution necessarily provides a lower bound on the increase in the underlying substitutability parameter.
+	
+
+
+\subsubsection{ \label{ref-004}The incidence of missing unit values\label{mark-2.1.}}
 
 
 
@@ -995,10 +1080,10 @@ We assume that information on quantities is missing due to imperfections in the 
 
 
 \begin{figure}
-\caption{Trade with missing unit values}
-\includegraphics[width=1\textwidth]{Graph_missing_uv.pdf}
-\label{fig:missing_uv}
-\caption*{The way to read this graph is : In 1962, 10\% of trade is in a 3-digit bilateral trade category that does not mention at least one unit value}
+	\caption{Trade with missing unit values}
+	\includegraphics[width=1\textwidth]{Graph_missing_uv.pdf}
+	\label{fig:missing_uv}
+	\caption*{The way to read this graph is : In 1962, 10\% of trade is in a 3-digit bilateral trade category that does not mention at least one unit value}
 \end{figure}
 
 
@@ -1022,83 +1107,6 @@ If no price is available at the 4-digit level, we move at the 3-digit level, etc
 As Figure \ref{fig:missing_uv} shows, that procedure allows to reduce considerably the share of trade without unit values.
 This improves the estimation of prices if one assumes that missing destination-specific relative prices at the 4'-digit can be approximated by the mean observed destination-specific relative price among the corresponding 4-digit group (and similarly at each aggregation level).
 
-
-\subsection{ Zero trade flows\label{mark-2.2.}}
-
-A second difficulty arises when both quantity and trade data are missing.
-Zero trade flows (ztf) are a prevalent feature of the data even though under model assumptions some trade should be observed in every sector \textit{k} between all pairs \textit{ij}.\footnote{The share of observed SITC 4-digit flows relatively to the total number of potential SITC 4-digit bilateral trade flows increases from 10\% to 14\% in 1962-2009.}
-To resolve this contradiction, we assume that this information is missing because the underlying trade flow is positive but so small that it does not pass the threshold applied by the data collecting authorities (in UN COMTRADE this threshold corresponds to 1000 USD).
-Such flows, if recorded, would not substantially modify the distribution of observed market shares in the destination (the left hand side of equation {\ref{eqn:nlestimation}) because they are an order of magnitude smaller than observed trade.
-Still, we have to make some assumption about their price to be able the effect of price on market shares.
-
-
-This is only possible when zero trade flows are present in an existing bilateral relation.
-In this case, we use the same stepwise price imputation for zero trade flows as in the case of missing unit values.
-This is problematic because statistically unobserved trade values logically correspond to a higher cif price than the maximum observed price in the destination across all sources and sectors while by construction we postulate that unobserved relative prices in ztf sectors are equal to a weighted average relative price across sectors in which bilateral trade is observed.
-\footnote{An alternative method consists in imputing unobserved relative prices with some arbitrary price above the maximum observed in the destination.
-As ztf constitute 85-90\% of all 4-digit trade flows, this method is problematic because results are driven by imputed rather than observed prices.
-}
-
-This assumption would not bias our estimate if the underestimation factor were constant across exporters.
-This scalar would cancel out across sources, and the estimated substitutability parameter would correspond to the true parameter.
-{\hyperref[ref-005]{Table 2}} shows it is not the case.
-The share of ztf is strongly decreasing in market share, i.e.
-the underestimation factor is larger for small exporters (though they already have higher prices).
-As a result, for a given observed distribution of market shares, the underlying dispersion in relative prices of the composite good is greater than the observed dispersion in relative prices.
-This means that the estimated parameter $(1-\tilde{\sigma })$ overestimates the true substitutability parameter $(1-\sigma)$.
-
-{\hyperref[ref-005]{Table 2}} shows that the reduction in the share of ztf proceeds at quicker pace in 1962-2013 for small exporters: the coefficient for the interaction term for the market share and year is significant and positive.
-{\hyperref[ref-006]{Table 3}} presents the predicted share of ztf for four types of exporters in 1962 and 2013.
-For a  small exporter with .01\% market share, the initial share of ztf is predicted to be .99, and it is reduced to .86 by 2009, i.e.
-a 13 percentage point decrease.
-Consider a large exporter, with a .6\% market share: its share of ztf is reduced from .86 to .76, a 10 percentage point decrease.
-As the gap between the share of ztf for big and small exporters is reduced overtime, the overestimation bias of $(1-\tilde{\sigma })$ is progressively reduced.
-
-%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z noteLA: J'enleve la phrase qui suit parce que ce qui compte c'est l'\'{e}cart entre les deux et non pas le fait que les prix soient sous-estim\'{e}s pour les petits.
-%Hence, the overestimation of the underling ${\sigma}$ by the estimated substitutability parameter ${\sigma}$ because of the under-estimation of small exporters' prices declines over time.' noteLA: J'enleve la phrase qui suit parce que ce qui compte c'est l'\'{e}cart entre les deux et non pas le fait que les prix soient sous-estim\'{e}s pour les petits.
-%`Hence, the overestimation of the underling ${\sigma}$ by the estimated substitutability parameter ${\sigma}$ because of the under-estimation of small exporters' prices declines over time.' noteLA: J'enleve la phrase qui suit parce que ce qui compte c'est l'\'{e}cart entre les deux et non pas le fait que les prix soient sous-estim\'{e}s pour les petits.
-%`Hence, the overestimation of the underling ${\sigma}$ by the estimated substitutability parameter ${\sigma}$ because of the under-estimation of small exporters' prices declines over time.' 
- 
-
-\begin{table}
-\caption{ \label{ref-005} Proportion of zero trade flows as a function of market share (4' digits)}
-\input{ztfpois_5digit.tex}
-
-\end{table}
-
-
-%\textbf{Table 3: Predicted share of ztf for exporters with different market share, 4'-digit level \label{ref-006}}
-
-\input{zdesc5.tex}\label{ref-006}
-
-
-
-%Columns (1) and (4) correspond to the mean and to 2 st.
-%deviations above the mean in the distribution of log market share.
-%Columns (2) and (3) correspond to the mean and to 2 st.
-%deviations above the mean in the distribution of market share.
-
-
-Thus, the hypothesis we make on unobserved sectoral prices in ztf sectors will not always impede interpreting the evolution of the underlying substitutability parameter.
-In particular, because the overestimation bias is reduced overtime, if it is found that the estimated parameter increases in absolute value, this evolution necessarily provides a lower bound on the increase in the underlying substitutability parameter.
-
-\subsection{Results}
-
-{\hyperref[ref-007]{Figure 7}} presents the results on the evolution of $(1-\tilde{\sigma })$ obtained when equation \ref{eqn:nlestimation} is estimated in annual cross-sections of the COMTRADE dataset.
-2008 is obviously an outlier.
-However, even excluding 2008, the absolute value of trade elasticity has increased by 38\% from 1962 to 2013.
-This corresponds to an annual increase of .6\% per year.\footnote{The coefficient of the geometric fit is significant at 1\% level, the 95\% confidence interval is between 0.4\% and 0.9\% (not taking into account though the uncertainty around yearly estimates).
-}
-According the preceding discussion, this is a lower bound on the increase in the underlying substituability parameter.
-
-
-\textbf{Figure 7: Estimated $(1-\tilde{\sigma })$ }
-
-\includegraphics[width=1\textwidth]{image5.png} 
-
-\subsection{Robustness checks\label{mark-2.3.}}
-%phrase a mettre en lien avec la discussion des robustness checks (effets de composition)
-The magnitude of the trade elasticity measured on aggregate trade data could have evolved over 1962-2013 without any shock to the underlying heterogeneity, in particular through changes in the range of traded goods or because of time-sensitive aggregation issues linked to estimating a single parameter across sectors. 
 
 \subsubsection{Changing the dataset\label{mark-2.3.1.}}
 
