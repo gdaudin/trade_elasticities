@@ -39,12 +39,14 @@ if "`c(hostname)'" =="LAmacbook.local" {
 capture log using "logs/`c(current_time)' `c(current_date)'"
 ****************************************************************************************************************************************************************
 
+capture program drop pour_graph_regression_3e_partie
+program pour_graph_regression_3e_partie
+args sample
+
 
 ** baseline
 
-use "Résultats 1ere regression 3e partie.dta", clear
-*variant when using estimation by Liza and by Guillaume
-*use "Résultats 1ere regression 3e partie_baseline_combined.dta", clear
+use "Résultats 1ere regression 3e partie_`sample'.dta", clear
 
 generate one_minus_sigma = 1-sigma_est
 
@@ -59,13 +61,17 @@ bys year : keep if _n==1
 
 
 foreach i of varlist one_minus_sigma { 
+	drop if year==.
 	quietly generate ln_`i' = ln(abs(`i'))
 	regress ln_`i' year
 	quietly predict ln_`i'_p
 	quietly generate `i'_p= -exp(ln_`i'_p)
 	quietly drop ln_`i'_p ln_`i'
-	display "`i' : total change in baseline"
-	display `i'_p[_N]/`i'_p[1]
+	display  %9.2f  `i'_p[_N]/`i'_p[1] ": total change"
+	display  %9.4f  _b[year] ": yearly change"
+	local conf_int_low = _b[year]-1.96*_se[year]
+	local conf_int_high = _b[year]+1.96*_se[year]
+	display   "[" %9.4f `conf_int_low' ";"  %9.4f `conf_int_high' "]"
 }
 
 
@@ -83,7 +89,18 @@ graph export graph7_without2008.eps, replace
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) /*
 	*/ (lfit one_minus_sigma year), /*
 	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
-graph export "1ere regression 3e partie.eps", replace
+graph export "1ere regression 3e partie_`sample'.eps", replace
+
+
+twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) ///
+	(connected one_minus_sigma year, msize(vsmall)) ////
+	 (lfit one_minus_sigma year), ///
+	legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) ///
+	scheme(s1mono) yscale(range(-1.5 0)) ylabel(-1.5 (0.3) 0)
+graph export "1ere regression 3e partie_common_axis_`sample'.eps", replace
+
+
+
 
 *variant with same scale on all graphs:
 /*
@@ -93,70 +110,10 @@ twoway   (rarea cl_elast cu_elast year, ylabel(-1.5(.5)0) fintensity(inten20) lp
 graph export graph7_with2008.eps, replace
 */
 graph dir
+end
 
-** baci
-
-use "Résultats 1ere regression 3e partie_Baci.dta", clear
-
-
-generate one_minus_sigma = 1-sigma_est
-
-
-generate double cl_elast=-exp(ln(sigma_est-1)-1.96*ecart_type_lnsigmaminus1)
-generate double cu_elast=-exp(ln(sigma_est-1)+1.96*ecart_type_lnsigmaminus1)
-bys year : keep if _n==1
-
-
-preserve
-drop if year == 2011
-
-
-foreach i of varlist one_minus_sigma { 
-	quietly generate ln_`i' = ln(abs(`i'))
-	regress ln_`i' year
-	quietly predict ln_`i'_p
-	quietly generate `i'_p= -exp(ln_`i'_p)
-	quietly drop ln_`i'_p ln_`i'
-	display "`i': total change in Baci"
-	display `i'_p[_N]/`i'_p[1]
-}
-
-*total change in estimated parameter: +25.8% over 1995-2016
-		
-twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(small)) (lfit one_minus_sigma year), /*
-*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
-graph export graph8_without2011.eps, replace
-restore
-
-twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) (lfit one_minus_sigma year), /*
-*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
-graph export graph8_with2011.eps, replace
-*graph dir
-
-** superbal
-
-use "Résultats 1ere regression 3e partie_superbal.dta", clear
-drop if year==.
-
-generate one_minus_sigma = 1-sigma_est
-
-
-generate double cl_elast=-exp(ln(sigma_est-1)-1.96*ecart_type_lnsigmaminus1)
-generate double cu_elast=-exp(ln(sigma_est-1)+1.96*ecart_type_lnsigmaminus1)
-bys year : keep if _n==1
-
-foreach i of varlist one_minus_sigma { 
-	quietly generate ln_`i' = ln(abs(`i'))
-	regress ln_`i' year
-	quietly predict ln_`i'_p
-	quietly generate `i'_p= -exp(ln_`i'_p)
-	drop ln_`i'_p ln_`i'
-	display "`i': total change in superbal"
-	display `i'_p[_N]/`i'_p[1]
-}
-
-*total change in estimated parameter: +67.7% over 1962-2013
-		
-twoway  (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) (lfit one_minus_sigma year), /*
-*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
-graph export graph9_superbal.eps, replace
+pour_graph_regression_3e_partie baseline
+pour_graph_regression_3e_partie superbal
+pour_graph_regression_3e_partie instrumented
+pour_graph_regression_3e_partie prix_calc
+pour_graph_regression_3e_partie Baci
