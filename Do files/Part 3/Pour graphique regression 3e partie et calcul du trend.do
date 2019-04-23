@@ -89,7 +89,8 @@ graph export graph7_without2008.eps, replace
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) /*
 	*/ (lfit one_minus_sigma year), /*
 	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
-graph export "1ere regression 3e partie_`sample'.eps", replace
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/1ere regression 3e partie_`sample'.pdf", replace
+graph export "1ere regression 3e partie_`sample'.pdf", replace
 
 
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) ///
@@ -97,7 +98,7 @@ twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth
 	 (lfit one_minus_sigma year), ///
 	legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) ///
 	scheme(s1mono) yscale(range(-1.5 0)) ylabel(-1.5 (0.3) 0)
-graph export "1ere regression 3e partie_common_axis_`sample'.eps", replace
+graph export "1ere regression 3e partie_common_axis_`sample'.pdf", replace
 
 
 

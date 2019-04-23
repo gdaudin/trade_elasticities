@@ -1008,55 +1008,9 @@ According the preceding discussion, this is a lower bound on the increase in the
 
 
 
-\subsection{Robustness checks}
+\subsection{Robustness checks\label{mark-2.3.}}
 %phrase a mettre en lien avec la discussion des robustness checks (effets de composition)
 The magnitude of the trade elasticity measured on aggregate trade data could have evolved over 1962-2013 without any shock to the underlying heterogeneity, in particular through changes in the range of traded goods or because of time-sensitive aggregation issues linked to estimating a single parameter across sectors. 
-
-
-\subsubsection{ The incidence of missing unit values}
-
-The COMTRADE dataset does not provide quantities for all non-zero trade flows. In that case, it is not possible to compute unit values.
-Figure \ref{fig:missing_uv}, \textit{4'-digit} indicates how often that happens from 1962 to 2013.
-The problem arises for a small share of the total trade value (never more than 25\%).
-In the baseline estimation, we have simply dropped these observations. As a robustness check, it is possible to approximate missing unit values by unit values from similar products using a stepwise price imputation procedure
-
-
-\begin{figure}
-	\caption{Trade with missing unit values}
-	\includegraphics[width=1\textwidth]{Graph_missing_uv.pdf}
-	\label{fig:missing_uv}
-	\caption*{The way to read this graph is : In 1962, 10\% of trade is in a 3-digit bilateral trade category that does not mention at least one unit value}
-\end{figure}
-
-
-
-
-%To deal with missing uv, we impute prices 
-%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z Enlev\'{e} :~The weighted average price at a higher aggregation level for this sector and source will be used for the unobserved price.
-%An alternative procedure consists in imputing the relative price observed at the same disaggregation level for another source with a similar market share in this sector and destination.
-%Results are not sensitive to the procedure used.
-%Enlev\'{e} :~The weighted average price at a higher aggregation level for this sector and source will be used for the unobserved price.
-%An alternative procedure consists in imputing the relative price observed at the same disaggregation level for another source with a similar market share in this sector and destination.
-%Results are not sensitive to the procedure used.
-%.
-
-The stepwise price imputation procedure is as follows.
-The relative price of each source in the destination is constructed at the highest disaggregation level for each product and quantity unit provided by the source (the \textit{4'-digit} level).
-We then proceed level by level for aggregation: the relative price of the composite sectoral good of the source is constructed at the 4-digit level using the weighted average relative price observed at the 4'-digit level, with destination-specific weights for each variety of the 4'-digit good the source is active in%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z Given relative prices constructed at the 4-digit level, destination-specific weights are used to aggregate these up to the 3-digit level, and so on until the relative price for the composite good is constructed using relative prices at the 1-digit level.
-%Given relative prices constructed at the 4-digit level, destination-specific weights are used to aggregate these up to the 3-digit level, and so on until the relative price for the composite good is constructed using relative prices at the 1-digit level.
-%.
-If no price is available at the 4-digit level, we move at the 3-digit level, etc.
-As Figure \ref{fig:missing_uv} shows, that procedure allows to reduce considerably the share of trade without unit values.
-This improves the estimation of prices if one assumes that missing destination-specific relative prices at the 4'-digit can be approximated by the mean observed destination-specific relative price among the corresponding 4-digit group (and similarly at each aggregation level).
-
-Figure \ref{fig:reg_prix_calc} shows that our result hold. The yearly increase of the absolute value of the estimated $\left(1-\sigma \right)$ is 0.6\% instead of 0.4\%. for a total increase of 35\% over the whole period.
-
-\begin{figure}
-	\caption{Estimated $(1-\sigma)$ , with imputed prices}
-	\includegraphics[width=1\textwidth]{"1ere regression 3e partie_prix_calc".pdf}
-	\label{fig:reg_prix_calc}
-\end{figure}
-
 
 
 \subsubsection{ Zero trade flows\label{mark-2.2.}}
@@ -1120,7 +1074,48 @@ Such flows, if recorded, would not substantially modify the distribution of obse
 	
 
 
-\subsubsection{Changing the dataset\label{baci}}
+\subsubsection{ \label{ref-004}The incidence of missing unit values\label{mark-2.1.}}
+
+
+
+To estimate the market share equation on the COMTRADE dataset we need to tackle the question of missing information on trade flows and unit values (uv).
+
+A first difficulty arises when the trade flow is observed but information on quantities is missing, and it is therefore not possible to compute the unit value.
+Figure \ref{fig:missing_uv}, \textit{4'-digit} indicates how often that happens from 1962 to 2013.
+The problem arises for a small share of the total trade value (never more than 25\%).
+We assume that information on quantities is missing due to imperfections in the data collection procedure, and that bilateral trade flows are observed with a similar degree of precision whether or not quantity has been recorded.
+
+
+\begin{figure}
+	\caption{Trade with missing unit values}
+	\includegraphics[width=1\textwidth]{Graph_missing_uv.pdf}
+	\label{fig:missing_uv}
+	\caption*{The way to read this graph is : In 1962, 10\% of trade is in a 3-digit bilateral trade category that does not mention at least one unit value}
+\end{figure}
+
+
+
+
+To deal with missing uv, we impute prices from similar products using a stepwise price imputation procedure
+%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z Enlev\'{e} :~The weighted average price at a higher aggregation level for this sector and source will be used for the unobserved price.
+%An alternative procedure consists in imputing the relative price observed at the same disaggregation level for another source with a similar market share in this sector and destination.
+%Results are not sensitive to the procedure used.
+%Enlev\'{e} :~The weighted average price at a higher aggregation level for this sector and source will be used for the unobserved price.
+%An alternative procedure consists in imputing the relative price observed at the same disaggregation level for another source with a similar market share in this sector and destination.
+%Results are not sensitive to the procedure used.
+%.
+
+The stepwise price imputation procedure is as follows.
+The relative price of each source in the destination is constructed at the highest disaggregation level for each product and quantity unit in which the source is active, the \textit{4'-digit} level.
+We then proceed level by level for aggregation: the relative price of the composite sectoral good of the source is constructed at the 4-digit level using the weighted average relative price observed at the 4'-digit level, with destination-specific weights for each variety of the 4'-digit good the source is active in%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z Given relative prices constructed at the 4-digit level, destination-specific weights are used to aggregate these up to the 3-digit level, and so on until the relative price for the composite good is constructed using relative prices at the 1-digit level.
+%Given relative prices constructed at the 4-digit level, destination-specific weights are used to aggregate these up to the 3-digit level, and so on until the relative price for the composite good is constructed using relative prices at the 1-digit level.
+%.
+If no price is available at the 4-digit level, we move at the 3-digit level, etc.
+As Figure \ref{fig:missing_uv} shows, that procedure allows to reduce considerably the share of trade without unit values.
+This improves the estimation of prices if one assumes that missing destination-specific relative prices at the 4'-digit can be approximated by the mean observed destination-specific relative price among the corresponding 4-digit group (and similarly at each aggregation level).
+
+
+\subsubsection{Changing the dataset\label{mark-2.3.1.}}
 
 
 We provide a robustness check by estimating the evolution of the heterogeneity parameter for aggregate bilateral trade on a different dataset.
@@ -1131,7 +1126,7 @@ At the 6-digit level, less than 7\% of total reported trade in BACI has missing 
 The disadvantage of BACI is that it covers only a relatively short period compared to the years over which the distance puzzle exists.
 Obviously, we do not expect to reproduce exactly the results obtained with our original dataset because the trade classification and its level of aggregation are different
 Figure \ref{fig:reg_Baci} shows that our results hold: the elasticity parameter is found to increase in absolute value from 1995 to 2016.
-This can be compared with the equivalent period in our original dataset: the increase in the absolute value of the estimated $\left(1-\sigma \right)$ is much steeper: 1.18\% a year instead of 0.4\%.
+This can be compared with the equivalent period in our original dataset: the increase in the estimated $\left(1-\sigma right)$ is much steeper: 1.18\% a year instead of 0.4\%.
 This finding supports the idea that our benchmark estimation likely provides a lower bound on the increase in the aggregate trade elasticity.
 
 %Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z noteLA: Ici je ne dis rien sur le biais lie aux flux zeros.
