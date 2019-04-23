@@ -948,17 +948,15 @@ Where ${{\gamma }_{i}}>0$ is a origin-country-specific preference parameter and 
 \[\begin{array}{*{35}{l}}
    \sum\limits_{k=1}^{K}{\frac{{{X}_{k,ij}}}{{{Y}_{j}}}}=\frac{{{X}_{ij}}}{{{Y}_{j}}} & = & \gamma _{i}^{\sigma -1}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}{{\left[ \frac{{{p}_{k,ij}}}{{{P}_{k,j}}} \right]}^{1-\sigma }}  \\
 \end{array}\]
-The market share equation for aggregate bilateral trade as a function of the weighted average of sectoral relative prices of  in  is: 
+Changing notation to $\kappa_i=\gamma_i^{\sigma-1}$, the market share equation for aggregate bilateral trade in a destination market is defined as a function of the weighted average of sectoral relative prices: 
 
-	 
- Changing notations:
 \begin{eqnarray}
-   \frac{{{X}_{ij}}}{{{Y}_{j}}} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }}  \\
+   \frac{{{X}_{ij}}}{{{Y}_{j}}} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }}  
 \end{eqnarray}
 
 As this is a market share, it is reasonable to assume that the errors are multiplicative.
 Measurement errors on a market share of 1\% cannot be the same in percentage points as measurement errors on a market share of 10\%.
-We have to fit the following model on the data:
+We have to fit the following model to the data:
 \begin{eqnarray}
    \frac{{{X}_{ij}}}{{{Y}_{j}}} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }}.{{e}^{{{\varepsilon }_{i,j}}}}
   \end{eqnarray}
@@ -966,12 +964,11 @@ We have to fit the following model on the data:
 Notice that we only have non-zero observations, as ${{p}_{k,ij}}$ is only observed when there is a trade flow.
 We take logs to transform the errors into additive ones and estimate the following equation for each year with a non-linear least square procedure in STATA:
 \begin{eqnarray}
-   \ln \left( \frac{{{X}_{ij}}}{{{Y}_{j}}} \right) & = & \ln \left( {{\kappa }_{i}} \right)+\ln \left( \sum\limits_{k=1}^{K}{\frac{{{Y}_{k,j}}}{{{Y}_{j}}}.}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }} \right) +{{\varepsilon }_{i,j}}
+   \ln \left( \frac{{{X}_{ij}}}{{{Y}_{j}}} \right) & = & \ln {{\kappa }_{i}} +\ln \left( \sum\limits_{k=1}^{K}{\frac{{{Y}_{k,j}}}{{{Y}_{j}}}.}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }} \right) +{{\varepsilon }_{i,j}}
    \label{eqn:nlestimation}
    \end{eqnarray}
    
-   	
-This yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $\footnote{Because of the way the procedure nl works in STATA, instead of minimizing $\sum\limits_{i,j}{{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$, it minimizes $\sum\limits_{i,j}{{{n}_{ij}}{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$ where ${{n}_{ij}}$ is the number of 4-digit sectors in which imports from $i$ to $j$ are recorded.
+This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $\footnote{Because of the way the procedure nl works in STATA, instead of minimizing $\sum\limits_{i,j}{{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$, it minimizes $\sum\limits_{i,j}{{{n}_{ij}}{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$ where ${{n}_{ij}}$ is the number of 4-digit sectors in which imports from $i$ to $j$ are recorded.
 As a result, we have to weight the regression by $1/{{n}_{ij}}\ $ to make its results comparable to those in part one.
 }.
 
