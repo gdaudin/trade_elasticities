@@ -986,9 +986,16 @@ We conclude with an interpretation of the distance puzzle through the lens of th
 
 \subsection{Results}
 
-{\hyperref[ref-007]{Figure 7}} presents the results on the evolution of $(1-\tilde{\sigma })$ obtained when equation \ref{eqn:nlestimation} is estimated in annual cross-sections of the COMTRADE dataset.
-2008 is obviously an outlier.
-However, even excluding 2008, the absolute value of trade elasticity has increased by 38\% from 1962 to 2013.
+The baseline estimation of equation (\ref{eqn:nlestimation}) is carried out on annual cross-sections of the UN COMTRADE dataset after minimal cleaning. 
+We work with the data at the 4-digit level, and we consider as separate goods trade flows with quantities measured in different units (kg,l,items). 
+We therefore refer to the level of disaggregation as $4'$-digit.
+We drop trade flows with missing information on quantity as well as trade flows and unit values with negative or zero values.
+We drop information on exporters whose market share is smaller than .1\% of global trade. 
+We drop trade flows whenever the associated unit value is in the top or bottom 5 percentiles of the unit value distribution in this product and destination market at the $4'$-digit level.
+We also drop trade flows whenever the associated unit value is more than two orders of magnitude smaller or bigger than the median unit value in the product and destination market.
+
+{\hyperref[ref-007]{Figure 7}} presents the results.
+The absolute value of trade elasticity has increased by 38\% from 1962 to 2013.
 This corresponds to an annual increase of .6\% per year.\footnote{The coefficient of the geometric fit is significant at 1\% level, the 95\% confidence interval is between 0.4\% and 0.9\% (not taking into account though the uncertainty around yearly estimates).
 }
 According the preceding discussion, this is a lower bound on the increase in the underlying substituability parameter.
