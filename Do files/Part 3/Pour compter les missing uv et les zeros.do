@@ -173,8 +173,13 @@ end
 
 capture program drop compter_zeros_bis
 program compter_zeros_bis
-args year
-use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+args year sample
+if "`sample'" == "baseline" use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+
+if "`sample'" == "superbal" {
+		use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+		quietly merge m:1 iso_o iso_d using "$dir/Résultats/Première partie/Coverage/superbal_list_1962.dta", keep(match)
+}	
 
 quietly tab product
 local nbr_prod=r(r)
@@ -183,7 +188,7 @@ local nbr_origin=r(r)
 quietly tab iso_d
 local nbr_dest=r(r)
 
-display "`year' -- ztf" 
+display "`year' -- `sample' -- ztf" 
 display %9.3f 1-_N/(`nbr_prod'*(`nbr_origin'-1)*`nbr_dest')
 
 end
@@ -197,9 +202,11 @@ end
 
 *foreach year of num 1962 (1) 1964 {
 foreach year of num 1962(1)2013 {
-	compter_zeros_bis `year'
+	compter_zeros_bis `year' baseline
+	compter_zeros_bis `year' superbal
+	
 }
-
+aiue
 
 *foreach year of num 1962 (1) 1964 {
 foreach year of num 1962(1)2013 {
