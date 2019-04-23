@@ -295,13 +295,13 @@ more back-and-forth travelling, between upstream and downstream firms.
 \subsection*{A shift of focus to the trade elasticity}
 %transition to our approach: heterogeneity matters (example: Chaney); our approach: investigation of product heterogeneity within canonical AvW approach
 The focus of the literature on the shape of the trade cost function mirrors the expectation that the distance coefficient moves together with the elasticity of trade costs to distance.
-But \cite{Chaney2016} provides a theoretical foundation for the gravity equation through the lens of network analysis which demonstrates that the distance coefficient can be invariant to the trade cost function.
-In \cite{Chaney2016} the rate of distance decay in aggregate trade is linked to the rate of decay in the density of firms which cover that distance with their network of contacts.
+But \cite{ChaneyThomas2018} provides a theoretical foundation for the gravity equation through the lens of network analysis which demonstrates that the distance coefficient can be invariant to the trade cost function.
+In \cite{ChaneyThomas2018} the rate of distance decay in aggregate trade is linked to the rate of decay in the density of firms which cover that distance with their network of contacts.
 As the geographic dispersion of the network is increasing in firm size, the shape parameter of the firm size distribution plays a key role in explaining movements in the distance coefficient.
 Thus, technological advances in transportation increase the geographic dispersion of exports at the level of the firm \if 0 and enhance the degree of international production fragmentation \fi but have no incidence on the distance elasticity of aggregate trade as long as the stationary firm size distribution verifies Zipf's law.
  
 %e.g. is such that the rank of the firm in terms of its weight in aggregate exports is inversely proportional to the frequency of such firms.
-%In \cite{Chaney2016} the distance distribution of trade for any firm is determined by the location of its contacts.
+%In \cite{ChaneyThomas2018} the distance distribution of trade for any firm is determined by the location of its contacts.
 %The trade cost function shapes the geographic dispersion of this network by affecting the probability of drawing a contact in each location at firm birth and subsequent network expansion through existing contacts.
 %Network expands in two ways: acquiring contact for some cost; metting friends of your friends.
 %The trade cost function determines the initial distribution of contacts, and hence affects probability of making a contact somewhere at any future date.
@@ -323,7 +323,7 @@ Thus, technological advances in transportation increase the geographic dispersio
 %More generally argument of why GVC may be irrelevant is that effect may go both ways.
 %If fragmentation arises as a consequence of lower trade costs, it is expected to increase the distance elasticity of trade through the magnification effect (more trade at closer distance) but also to decrease the distance elasticity of trade through enhanced technology transfer (product homogeneization): the two effects may be of similar magnitude.
 
-The link between the distance coefficient and the parameter which captures the degree of structural heterogeneity in the economy is not specific to \cite{Chaney2016}.
+The link between the distance coefficient and the parameter which captures the degree of structural heterogeneity in the economy is not specific to \cite{ChaneyThomas2018}.
 Every theoretical foundation of the gravity model delivers a functional relationship of the distance elasticity with the intensity of the incentive to trade, 
 i.e. the degree of structural heterogeneity in some model-specific dimension.
 The combination of empirical evidence on the changing shape of the trade cost function with evidence on the stability of the distance distribution of trade indicates that structural heterogeneity may have contributed to the evolution of the distance coefficient.
@@ -910,11 +910,11 @@ While we admit that in most tractable theoretical settings these parameters woul
 %It is not immediate that they are the same in the data.
 
 The UN COMTRADE database gives information on bilateral trade flows and cif unit values at the SITC 4-digit level since 1962 for the majority of countries.
-This data are sufficient to estimate the trade elasticity in the Armington framework.
-The perceived substitutability of imported sectoral goods can be estimated on the basis of the distribution of prices and of market shares in each destination market.
+These data are sufficient to estimate the trade elasticity in the Armington framework.
+The perceived substitutability of imported sectoral goods can be estimated on the basis of the distribution of prices and of market shares in each destination.
 %If we have importer-specific prices in destination markets and importer-specific market share, we should be able to observe some statistical regularities.
 
-The basic intuition of the method we use starts from the well-known result that assuming a CES utility function, demand for an exporter-specific variety in the one-good Armington framework is:
+The basic intuition of the method we use starts from the demand equation for an exporter-specific sectoral good in the one-good Armington framework (assuming a CES utility function):
 \[{{X}_{ij}}={{\left( \frac{{{P}_{ij}}}{{{P}_{j}}} \right)}^{-(\sigma -1)}}{{Y}_{j}}\]
 where ${X}_{ij}$ is the cif value of the exports from $i$ to $j$, ${{P}_{ij}}$ is the cif price of the good shipped from $i$ to $j$ and ${{P}_{j}}$ is the price index in the destination and ${{Y}_{j}}$ total import demand in the destination.
 The exponent $\left( \sigma -1 \right)$ captures substitutability of country-composite goods across frameworks.
@@ -948,17 +948,15 @@ Where ${{\gamma }_{i}}>0$ is a origin-country-specific preference parameter and 
 \[\begin{array}{*{35}{l}}
    \sum\limits_{k=1}^{K}{\frac{{{X}_{k,ij}}}{{{Y}_{j}}}}=\frac{{{X}_{ij}}}{{{Y}_{j}}} & = & \gamma _{i}^{\sigma -1}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}{{\left[ \frac{{{p}_{k,ij}}}{{{P}_{k,j}}} \right]}^{1-\sigma }}  \\
 \end{array}\]
-The market share equation for aggregate bilateral trade as a function of the weighted average of sectoral relative prices of  in  is: 
+Changing notation to $\kappa_i=\gamma_i^{\sigma-1}$, the market share equation for aggregate bilateral trade in a destination market is defined as a function of the weighted average of sectoral relative prices: 
 
-	 
- Changing notations:
 \begin{eqnarray}
-   \frac{{{X}_{ij}}}{{{Y}_{j}}} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }}  \\
+   \frac{{{X}_{ij}}}{{{Y}_{j}}} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }}  
 \end{eqnarray}
 
 As this is a market share, it is reasonable to assume that the errors are multiplicative.
 Measurement errors on a market share of 1\% cannot be the same in percentage points as measurement errors on a market share of 10\%.
-We have to fit the following model on the data:
+We have to fit the following model to the data:
 \begin{eqnarray}
    \frac{{{X}_{ij}}}{{{Y}_{j}}} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }}.{{e}^{{{\varepsilon }_{i,j}}}}
   \end{eqnarray}
@@ -966,23 +964,25 @@ We have to fit the following model on the data:
 Notice that we only have non-zero observations, as ${{p}_{k,ij}}$ is only observed when there is a trade flow.
 We take logs to transform the errors into additive ones and estimate the following equation for each year with a non-linear least square procedure in STATA:
 \begin{eqnarray}
-   \ln \left( \frac{{{X}_{ij}}}{{{Y}_{j}}} \right) & = & \ln \left( {{\kappa }_{i}} \right)+\ln \left( \sum\limits_{k=1}^{K}{\frac{{{Y}_{k,j}}}{{{Y}_{j}}}.}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }} \right) +{{\varepsilon }_{i,j}}
+   \ln \left( \frac{{{X}_{ij}}}{{{Y}_{j}}} \right) & = & \ln {{\kappa }_{i}} +\ln \left( \sum\limits_{k=1}^{K}{\frac{{{Y}_{k,j}}}{{{Y}_{j}}}.}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }} \right) +{{\varepsilon }_{i,j}}
    \label{eqn:nlestimation}
    \end{eqnarray}
    
-   	
-This yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $\footnote{Because of the way the procedure nl works in STATA, instead of minimizing $\sum\limits_{i,j}{{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$, it minimizes $\sum\limits_{i,j}{{{n}_{ij}}{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$ where ${{n}_{ij}}$ is the number of 4-digit sectors in which imports from $i$ to $j$ are recorded.
+This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $\footnote{Because of the way the procedure nl works in STATA, instead of minimizing $\sum\limits_{i,j}{{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$, it minimizes $\sum\limits_{i,j}{{{n}_{ij}}{{\left( {{\varepsilon }_{ij}} \right)}^{2}}}$ where ${{n}_{ij}}$ is the number of 4-digit sectors in which imports from $i$ to $j$ are recorded.
 As a result, we have to weight the regression by $1/{{n}_{ij}}\ $ to make its results comparable to those in part one.
 }.
 
 
 \section{ \label{ref-003}Evolution of the Armington trade elasticity in 1963-2013\label{mark-2.}}
-%Two issues: whether data features impede consistent estimate of $\sigma$; whether data features impede interpretation of distance puzzle through lens of Armington (distribution of domestic prices and selection, ie more in line with EK than with Armington)
-In this section we first discuss the issues of missing information and selection in trade. We evaluate the direction and magnitude of the possible bias that missing unit values and zero trade flows may introduce in the estimation of the aggregate trade elasticity. We then carry out the baseline estimation and assess the robustness of the results. 
+
+In this section we first discuss the results of the naive estimation of (\ref{eqn:nlestimation}). 
+We then carry out a series of robustness checks. 
+First, we investigate the issues of missing prices as well as of selection in trade. 
+%We evaluate the direction and magnitude of the possible bias that missing unit values and zero trade flows may introduce in the estimation of the aggregate trade elasticity. 
+Second, we instrument prices to deal with possible endogeneity concerns in demand estimation.   
+Third, we check whether the results are robust to switching to a higher quality dataset (BACI) available only for a subset of years.
 We conclude with an interpretation of the distance puzzle through the lens of the Armington framework by decomposing the estimated annualized change in the distance coefficient into the part attributable to the estimated annualized change in the trade elasticity and the residual annualized change attributable to the evolution of the elasticity of trade costs to distance $ \rho $. 
 %Under the assumption of model independence, this decomposition of the movement in the distance coefficient across the two elasticities is expected to carry over to an alternative microfoundation of the gravity model.
-
-
 
 \subsection{Results}
 
