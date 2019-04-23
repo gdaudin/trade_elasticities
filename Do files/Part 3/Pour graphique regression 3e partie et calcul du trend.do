@@ -19,6 +19,7 @@ set more off
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
+	global dirgit "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
 	cd "$dir/Résultats/Troisième partie/"
 
 }
@@ -89,7 +90,7 @@ graph export graph7_without2008.eps, replace
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) /*
 	*/ (lfit one_minus_sigma year), /*
 	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "geometric fit")) scheme(s1mono)
-graph export "$dir/Git/trade_elasticities/Rédaction/tex/1ere regression 3e partie_`sample'.pdf", replace
+graph export "$dirgit/Git/trade_elasticities/Rédaction/tex/1ere regression 3e partie_`sample'.pdf", replace
 graph export "1ere regression 3e partie_`sample'.pdf", replace
 
 
