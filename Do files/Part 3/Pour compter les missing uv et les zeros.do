@@ -191,6 +191,13 @@ local nbr_dest=r(r)
 display "`year' -- `sample' -- ztf" 
 display %9.3f 1-_N/(`nbr_prod'*(`nbr_origin'-1)*`nbr_dest')
 
+gen share_of_ztf = 1-_N/(`nbr_prod'*(`nbr_origin'-1)*`nbr_dest')
+gen sample ="`sample'"
+keep year sample share_of_ztf 
+keep if _n==1
+capture append using "$dir/Résultats/Troisième partie/zéros/Nbredzerosbis.dta"
+save "$dir/Résultats/Troisième partie/zéros/Nbredzerosbis.dta", replace
+
 end
 
 
@@ -199,9 +206,11 @@ end
 
 *********************************
 
+capture erase "$dir/Résultats/Troisième partie/zéros/Nbredzerosbis.dta"
 
 *foreach year of num 1962 (1) 1964 {
 foreach year of num 1962(1)2013 {
+	
 	compter_zeros_bis `year' baseline
 	compter_zeros_bis `year' superbal
 	
