@@ -998,7 +998,7 @@ We also drop trade flows whenever the associated unit value is more than two ord
 %{\hyperref[ref-005]{Figure 5}} 
 Figure \ref{fig:baseline} presents the results.
 The absolute value of the estimated trade elasticity $|1-\sigma|$ has increased by 22\% from 1962 to 2013.
-This corresponds to an annual increase of .4\% per year.\footnote{The coefficient of the geometric fit is significant at 1\% level, the 95\% confidence interval is between 0.15\% and 0.63\% (not taking into account though the uncertainty around yearly estimates).}
+This corresponds to an annual increase of .4\% per year.\footnote{The estimated annualized growth rate is significant at 1\% level, the 95\% confidence interval is between 0.15\% and 0.63\% (not taking into account though the uncertainty around yearly estimates).}
 %According the preceding discussion, this is a lower bound on the increase in the underlying substituability parameter.
 
 %\textbf{Figure 5: Estimated $(1-\sigma)$}
@@ -1134,11 +1134,7 @@ If this happens because $\kappa_i$ is small, as might be possible for small expo
 	Thus, the hypothesis we make on unobserved sectoral prices in ztf sectors will not always impede interpreting the evolution of the underlying substitutability parameter.
 	In particular, because the overestimation bias is reduced overtime, if it is found that the estimated parameter increases in absolute value, this evolution necessarily provides a lower bound on the increase in the underlying substitutability parameter.
 	
-
-
 \subsubsection{Changing the dataset\label{baci}}
-
-
 We provide a robustness check by estimating the evolution of the heterogeneity parameter for aggregate bilateral trade on a different dataset.
 We use the BACI dataset which reports bilateral trade data at the HS-1992 6-digit disaggregation level for 1995-2009.
 The accuracy of the relative prices of country-composite goods constructed with this dataset is improved because the harmonization procedure applied by (Gaulier et Zignago 2010) in constructing BACI yields much better-quality unit values while substantially reducing the number of observations with lacking unit value.
@@ -1227,25 +1223,37 @@ Our baseline equation for the first stage of the estimation for a given lag is:
 %We estimate this equation separately for each year of the sample. Hence, we allow the estimated coefficients to be year-specific.
 
 Figure \ref{fig:firststage} presents the results for the estimated pass-through. 
+For almost all years and all specifications - with a few exceptions in the early years - the estimated pass-through is significant and positive. Further, the estimated pass-through does not strongly depend on either the instrument or the time lag. However, the share of explained variation is small. This finding suggests that economy-wide domestic conditions explain a very small share of sector-specific price changes.
 \begin{figure}[H]
 \caption{Estimated $\alpha^\nu_{t,l}$}
-\includegraphics[width=1\textwidth]{"firststage".pdf}
+\includegraphics[width=1\textwidth]{firststage.pdf}
 \label{fig:firststage}
 \end{figure}
 
-The choice of the lag is associated with a trade-off.
-The shorter the lag, the more data we can use.
-However, if demand shocks in the destination are persistent, the covariance between the lagged price and the demand shock in the error term may remain positive if the first lag is used.
-Hence, we use a three-year lag in the baseline specifications.
+The predicted unit values in $t$, $\hat{p}_{k,ij,t}$ are constructed by augmenting the unit values observed in $t-l$ with the change in the common cost component, given the estimate of the pass-through $\hat{\alpha}^\nu_{t-l}$:
+\begin{eqnarray}
+\hat{p}_{k,ij,t}&=&{p}_{k,ij,t-l}\left(\frac{P^\nu_{i,t}}{P^\nu_{i,t-l}}\right)^{\hat{\alpha^\nu_{t,l}}}\label{eqn:uvpred}
+\end{eqnarray}
 
-For almost all years, and all specifications (there are a few exceptions at the beginning of the period) the path-through estimated in equation {\hyperref[ref-009]{ }} is statistically significant and positive.
-The R$^{2}$ is very small.
-That suggests that economy-wide domestic conditions explain a very small share of price and sector-specific price variations.
-Considering the dimension of the data, this is perhaps not surprising.
-Still, this may worry us as to the weakness of our instrument.
-Recall however that the instrument is actually the adjusted past unit value.
-Past unit values have a very strong correlation with present unit values.
-The correlation between adjusted past unit values and current unit values is slightly higher.
+As the past unit values are a very strong predictor of current unit values, we are not worried about the strength of our instrument, notwithstanding the fact that economy-wide cost shocks explain a relatively small fraction of variation in landed sectoral prices.\footnote{The adjustment of past unit values for the common cost component weakly increases the correlation between past and current unit values.} 
+%Still, this may worry us as to the weakness of our instrument.
+%Recall however that the instrument is actually the adjusted past unit value.
+%Past unit values have a very strong correlation with present unit values.
+%The correlation between adjusted past unit values and current unit values is slightly higher.
+
+We estimate (\ref{eqn:nlestimation}) while replacing current unit values with the predicted unit values $\hat{p}_{k,ij,t-l}$ from (\ref{eqn:uvpred}). To keep as many years as possible, we opt for the smallest time lag ($l=1$). Figure \ref{fig:instr} presents the results. 
+%The choice of the lag is associated with a trade-off.
+%The shorter the lag, the more data we can use.
+%However, if demand shocks in the destination are persistent, the covariance between the lagged price and the demand shock in the error term may remain positive if the first lag is used.
+
+\begin{figure}[H]
+\caption{Estimated $1-\sigma$, predicted unit values}
+\includegraphics[width=1\textwidth]{"1ere regression 3e partie_instrumented".pdf}
+\label{fig:instr}
+\end{figure}
+
+The absolute value of the estimated trade elasticity $|1-\sigma|$ has increased by 60\% from 1963 to 2013. The predicted trade elasticity equals $-.65$ in 2013. 
+This corresponds to an annual increase of .9\% per year.\footnote{The estimated annualized growth rate is significant at the 1\% level, the 95\% confidence interval is between 0.7\% and 1.2\% (not taking into account though the uncertainty around yearly estimates).} The evolution of the parameter is much more pronounced when predicted unit values are used in the estimation, suggesting that price endogeneity may indeed be affecting not only the level but also the evolution of the estimated elasticity.
 
 \if 0
 As a falsification test, we verify that variations of the unit price are not explained by past or future variations of domestic costs.
