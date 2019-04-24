@@ -1009,11 +1009,7 @@ This corresponds to an annual increase of .4\% per year.\footnote{The coefficien
 \begin{center}
 \setlength{\fboxrule}{1pt} %makes border lines thick
 \setlength{\fboxsep}{.1in} %increases distance to border
-<<<<<<< Updated upstream
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.5in]{"1ere regression 3e partie_baseline".pdf}}
-=======
 \fbox{\includegraphics[trim = 0mm 0mm 0mm 0mm, clip, height=2.7in]{"1ere regression 3e partie_baseline".pdf}}
->>>>>>> Stashed changes
 \end{center}
 \end{figure}
 
@@ -1205,9 +1201,9 @@ If exporter-specific sectoral goods differ in bulkiness, unit value differences 
 %Attenuation bias would not impede analyzing the evolution of the substitutability parameter if only the level of the estimated parameter were affected. But as already shown in the seminal paper by \cite{Feenstra1994}, this attenuation bias also impacts the evolution of the parameter. 
 To check whether unobserved demand shifters correlated with prices are a source of concern in the estimation, in particular for evaluating the rate of change in the estimated parameter,\footnote{\cite{Feenstra1994} shows that the attenuation bias also affects the evolution of the estimated parameter.} we need an instrument that adequately captures exporter-specific shocks to sector \textit{k} prices that are not demand-driven, such as exogenous shocks to the cost of inputs.
 %We would like to use changes in the bilateral-specific real exchange rate. One possibility would be to use Producer Price Index (PPI) since it captures the evolution of prices faced by producers on the inputs' side. Unfortunately, we do not have PPI data for most countries and years in our sample. We therefore settle for an alternative exporter-specific price level indicator: the GDP price level in current US dollars as reported in the Penn World Tables for 189 countries in 1950-2009.\footnote{See (\cite{Heston 2011}). Our sample of countries does not coincide perfectly with the countries in the Penn World Tables. However, as it is the smallest exporters that drop out, the sample adjustment in terms of world trade coverage is minor.}
-We use adjusted past unit values as an instrument for current unit value.
-The adjustment is based on exporter-specific price shocks as measured by domestic price evolutions.
-Unfortunately, we do not have information on producer price indices at the SITC 4-digit level.
+%We use adjusted past unit values as an instrument for current unit value.
+%The adjustment is based on exporter-specific price shocks as measured by domestic price evolutions.
+Producer price indices (PPI) would be our preferred data source on changes in the cost of domestic inputs. Unfortunately, information on producer price indices is not provided at the SITC 4-digit level. 
 Even at the aggregate level, PPI information is not available for most countries and years in our sample.
 We therefore settle for the price level of GDP and the price level of investment.
 
@@ -1225,8 +1221,8 @@ Information is provided for 113 countries in each year, and for the remaining co
 Thus, our sample of countries does not coincide perfectly with the countries in the Penn World Table.
 However, as it is the smallest exporters that drop out, the sample adjustment in terms of world trade coverage is minor.
 
-The instrumenting procedure consists in exploiting past information on unit values and on changes in the cost of domestic inputs to replace observed unit values ${{p}_{k,ij,t}}$ with predicted unit values ${{\hat{p}}_{k,ij,t}}$.
-We assume a stylized cost function in which the sector-specific cost is determined by an economy-wide cost measure ${{C}_{it}}$ together with sector-producer specific characteristics summarized by the index ${{z}_{k,i,t}}$ (> 0) and bilateral characteristics of trade costs ${{z}_{ij,t}}$ (> 0).
+
+The instrumenting procedure consists in exploiting past information on unit values together with information on changes in the cost of domestic inputs to replace observed unit values ${{p}_{k,ij,t}}$ with predicted unit values ${{\hat{p}}_{k,ij,t}}$. We assume a stylized cost function in which the sector-specific cost is determined by an economy-wide cost measure ${{C}_{it}}$ together with sector-producer specific characteristics summarized by the index ${{z}_{k,i,t}}$ (> 0) and bilateral characteristics of trade costs ${{z}_{ij,t}}$ (> 0).
 Denoting the time lag by $l$, we assume:
 \[{{c}_{k,ij,t}}={{C}_{i,t}}.{{z}_{k,i,t}}.{{z}_{ij,t}}\] 
 We assume further that the cost component is well captured by the GDP or investment price level: ${{C}_{i,t}}=P_{i,t}^{v}$ where $v=\left\{ gdp,i \right\}$.
@@ -1272,54 +1268,21 @@ We thus estimate the following equation:
 
 \[\ln {{p}_{k,ij,t}}-\ln {{p}_{k,ij,t-l}}={{\alpha }_{k,t}}\ln \left( \frac{P_{i,t}^{v}}{P_{i,t-l}^{v}} \right)+{{\beta }_{k,t}}\ln \left( \frac{P_{i,t+2}^{v}}{P_{i,t+1}^{v}} \right)+\gamma \ln \left( \frac{P_{i,t-3}^{v}}{P_{i,t-4}^{v}} \right)+{{\varepsilon }_{k,ij,t,l}}\] 
 
-\subsubsection{ Instrumenting: motivation and results (old)\label{mark-2.3.3.}}
-
-
-
-The instrumenting procedure is the following.
-First, we compute relative prices for exporter-specific composite goods in each destination market using the stepwise price imputation procedure (see {\hyperref[ref-004]{3.1}}).
-Second, for each destination market, we compute the mean evolution of GDP price levels in current US dollars of its trading partners, weighted by their market shares in this destination.
-This amounts to computing the evolution of the relevant real exchange rate for each specific bilateral trade relation.
-Third, we compute a hypothetical relative price at time \textit{t} for each exporter in each market as the product of its relative price at time (\textit{t}${-}$1) and the evolution of its GDP price level between \textit{t} and (\textit{t}-1) relatively to all other trading partners in this destination.
-Fourth, we predict the relative price of each exporter in each destination at time \textit{t} by regressing its observed relative price on this hypothetical relative price.
-This gives an instrumented relative price for each exporter which depends only on its past relative price and the relative evolution of its GDP price level.
-Finally, we estimate equation {\hyperref[ref-002]{ }} using these instrumented relative prices instead of the observed relative prices.
-It could be argued that allowing for just one lag inadequately captures the temporal relationship between shocks to inputs' prices and their pass-through to the price of exported output.
-Indeed, if prices are relatively persistent, the instrumenting procedure would amount to little more than replacing observed prices in \textit{t} with lagged observed prices in (\textit{t}-1).
-We therefore also estimate equation {\hyperref[ref-002]{ }} using as instrument the evolution of each exporter's GDP price level relatively to all other trading partners in the destination between (\textit{t}-\textit{s}) and \textit{t} where \textit{s}=1,...,10
-%Guillaume DaudinGD2016-08-30T17:46:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-08-30T17:46:00Z 2016-08-30T17:46:00Z .
-%0 : where is the predicted growth rate between s and s${-}$1.
-%Appendix Erreur~! Source du renvoi introuvable.
+%Instrumenting: motivation and results (old)
+%previous procedure used GDP price index to predict evolution of own price relatively to evolution of price in the destination (as a function of price evolution of each partner, weighted by respective market shares).
+%For each destination market, we compute the mean evolution of GDP price levels in current US dollars of its trading partners, weighted by their market shares in this destination.
+%This amounts to computing the evolution of the relevant real exchange rate for each specific bilateral trade relation.
+%Third, we compute a hypothetical relative price at time \textit{t} for each exporter in each market as the product of its relative price at time (\textit{t}${-}$1) and the evolution of its GDP price level between \textit{t} and (\textit{t}-1) relatively to all other trading partners in this destination.
+%Fourth, we predict the relative price of each exporter in each destination at time \textit{t} by regressing its observed relative price on this hypothetical relative price.
+%This gives an instrumented relative price for each exporter which depends only on its past relative price and the relative evolution of its GDP price level.
+%Finally, we estimate equation {\hyperref[ref-002]{ }} using these instrumented relative prices instead of the observed relative prices.
+%It could be argued that allowing for just one lag inadequately captures the temporal relationship between shocks to inputs' prices and their pass-through to the price of exported output.
+%Indeed, if prices are relatively persistent, the instrumenting procedure would amount to little more than replacing observed prices in \textit{t} with lagged observed prices in (\textit{t}-1).
+%We therefore also estimate equation {\hyperref[ref-002]{ }} using as instrument the evolution of each exporter's GDP price level relatively to all other trading partners in the destination between (\textit{t}-\textit{s}) and \textit{t} where \textit{s}=1,...,10 where is the predicted growth rate between s and s${-}$1.
 %shows that increasing the number of lags reinforces the result obtained with one lag.
 %0 : where is the predicted growth rate between s s and s s ${-}$1.
-%Appendix Erreur~! Source du renvoi introuvable.
-%Erreur~! Source du renvoi introuvable.
-%Erreur~! Source du renvoi introuvable.
-%shows that increasing the number of lags reinforces the result obtained with one lag.
+%shows that increasing the number of lags reinforces the result obtained with one lag. The evolution of the parameter becomes steeper as we increase the number of lags. Therefore, it is likely that our estimate provides a lower bound on the increase in the true substitutability parameter.
 
-Results obtained with one lag (\textit{s}=1) are shown in {\hyperref[ref-010]{Figure 9}}.
-The absolute value of the substitutability parameter has increased by 13\% in 1963-2009 while the level of the estimated parameter increases by 9\% on average relatively to the estimate obtained with non-instrumented prices.
-
-
-\textbf{ \label{ref-010}Figure 9 : Estimated (1${-}(1-\tilde{\sigma })$),instrumented relative price of composite good, 1 lag}
-\includegraphics[width=1\textwidth]{image8.png} 
-
-This result is robust to increasing the number of periods in which the evolution of exports' prices is predicted with the evolution of domestic prices.
-Thus, in 1972-2009, the elasticity increases by 20\% when the instrument is constructed with one lag, and by 23\% when the number of lags is 10 (see Appendix \textbf{Erreur~! Source du renvoi introuvable.}).
-The evolution of the parameter becomes steeper as we increase the number of lags.
-Therefore, it is likely that our estimate provides a lower bound on the increase in the true substitutability parameter.
-%
-%%Guillaume DaudinGD2016-08-30T17:46:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-08-30T17:46:00Z 2016-08-30T17:46:00Z 0 Figure Erreur~! Source du renvoi introuvable.
-%presents the results on the evolution of (1${-}$${\upsigma}$) obtained when (7) is estimated on annual crossections of the COMTRADE dataset.
-%The absolute value of trade elasticity has increased by 33\% from 1962 to 2009.
-%This corresponds to an annual increase of .6\% per year.
-%0 Figure Erreur~! Source du renvoi introuvable.
-%Erreur~! Source du renvoi introuvable.
-%Erreur~! Source du renvoi introuvable.
-%presents the results on the evolution of (1${-}$${\upsigma}$) obtained when (7) is estimated on annual crossections of the COMTRADE dataset.
-%The absolute value of trade elasticity has increased by 33\% from 1962 to 2009.
-%This corresponds to an annual increase of .6\% per year.
-%Figure : Estimated (1${-}$${\upsigma}$) Figure : Estimated (1${-}$${\upsigma}$) Figure : Estimated (1${-}$${\upsigma}$) 0 This paper is the first to provide empirical evidence on the reduction in the degree of structural heterogeneity of the economy in the last five decades by means of estimating annual trade elasticities.
 %What is the economic significance of a reduction in the degree of structural heterogeneity? The reduction in the number of zeros in the bilateral sectoral trade matrix illustrates that over the last five decades a growing number of countries started producing an increasingly similar set of goods.
 %In the Armington framework the composite good each country exports is horizontally differentiated.
 %If consumer perception of the degree of differentiation across places of production is decreasing in the similarity of the product mix that countries supply to world markets, then an increasing Armington trade elasticity, e.g.
@@ -1378,49 +1341,11 @@ Therefore, it is likely that our estimate provides a lower bound on the increase
 %noteLA: Ici je ne dis rien sur le biais lie aux flux zeros.
 %Mais j'ai fait la verification (voir fichier 'ztfpois\ s\ do4(4)digit\ s\ do4(b)aci.tex' dans le repertoire) et le biais lie au fait que les prix sont sous-estimes davantage pour les petits exportateurs et que le nombre de zeros se reduit plus vite pour les petits est toujours present.
 %Toutefois, lorsqu'on inclut a la fois la ms et l'interaction, les deux variables sont significatives a 5\% dans la specification avec les effets fixes et ils ne sont plus significatives dans la specification sans les effets fixes.
-%Je ne sais pas si du coup nous pourrions argumenter que le biais lie aux zeros a un moindre impact sur l'evolution du parametre estime dans baci.
-%0 Gaulier2010 provide a detailed description of the methodology used in constructing BACI.
-%0 We provide a robustness check by estimating the evolution of the heterogeneity parameter for aggregate bilateral trade on a different dataset.
-%We use the BACI dataset which reports bilateral trade data at the HS-1992 6-digit disaggregation level for 1995-2009.
-%The accuracy of the relative prices of country-composite goods constructed with this dataset is improved because the harmonization procedure applied by Gaulier2010 in constructing BACI yields much better-quality unit values while substantially reducing the number of observations with lacking unit value.
-%As a result, at the 6-digit level, less than 7\% of total reported trade in BACI has missing unit values.
-%This is reduced to 1-3\% of total trade when the data is aggregated to the 4-digit level, as opposed to more than 10\% in the raw COMTRADE data we originally used.
-%Another advantage is that the share of ztf in BACI is stable in 1995-2009 as opposed to relatively strong fluctuations in the share of ztf overtime in our original dataset.
-%The disadvantage of BACI is that it covers only a relatively short period compared to the years over which the distance puzzle exists.
-%Obviously, we do not expect to reproduce exactly the results obtained with our original dataset because the trade classification and its level of aggregation are different.
-%noteLA: Ici je ne dis rien sur le biais lie aux flux zeros.
-%Mais j'ai fait la verification (voir fichier 'ztfpois\ s\ do4( noteLA: Ici je ne dis rien sur le biais lie aux flux zeros.
-%Mais j'ai fait la verification (voir fichier 'ztfpois\ s\ do4( 4 4 )digit\ s\ do4( )digit\ s\ do4( b b )aci.tex' dans le repertoire) et le biais lie au fait que les prix sont sous-estimes davantage pour les petits exportateurs et que le nombre de zeros se reduit plus vite pour les petits est toujours present.
-%Toutefois, lorsqu'on inclut a la fois la ms et l'interaction, les deux variables sont significatives a 5\% dans la specification avec les effets fixes et ils ne sont plus significatives dans la specification sans les effets fixes.
-%Je ne sais pas si du coup nous pourrions argumenter que le biais lie aux zeros a un moindre impact sur l'evolution du parametre estime dans baci.
-%)aci.tex' dans le repertoire) et le biais lie au fait que les prix sont sous-estimes davantage pour les petits exportateurs et que le nombre de zeros se reduit plus vite pour les petits est toujours present.
-%Toutefois, lorsqu'on inclut a la fois la ms et l'interaction, les deux variables sont significatives a 5\% dans la specification avec les effets fixes et ils ne sont plus significatives dans la specification sans les effets fixes.
-%Je ne sais pas si du coup nous pourrions argumenter que le biais lie aux zeros a un moindre impact sur l'evolution du parametre estime dans baci.
-%0 Gaulier2010 provide a detailed description of the methodology used in constructing BACI.
-%Figure : Estimated (1${-}$${\upsigma}$), BACI database Figure : Estimated (1${-}$${\upsigma}$), BACI database Figure : Estimated (1${-}$${\upsigma}$), BACI database Fig.
-%Erreur~! Source du renvoi introuvable.
-%shows that our results hold: the elasticity parameter is found to increase in absolute value from 1995-2009.
-%This can be compared with the equivalent period in our original dataset0 Fig.
-%Erreur~! Source du renvoi introuvable.: the increase in the elasticity is much steeper on the BACI dataset.
-%This finding supports the idea that our benchmark estimation likely provides a lower bound on the increase in the aggregate trade elasticity.
-%However, the level of the elasticity estimated in 1995-1999 on BACI data is puzzling and suggests the existence of an attenuation bias.
-%This is the focus of our second robustness check.
-%Fig.
-%Erreur~! Source du renvoi introuvable.
-%Erreur~! Source du renvoi introuvable.
-%Erreur~! Source du renvoi introuvable.
-%shows that our results hold: the elasticity parameter is found to increase in absolute value from 1995-2009.
-%This can be compared with the equivalent period in our original dataset0 Fig.
-%Erreur~! Source du renvoi introuvable.
-%Erreur~! Source du renvoi introuvable.
-%Erreur~! Source du renvoi introuvable.
-%: the increase in the elasticity is much steeper on the BACI dataset.
-%This finding supports the idea that our benchmark estimation likely provides a lower bound on the increase in the aggregate trade elasticity.
-%However, the level of the elasticity estimated in 1995-1999 on BACI data is puzzling and suggests the existence of an attenuation bias.
-%This is the focus of our second robustness check.
-%
-% .
 
+%Obviously, we do not expect to reproduce exactly the results obtained with our original dataset because the trade classification and its level of aggregation are different.
+
+%the increase in the elasticity is much steeper on the BACI dataset.
+%This finding supports the idea that our benchmark estimation likely provides a lower bound on the increase in the aggregate trade elasticity.
 
 \subsection{ Is there a distance puzzle left? \label{mark-2.4.}}
 
