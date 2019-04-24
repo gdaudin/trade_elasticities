@@ -18,7 +18,9 @@ set more off
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+	global dirgit "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/Git/"
 	cd "$dir/Data_Interm/Third_Part/"
+
 
 }
 
@@ -31,6 +33,7 @@ if "`c(hostname)'" =="ECONCES1" {
 *for laptop Liza
 if "`c(hostname)'" =="LAmacbook.local" {
 	global dir "/Users/liza/Documents/LIZA_WORK"
+	global dirgit "/Users/liza/Documents/LIZA_WORK/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/"
 	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 }
 
@@ -378,8 +381,11 @@ foreach instr of local liste_instr {
 		}
 	}
 }
-graph combine gdpo1.gph gdpo2.gph gdpo3.gph i1.gph i2.gph i3.gph, iscale(.5) scheme(s2mono) rows(2) ycommon xcommon note("Note: [GDP] stands for GDP deflator, [I] stands for investment price index",justification(center))
+graph combine gdpo1.gph gdpo2.gph gdpo3.gph i1.gph i2.gph i3.gph, iscale(.5) scheme(s2mono) rows(2) ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level",justification(center))
 graph export firststage.eps, replace
+
+graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage.pdf", replace
+
 
 local liste_instr gdpo i
 foreach instr of local liste_instr {
