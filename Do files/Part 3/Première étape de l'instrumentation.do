@@ -383,7 +383,7 @@ foreach instr of local liste_instr {
 			(connected coef_ln_rel_`instr'_lag`lag' year, lwidth(medthin) lpattern(solid) msymbol(smcircle_hollow) msize(small)) ///
 			(fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)), ///
 			 legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("lag `lag' [I]") ///
-			 scheme(s2mono) saving(`instr'`lag')
+			 scheme(s1mono) saving(`instr'`lag')
 		}
 	}
 }
