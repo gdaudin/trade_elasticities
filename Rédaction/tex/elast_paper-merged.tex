@@ -1302,20 +1302,29 @@ We thus estimate the following equation:
 %the increase in the elasticity is much steeper on the BACI dataset.
 %This finding supports the idea that our benchmark estimation likely provides a lower bound on the increase in the aggregate trade elasticity.
 
-\subsection{ Is there a distance puzzle left? \label{mark-2.4.}}
+\subsection{ Is there a distance puzzle left?}
 
-This section has provided empirical evidence on the evolution of the aggregate substitutability parameter for world trade in 1963-2009.
-This substitutability parameter corresponds to the aggregate trade elasticity in the Armington framework.
-We find that this parameter has increased by 33\% between 1963 and 2009 in the benchmark estimation, and by 13\% when prices are instrumented.
-Both estimates are likely to be lower bounds on the increase in the true substitutability parameter.
-Section 1 has shown that the distance elasticity of trade has increased by 7\% over the same period.
-Combining these two results, there is no distance puzzle in the framework of the Armington model in as much as the elasticity of trade costs to distance has decreased by at least 5-7\% in 1963-2009.\footnote{The elasticity decreases by 5\% when the evolution of $\rho$ is computed from the ratio of trends, and by 7\% when it is computed as the trend of the ratios.
-} Increasing perceived substitutability of country-specific composite goods contributes to the increasing distance elasticity of trade.
+This section has provided empirical evidence on the evolution of the aggregate substitutability parameter for world trade from 1963 to 2013.
+In the Armington framework, this substitutability parameter $(1-\sigma)$ corresponds to the aggregate trade elasticity  $\epsilon$.
+We find that this parameter has increased by 22\% between 1963 and 2009 in the baseline estimation, and by 60\% when prices are instrumented.
+Section 1 has shown that the distance elasticity of trade ($\delta$)has increased by 4\% over the same period in the baseline estimate.
+A naïve combination of these two results suggests, there is no distance puzzle left in the framework of the Armington model in as much as the elasticity of trade costs to distance ($\rho$) has decreased by 15\% in 1963-2013.
+More formally, we run Monte Carlo estimation of the mean and standard deviation of $\rho$ defined as $\frac{\delta}{1-\sigma}$. Figure \ref{fig:rho} gives the results for the baseline estimation, the instrumented estimation and the superbalanced sample.
+Years where the estimated standard deviation is too large or the estimation of $\sigma$ did not converge are dropped out. The resulting precision of the measure of $\rho$ is not what we would like. Still, in all cases, the point estimates suggest a decrease of $\rho$ by 13\% in the baseline estimate, 27\% using the instrumented method and 23\% in the superbalanced sample.
+%\footnote{The elasticity decreases by 5\% when the evolution of $\rho$ is computed from the ratio of trends, and by 7\% when it is computed as the trend of the ratios.}
+Increasing perceived substitutability of country-specific composite goods contributes to the non-decreasing distance elasticity of trade.
 
-The reduction in the elasticity of trade costs to distance is even more pronounced if we focus on 1970-2009.
-As shown by (Hummels 2007), this period is characterized by a new phenomenon: the fact that air transportation starts playing a substantial role in world trade.
-The instrumented Armington elasticity increases by 19\% in this period while the evolution of the distance elasticity is best described as flat.
-It follows that the elasticity of trade costs to distance has decreased by at least 17\% in 1970-2009.
+
+\begin{figure}[H]
+	\caption{Estimated $\rho$ }
+	\includegraphics[width=1\textwidth]{"graph_rho".pdf}
+	\label{fig:rho}
+\end{figure}
+
+%The reduction in the elasticity of trade costs to distance is even more pronounced if we focus on 1970-2009.
+%As shown by (Hummels 2007), this period is characterized by a new phenomenon: the fact that air transportation starts playing a substantial role in world trade.
+%The instrumented Armington elasticity increases by 19\% in this period while the evolution of the distance elasticity is best described as flat.
+%It follows that the elasticity of trade costs to distance has decreased by at least 17\% in 1970-2009.
 
 
 What is the economic interpretation of an increasing substitutability parameter measured on aggregate data? 
@@ -1337,31 +1346,32 @@ The bottom line is that an increase in measured substitutability for country-com
 %maybe here introduce discussion of alternative frameworks (whether result is relevant if move away from Armington); discuss restrictiveness of assumptions in EK-ChaneyMelitz (or) threshold effect
 \section{Conclusion}
 
-The estimated effect of distance in gravity equations has increased in the past fifty years despite substantial innovation in transportation and communication: this is the `distance puzzle'.
-Using COMTRADE 4-digit bilateral trade data in 1962-2009, this paper finds that the evolution of the elasticity of trade flows to trade costs, referred to as the `trade elasticity', provides a direct explanation of the increasing distance elasticity of trade.
+The estimated effect of distance in gravity equations has not decreased in the past fifty years despite substantial innovation in transportation and communication that should have reduced the relative effect of distance: this is the `distance puzzle'.
+Using COMTRADE 4-digit bilateral trade data in 1962-2013, this paper finds that the evolution of the elasticity of trade flows to trade costs, referred to as the `trade elasticity', provides a direct explanation of the increasing distance elasticity of trade.
 Increased sensitivity of trade flows to relative prices has more than compensated the reduction in the elasticity of trade costs to distance.
 
 The paper proceeds in three steps.
 First, it shows that the distance puzzle is a feature of our data by estimating yearly cross-section gravity equations.
-In the baseline estimation the distance coefficient has increased by 7\% from 1962 to 2009.
+In the baseline estimation the distance coefficient has increased by 4\% from 1962 to 2013.
 This result holds when we correct for changes in the sample of trading partners and the composition of world trade.
-Taking into account FTAs seems to solve the distance puzzle, but this might be an artefact of their growing importance: introducing FTAs dummies amounts to adding a time-growing number of proximity controls in the estimation.
+%Taking into account FTAs seems to solve the distance puzzle, but this might be an artefact of their growing importance: introducing FTAs dummies amounts to adding a time-growing number of proximity controls in the estimation.
 
-Second, the paper suggests an \textit{ad hoc} method of measuring structural heterogeneity in the Armington framework.
+Second, the paper suggests a method to measure structural heterogeneity in the Armington framework.
 In the main theoretical foundations of the gravity equation the distance coefficient is the product of the elasticity of trade costs to distance and a measure of heterogeneity.
 In the Armington framework, heterogeneity is inter-country and intra-sector.
-The trade elasticity corresponds to the degree of perceived substitutability of country-specific varieties of each good, which can be approximated by studying the relations between the price level and the market share of importers in destination markets.
+The trade elasticity corresponds to the degree of perceived substitutability of country-specific varieties of each good, which can be approximated by studying the relations between the prices and the market share of importers in destination markets.
 
 Third, the paper estimates the evolution of the trade elasticity in the Armington framework, i.e.
 the substitution elasticity between country composite goods.
 It uses 4-digit unit values as proxies for sectoral prices.
-In our method, unobserved unit values for zero trade flows lead to an overestimation bias that is reduced over time.
-As the estimated elasticity still increases in absolute value this%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z 0 while the overestimation bias is reduced, 0 while the overestimation bias is reduced,
- evolution provides a lower bound on the increase in the absolute value of the underlying trade elasticity.
-Once instrumented by bilateral real exchange rates, the estimated elasticity increases by 13\% between 1963 and 2009.
-The evolution of the distance coefficient is thus compatible with a decrease of the elasticity of trade costs to distance of at least 5 to 7\%.
-This reduction in the elasticity of trade costs to distance is even more pronounced if we focus on the period in which air transportation starts playing an important role in bilateral trade.
-We find that from 1970 to 2009 the elasticity of trade costs to distance has decreased by 17\% while the perceived substitutability of countries' product bundles has increased by at least 19\%.
+%In our method, unobserved unit values for zero trade flows lead to an overestimation bias that is reduced over time.
+%As the estimated elasticity still increases in absolute value this%Guillaume DaudinGD2016-04-20T14:47:00Z Guillaume DaudinGD Guillaume DaudinGD Guillaume Daudin Guillaume Daudin GD GD 2016-04-20T14:47:00Z 2016-04-20T14:47:00Z 0 while the overestimation bias is reduced, 0 while the overestimation bias is reduced,
+% evolution provides a lower bound on the increase in the absolute value of the underlying trade elasticity.
+Once instrumented by bilateral real exchange rates, the estimated elasticity increases by between 22\% and 60\% between 1963 and 2013.
+The evolution of the distance coefficient is compatible with a decrease of the elasticity of trade costs to distance of between 13\% and 23\%.
+There is a lot of uncertainty around these estimates. 
+%This reduction in the elasticity of trade costs to distance is even more pronounced if we focus on the period in which air transportation starts playing an important role in bilateral trade.
+%We find that from 1970 to 2009 the elasticity of trade costs to distance has decreased by 17\% while the perceived substitutability of countries' product bundles has increased by at least 19\%.
 
 
 
