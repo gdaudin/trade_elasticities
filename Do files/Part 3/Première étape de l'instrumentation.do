@@ -17,10 +17,9 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities/"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
 	global dirgit "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/Git/"
-	cd "$dir/Data_Interm/Third_Part/"
-
+    cd "$dir/Data_Interm/Third_Part/"
 
 }
 
@@ -353,6 +352,7 @@ foreach year of numlist 1963/2013 {
 
 ** keep all estimated coefs in one file (per instrument: gdpo, i)
 local liste_instr gdpo i
+capture erase tmp_coefs_`instr', replace
 foreach instr of local liste_instr {
 	foreach year of numlist 1963/2013 {
 		use tmp_coefs_`instr'_`year', clear
@@ -372,16 +372,23 @@ foreach instr of local liste_instr {
 		gen low_`lag'=coef_ln_rel_`instr'_lag`lag'-2*se_ln_rel_`instr'_lag`lag'
 		gen high_`lag'=coef_ln_rel_`instr'_lag`lag'+2*se_ln_rel_`instr'_lag`lag'
 		if "`instr'"=="gdpo" {
-			graph twoway (rarea low_`lag' high_`lag' year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected coef_ln_rel_`instr'_lag`lag' year, lwidth(medthin) lpattern(solid) msymbol(smcircle_hollow) msize(small)) (fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)),/*
-			*/ legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("lag `lag' [GDP]") scheme(s2mono) saving(`instr'`lag')
+			graph twoway (rarea low_`lag' high_`lag' year, fintensity(inten20) lpattern(dot) lwidth(thin)) ///
+			(connected coef_ln_rel_`instr'_lag`lag' year, lwidth(medthin) lpattern(solid) msymbol(smcircle_hollow) msize(small)) ///
+			(fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)), ///
+			legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("lag `lag' [GDP]") /// 
+			scheme(s1mono) saving(`instr'`lag')
 		}
 		if "`instr'"=="i"  {
-			graph twoway (rarea low_`lag' high_`lag' year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected coef_ln_rel_`instr'_lag`lag' year, lwidth(medthin) lpattern(solid) msymbol(smcircle_hollow) msize(small)) (fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)),/*
-			*/ legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("lag `lag' [I]") scheme(s2mono) saving(`instr'`lag')
+			graph twoway (rarea low_`lag' high_`lag' year, fintensity(inten20) lpattern(dot) lwidth(thin)) ///
+			(connected coef_ln_rel_`instr'_lag`lag' year, lwidth(medthin) lpattern(solid) msymbol(smcircle_hollow) msize(small)) ///
+			(fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)), ///
+			 legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("lag `lag' [I]") ///
+			 scheme(s2mono) saving(`instr'`lag')
 		}
 	}
 }
-graph combine gdpo1.gph gdpo2.gph gdpo3.gph i1.gph i2.gph i3.gph, iscale(.5) scheme(s2mono) rows(2) ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level",justification(center))
+graph combine gdpo1.gph gdpo2.gph gdpo3.gph i1.gph i2.gph i3.gph, iscale(.5) ///
+	scheme(s1mono) rows(2) ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level",justification(center))
 graph export firststage.eps, replace
 
 graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage.pdf", replace
