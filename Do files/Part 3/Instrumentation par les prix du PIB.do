@@ -44,7 +44,7 @@ program first_stage_instr
 *local year 1965 
 *local liste_instr gdpo
 	
-	use temp_mod_`year', clear
+	use For_instru_`year', clear
 	*clean data: restrict to dest-product groups where at least 5 suppliers observed \& to dest where at least 50 products observed
 	bysort iso_d prod_unit: gen nb_obs=_N
 	drop if nb_obs<5

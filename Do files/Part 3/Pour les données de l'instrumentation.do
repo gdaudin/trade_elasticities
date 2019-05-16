@@ -186,8 +186,10 @@ program prep_instr
 		joinby iso_o year using "tmp_pwt90_`year'", unmatched(master)
 	}
 	drop _merge
-	save temp_mod_`year', replace
+	erase temp_mod_`year', replace
+	save For_instru_`year', replace
 end
+
 
 
 
@@ -203,3 +205,6 @@ foreach n of numlist 1963/2013 {
 	prep_instr `n'
 }
 
+foreach n of numlist 1962/2013 {
+	erase temp_`n'
+}
