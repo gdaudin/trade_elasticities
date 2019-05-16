@@ -186,7 +186,7 @@ program prep_instr
 		joinby iso_o year using "tmp_pwt90_`year'", unmatched(master)
 	}
 	drop _merge
-	erase temp_mod_`year', replace
+	erase "temp_mod_`year'.dta"
 	save For_instru_`year', replace
 end
 
