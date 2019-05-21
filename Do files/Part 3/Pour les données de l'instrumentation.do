@@ -165,8 +165,8 @@ program prep_instr
 		
 		use temp_`year_lag', clear
 		assert year==`year_lag'
-		keep iso_o iso_d prod_unit sitc4 qty_token qty_unit uv_presente ms_secteur ms_pays
-		local vars uv_presente ms_secteur ms_pays
+		keep iso_o iso_d prod_unit sitc4 qty_token qty_unit uv_presente ms_secteur ms_pays value
+		local vars uv_presente ms_secteur ms_pays value
 		foreach v of local vars {
 			rename `v' `v'_lag_`lag'
 		}
@@ -194,12 +194,12 @@ end
 
 
 *PROGRAMS FIRST STAGE:
-
+/*
 foreach n of numlist 1962/2013 {
 	calc_ms `n'
 }
 
-
+*/
 
 foreach n of numlist 1963/2013 {
 	prep_instr `n'
