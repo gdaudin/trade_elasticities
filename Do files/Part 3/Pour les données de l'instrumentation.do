@@ -206,5 +206,5 @@ foreach n of numlist 1963/2013 {
 }
 
 foreach n of numlist 1962/2013 {
-	erase temp_`n'
+	capture erase temp_`n'
 }
