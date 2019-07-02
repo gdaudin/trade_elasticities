@@ -73,6 +73,7 @@ program first_stage_instr
 		drop if uv_presente_lag_`lag' ==.
 		gen double ln_uv_lag_`lag'=ln(uv_presente_lag_`lag')
 		gen uv_evolution_lag_`lag' = uv_presente/uv_presente_lag_`lag'-1
+		gen uv_ln_evolution_lag_`lag' = ln_uv-ln_uv_lag_1
 		gen	weight_lag_`lag' = value_lag_`lag'/uv_presente_lag_`lag'
 		
 	}
@@ -137,6 +138,12 @@ foreach lag of numlist `laglist' {
 	egen blik = total(weight_lag_`lag'), by (iso_o prod_unit)
 	gen evolution_other_markets_lag_`lag' = (blouk-blif)/(blik-weight_lag_`lag')
 	gen evolution_moy_lag_`lag' = blouk/blik
+	
+	gen blif_ln = uv_ln_evolution_lag_`lag' * weight_lag_`lag'
+	egen blouk_ln = total(blif_ln), by(iso_o prod_unit)
+	gen evolution_ln_other_markets_lag_`lag' = (blouk_ln-blif_ln)/(blik-weight_lag_`lag')
+	gen evolution_ln_moy_lag_`lag' = blouk_ln/blik
+	
 }
 *drop blif blouf blik
 
@@ -159,6 +166,9 @@ drop if uv_evolution_lag_1 <=r(p1)
 
 
 reg uv_evolution_lag_1 evolution_other_markets_lag_1
+reg uv_ln_evolution_lag_1 evolution_ln_other_markets_lag_1
+
+
 predict explained_predict
 gen uv_predict = uv_presente_lag_1*explained_predict
 
