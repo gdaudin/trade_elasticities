@@ -138,19 +138,20 @@ foreach lag of numlist `laglist' {
 	gen evolution_other_markets_lag_`lag' = (blouk-blif)/(blik-weight_lag_`lag')
 	gen evolution_moy_lag_`lag' = blouk/blik
 }
+*drop blif blouf blik
 
 
 
 
 summarize evolution_other_markets_lag_1, det
-drop if evolution_other_markets_lag_1 >=r(p90)
+drop if evolution_other_markets_lag_1 >=r(p99)
 summarize evolution_other_markets_lag_1, det
-drop if evolution_other_markets_lag_1 <=r(p10)
+drop if evolution_other_markets_lag_1 <=r(p1)
 
 summarize uv_evolution_lag_1, det
-drop if uv_evolution_lag_1 >=r(p90)
+drop if uv_evolution_lag_1 >=r(p99)
 summarize uv_evolution_lag_1, det
-drop if uv_evolution_lag_1 <=r(p10)
+drop if uv_evolution_lag_1 <=r(p1)
 
 
 
@@ -158,9 +159,14 @@ drop if uv_evolution_lag_1 <=r(p10)
 
 
 reg uv_evolution_lag_1 evolution_other_markets_lag_1
+predict explained_predict
+gen uv_predict = uv_presente_lag_1*explained_predict
+
+corr uv_presente uv_presente_lag_1 uv_predict 
+
+
+
 reg uv_evolution_lag_1 evolution_other_markets_lag_1 [aweight=weight_lag_1]
-
-
 
 end
 /*
