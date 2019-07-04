@@ -203,9 +203,13 @@ foreach n of numlist 1962/2013 {
 */
 
 foreach n of numlist 1963/2013 {
+*local years 1963 1986 2005
+*foreach n of local years {
 	prep_instr `n'
 }
 
 foreach n of numlist 1962/2013 {
+*local years 1963 1986 2005
+*foreach n of local years {
 	capture erase temp_`n'
 }
