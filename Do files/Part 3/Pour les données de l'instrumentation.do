@@ -170,6 +170,7 @@ program prep_instr
 		foreach v of local vars {
 			rename `v' `v'_lag_`lag'
 		}
+		rename uv_presente_lag* uv_lag*
 		gen year=`year'
 		joinby iso_o iso_d year prod_unit sitc4 qty_token qty_unit using temp_mod_`year', unmatched(using)
 		drop _merge 
