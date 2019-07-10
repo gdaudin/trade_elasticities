@@ -69,25 +69,44 @@ program first_stage_instr
 	
 	
 	foreach lag of numlist `laglist' {
-		gen double ln_uv_lag_`lag'=ln(uv_presente_lag_`lag')
+		gen double ln_uv_lag_`lag'=ln(uv_lag_`lag')
+		gen explained = ln_uv - ln_uv_lag_`lag'
+		gen	weight_lag_`lag' = value_lag_`lag'/uv_presente_lag_`lag'
+		label var weight_lag_`lag' "Poids pour l'instrumentation par la prix des autres marchés"
 		foreach instr of local liste_instr {
-			gen double ln_`instr'_lag_`lag'=ln(rel_`instr'_lag_`lag')
-		}
-	}
-	
-	*add info on one lag or two lag exporter price level for specifications in which two lags are used
-	*reformulate as per year changes:
-	
-	foreach instr of local liste_instr {
-		foreach lag of numlist `laglist' {
-		
-			gen double ln_rel_`instr'_lag`lag'=ln(rel_`instr'_lag_`lag')
-		*	gen double ln_`instr'_lag2=ln(rel_`instr'_`i'/rel_`instr'_`iprime')
+			if "`instr'" != "om" {
+				gen double ln_rel_`instr'_lag`lag'=ln(rel_`instr'_lag_`lag')
+			}
+			if "`instr'" == "om" {
+				** Remove when the number of peer markets is not at least two
+				bys iso_o prod_unit : drop if _N <=3
+				egen iso_o_iso_d_prod_unit=group(iso_o iso_d prod_unit)
+				su iso_o_iso_d_prod_unit, meanonly
+				generate iso_o_prod_unit = iso_o+"_"+prod_unit
+				** Pour calculer l'évolution du prix dans les autres marchés
+				gen blif = uv_ln_evolution_lag_`lag' * weight_lag_`lag'
+				egen blouk = total(blif), by(iso_o prod_unit)
+				egen blik = total(weight_lag_`lag'), by (iso_o prod_unit)
+				gen ln_rel_`instr'_lag`lag' = (blouk-blif)/(blik-weight_lag_`lag')
+				gen evolution_ln_moy_lag_`lag' = blouk/blik
+				drop blif blouf blik
+				**Pour enlever les évolutions extrêmes
+				summarize evolution_other_markets_lag_`lag', det
+				drop if evolution_other_markets_lag_`lag' >=r(p99)
+				summarize evolution_other_markets_lag_`lag', det
+				drop if evolution_other_markets_lag_`lag' <=r(p1)
+
+				summarize uv_evolution_lag_`lag', det
+				drop if uv_evolution_lag_`lag' >=r(p99)
+				summarize uv_evolution_lag_`lag', det
+				drop if uv_evolution_lag_`lag' <=r(p1)			
+			}
+			
 		}
 	}
 	
 
-	*drop if iso_o=="USA"
+
 	**run simple lag specifications and store coefs and std errors: uv and instr in some year
 	*local k 3
 	
@@ -98,9 +117,26 @@ program first_stage_instr
 		local var_explicatives
 		foreach instr of local liste_instr {
 				local var_explicatives `var_explicatives' ln_rel_`instr'_lag`lag'
+				if "`instr'" == "om" {
+					** Remove when the number of peer markets is not at least two
+					bys iso_o prod_unit : drop if _N <=3
+					egen iso_o_iso_d_prod_unit=group(iso_o iso_d prod_unit)
+					su iso_o_iso_d_prod_unit, meanonly
+					generate iso_o_prod_unit = iso_o+"_"+prod_unit
+					**Pour enlever les évolutions extrêmes
+					summarize evolution_other_markets_lag_`lag', det
+					drop if evolution_other_markets_lag_`lag' >=r(p99)
+					summarize evolution_other_markets_lag_`lag', det
+					drop if evolution_other_markets_lag_`lag' <=r(p1)
+
+					summarize uv_evolution_lag_`lag', det
+					drop if uv_evolution_lag_`lag' >=r(p99)
+					summarize uv_evolution_lag_`lag', det
+					drop if uv_evolution_lag_`lag' <=r(p1)			
+			}
 		}
 
-		gen explained = ln_uv - ln_uv_lag_`lag'
+		
 		reg explained `var_explicatives' /*, noconstant*/ 
 		
 		preserve
@@ -121,16 +157,16 @@ program first_stage_instr
 		drop explained explained_predict
 		
 		if strmatch("`c(username)'","*daudin*")==1 {
-			outreg2 using "$dir/Résultats/Troisième partie/first_stage_results", excel ctitle(`year'_`lag'lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
+			outreg2 using "$dir/Résultats/Troisième partie/first_stage_results_`liste_instr'_`lag'", excel ctitle(`year'_`lag'lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
 		}
 		if "`c(hostname)'" =="LAmacbook.local" {
-			outreg2 using "first_stage_results", excel ctitle(`year'_`lag'lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
+			outreg2 using "first_stage_results_`liste_instr'_`lag'", excel ctitle(`year'_`lag'lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
 		}
 		corr  ln_uv ln_uv_`liste_instr'_`lag'lag ln_uv_lag_`lag'
 		gen uv_`liste_instr'_`lag'lag = exp(ln_uv_`liste_instr'_`lag'lag)
 		
 		local predict_for_corr `predict_for_corr' uv_`liste_instr'_`lag'lag
-		local var_for_corr `var_for_corr' uv_presente_lag_`lag'
+		local var_for_corr `var_for_corr' uv_lag_`lag'
 		
 	
 	
@@ -157,21 +193,21 @@ foreach year of numlist 1963/2013 {
 	
 		first_stage_instr, year(`year') liste_instr(`instr')
 		if strmatch("`c(username)'","*daudin*")==1 {
-			if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`year'.dta"
+			if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`lag'_`year'.dta"
 			if `k'!=1 drop _merge
-			save "$dir/Résultats/Troisième partie/first_stage_`year'.dta", replace
+			save "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`lag'_`year'.dta", replace
 		}
 		if "`c(hostname)'" =="LAmacbook.local" {
-			if `k'!=1 merge 1:1  iso_d-ln_uv using "first_stage_`year'.dta"
+			if `k'!=1 merge 1:1  iso_d-ln_uv using "first_stage_`liste_instr'_`lag'_`year'.dta"
 			if `k'!=1 drop _merge
-			save "first_stage_`year'.dta", replace
+			save "first_stage_`liste_instr'_`lag'_`year'.dta", replace
 		}
 		local k = `k'+1
 	}
 }
 
-** keep all estimated coefs in one file (per instrument: gdpo, i)
-local liste_instr gdpo i
+** keep all estimated coefs in one file (per instrument: gdpo, i, om)
+local liste_instr gdpo i om
 capture erase tmp_coefs_`instr', replace
 foreach instr of local liste_instr {
 	foreach year of numlist 1963/2013 {
@@ -185,7 +221,7 @@ foreach instr of local liste_instr {
 }
 
 *recap graph: scheme s2mono 
-local liste_instr gdpo i
+local liste_instr gdpo i om
 foreach instr of local liste_instr {
 	use tmp_coefs_`instr', clear
 	foreach lag of numlist 1/3 {
@@ -207,7 +243,7 @@ foreach instr of local liste_instr {
 		}
 	}
 }
-graph combine gdpo1.gph gdpo2.gph gdpo3.gph i1.gph i2.gph i3.gph, iscale(.5) ///
+graph combine gdpo1.gph gdpo2.gph gdpo3.gph i1.gph i2.gph i3.gph om1.gph om2.gph om3.gph, iscale(.5) ///
 	scheme(s1mono) rows(2) ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level",justification(center))
 graph export firststage.eps, replace
 
