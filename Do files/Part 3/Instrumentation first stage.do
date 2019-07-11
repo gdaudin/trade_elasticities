@@ -180,12 +180,12 @@ foreach year of numlist 1963/2013 {
 	 foreach instr of local liste_instr {
 		first_stage_instr, year(`year') liste_instr(`instr')
 		if strmatch("`c(username)'","*daudin*")==1 {
-			if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`lag'_`year'.dta"
+			if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`year'.dta"
 			if `k'!=1 drop _merge
-			save "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`lag'_`year'.dta", replace
+			save "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`year'.dta", replace
 		}
 		if "`c(hostname)'" =="LAmacbook.local" {
-			if `k'!=1 merge 1:1  iso_d-ln_uv using "first_stage_`liste_instr'_`lag'_`year'.dta"
+			if `k'!=1 merge 1:1  iso_d-ln_uv using "first_stage_`liste_instr'_`year'.dta"
 			if `k'!=1 drop _merge
 			save "first_stage_`liste_instr'_`lag'_`year'.dta", replace
 		}
