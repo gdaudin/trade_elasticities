@@ -76,9 +76,11 @@ if strmatch("`c(username)'","*daudin*")==1 {
 	}	
 
 	if "`sample'" == "instrumented" {
-		use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
-		rename value value_`year'
-		gen uv_`year'=exp(ln_uv_gdpo_1lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
+	local instrument $instrument
+	local lag $lag
+		use "$dir/Résultats/Troisième partie/first_stage_gdpo i om_`year'", clear
+	*	rename value value_`year'
+		gen uv_`year'=exp(ln_uv_`instrument'_`lag'lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
 	}
 
 
@@ -88,10 +90,10 @@ if strmatch("`c(username)'","*daudin*")==1 {
 		replace uv_`year' = rel_price
 		label var uv_`year' "Attention il s'agit des prix relatifs calculés"
 	}
-
-
-
 }
+
+
+
 
 if strmatch("`c(hostname)'","LAmacbook.local")==1 | strmatch("`c(hostname)'","L184355620")==1 {
 /*On va chercher les données*/
@@ -102,9 +104,11 @@ if strmatch("`c(hostname)'","LAmacbook.local")==1 | strmatch("`c(hostname)'","L1
 	}	
 		
 	if "`sample'" == "instrumented" {
-		use "first_stage_`year'", clear
-		rename value value_`year'
-		gen uv_`year'=exp(ln_uv_gdpo_1lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
+		use "first_stage_gdpo i om_`year'", clear
+		local lag $lag
+			use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
+	*	rename value value_`year'
+		gen uv_`year'=exp(ln_uv_`instrument'_`lag'lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
 	}
 	
 	
@@ -114,9 +118,6 @@ if strmatch("`c(hostname)'","LAmacbook.local")==1 | strmatch("`c(hostname)'","L1
 		replace uv_`year' = rel_price
 		label var uv_`year' "Attention il s'agit des prix relatifs calculés"
 	}
-
-
-
 }
 
 	drop if iso_o==iso_d
@@ -179,18 +180,13 @@ if "`sample'" != "instrumented" {
 	bys prod_unit iso_d: egen c_50_uv = pctile(uv_presente),p(50)
 	drop if uv_presente < c_05_uv | uv_presente > c_95_uv
 	drop if uv_presente < c_50_uv/100 | uv_presente > c_50_uv*100
-
-
 }	
 
-if strmatch("`c(hostname)'","L184355620")==1 {
 
-	save "temp_`year'", replace
-}
-else {
-	save "$dir/temp_`year'", replace
-}
+if strmatch("`c(hostname)'","L184355620")==1 save "temp_`year'", replace
+		else save "$dir/temp_`year'", replace
 
+*/
 
 end 
 
@@ -208,7 +204,8 @@ end
 program nlnonlin
 	version 12
 	su group_iso_o, meanonly	
-	local nbr_iso_o=r(max)
+		local nbr_iso_o=r(max)
+		display "`nbr_iso_o'"
 	local nbr_var=`nbr_iso_o'+2
 	syntax varlist (min=`nbr_var' max=`nbr_var') if [iweight], at(name)
 	local lnms_pays : word 1 of `varlist'
@@ -290,14 +287,8 @@ program reg_nlin
 timer clear 1
 timer on 1
  
-if strmatch("`c(hostname)'","L184355620")==1 {
-
-	use "temp_`year'", clear
-}
-
-else {
-	use "$dir/temp_`year'", clear
-}
+if strmatch("`c(hostname)'","L184355620")==1	use "temp_`year'", clear
+		use "$dir/temp_`year'", clear
 	
 	
 *********Calcul des ms définitifs
@@ -322,6 +313,8 @@ else {
 	*Par secteur chez un importateur
 	bys iso_d prod_unit : egen tot_import_secteur = total(value)
 	generate ms_secteur = tot_import_secteur / tot_import
+	
+	drop if uv_presente>=.
 
 	
 	
@@ -329,7 +322,9 @@ else {
 	quietly tabulate iso_o, gen(iso_o_)
 	su group_iso_o, meanonly	
 		local nbr_iso_o=r(max)
+		display "`nbr_iso_o'"
 	egen group_prod=group(prod_unit)
+	
 	
 	
 	local startlnsigmaminus1 2
@@ -358,13 +353,13 @@ display "`initial_iso_o'"
 capture drop weight
 gen weight=0
 bys iso_d iso_o	: replace weight = 1/_N
-*Cela de manière 
+
 	
 *	nl nonlin @ ms_pays prix_rel_5 ms_secteur_5 `liste_variables_iso_o', eps(1e-3) iterate(100) parameters(sigma `liste_parametres_iso_o' ) initial(sigma 1.5 `initial_iso_o')
-	drop if uv_presente>=.
 	display "nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
 *	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o', iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
-	capture noisily nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
+	capture noisily nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=weight], ///
+			iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
 	
 	
 	
@@ -463,7 +458,7 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Ba
 
 
 *********************************Lancer les programmes pour sitc (COMTRADE)
-
+/*
 clear
 set obs 1
 gen year=.
@@ -482,7 +477,7 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_ba
 
 log close
 
-
+*/
 ****************************************************************************
 *******************************Lancer les programmes sur le prix_calc
 /*
@@ -501,16 +496,18 @@ foreach year of num 1962(1)2013 {
 use "$dir/temp_result", clear
 save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_prix_calc", replace
 
-
-/*
-/*
+*/
 ****************************************************************************
 *******************************Lancer les programmes sur les données instrumentées
 clear
 set obs 1
 gen year=.
-capture save "$dir/temp_result"
-foreach year of num 1963(2)2013 {
+capture drop "$dir/temp_result.dta"
+global instrument gdpo
+global lag 1
+* ou gdp ou i...
+foreach year of num 1963(1)2013 {
+*foreach year of num 2013 {
 	display "`year'"
 	display
 	prepar_data  instrumented `year'
@@ -518,8 +515,8 @@ foreach year of num 1963(2)2013 {
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
 }
-use "$dir/temp_result", clear
-save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_instrumented", replace
+use "$dir/temp_result.dta", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_instrumented_${instrument}_${lag}lag", replace
 
 ****************************************************************************
 */
