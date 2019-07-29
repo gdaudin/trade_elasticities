@@ -74,7 +74,7 @@ program first_stage_instr
 		gen	weight_lag_`lag' = value_lag_`lag'/uv_lag_`lag'
 		label var weight_lag_`lag' "Poids pour l'instrumentation par la prix des autres marchés"
 		foreach instr of local liste_instr {
-			if "`instr'" != "om" {
+			if "`instr'" != "om" & "`instr'" !="ln_uv" {
 				gen double ln_rel_`instr'_lag`lag'=ln(rel_`instr'_lag_`lag')
 			}
 			if "`instr'" == "om" {
@@ -102,13 +102,18 @@ program first_stage_instr
 		generate iso_o_prod_unit = iso_o+"_"+prod_unit
 	}
 	
-	
 	encode prod_unit, generate (prod_unit_num)
 
 	foreach lag of numlist `laglist' {
 		local var_explicatives
 		foreach instr of local liste_instr {
-				local var_explicatives `var_explicatives' ln_rel_`instr'_lag`lag'
+				if "`instr'" == "ln_uv" {
+					local var_explicatives `var_explicatives' `instr'_lag_`lag'
+				}
+				if "`instr'" != "ln_uv" {
+					local var_explicatives `var_explicatives' ln_rel_`instr'_lag`lag'
+				}
+				
 				if "`instr'" == "om" {
 					**Pour enlever les évolutions extrêmes
 					summarize ln_rel_`instr'_lag`lag', det
@@ -120,13 +125,22 @@ program first_stage_instr
 					drop if explained_lag_`lag' >=r(p99)
 					summarize explained_lag_`lag', det
 					drop if explained_lag_`lag' <=r(p1)			
-			
-
 			}
 		}
 
 		
-		reg explained_lag_`lag' `var_explicatives' /*, noconstant*/ 
+	*	display "`var_explicatives'"
+	*	blouf
+		
+		if strpos("`liste_instr'","ln_uv_lag_1")==0 {
+			reg explained_lag_`lag' `var_explicatives' /*, noconstant*/ 
+		}
+		
+		if strpos("`liste_instr'","ln_uv_lag_1")!=0 {
+			reg ln_uv `var_explicatives'
+		}
+		
+		
 		
 		preserve
 		keep in 1
@@ -142,7 +156,12 @@ program first_stage_instr
 		restore
 		
 		predict predict
-		gen ln_uv_`liste_instr'_`lag'lag = predict + ln_uv_lag_`lag'
+		if strpos("`liste_instr'","ln_uv_lag_1")==0 {
+			gen ln_uv_`liste_instr'_`lag'lag = predict + ln_uv_lag_`lag'
+		}
+		if strpos("`liste_instr'","ln_uv_lag_1")!=0 {
+			rename predict ln_uv_`liste_instr'_`lag'lag
+		}
 		drop explained_lag_`lag' predict
 		
 		if strmatch("`c(username)'","*daudin*")==1 {
@@ -173,7 +192,12 @@ end
 *PROGRAMS FIRST STAGE:
 
 
-local liste_instr gdpo i om
+*first_stage_instr, year(1970) liste_instr(ln_uv)
+
+
+
+local liste_instr gdpo i om ln_uv
+*local liste_instr ln_uv
 
 foreach year of numlist 1963/2013 {
 	local k 1
@@ -192,7 +216,6 @@ foreach year of numlist 1963/2013 {
 		local k = `k'+1
 	}
 }
-
 
 
 
