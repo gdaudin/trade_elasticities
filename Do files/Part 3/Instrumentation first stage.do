@@ -243,12 +243,14 @@ end
 
 capture program drop graphs
 program  graphs
-syntax, liste_instr(string)
+syntax, liste_instr(string) regression(string)
+*regression is either "full" or "individual"
 
 
 local list_graph
+if "`regression'" == "full" use "tmp_coefs_`liste_instr'.dta", clear
 foreach instr of local liste_instr {
-	use tmp_coefs_`instr', clear
+	if "`regression'" == "individual" use "tmp_coefs_`instr'.dta", clear
 	foreach lag of numlist 1/3 {
 		if "`instr'"=="uv" {
 			rename coef_ln_uv_lag_`lag' coef_ln_rel_`instr'_lag`lag'
@@ -271,19 +273,19 @@ foreach instr of local liste_instr {
 	}
 }
 
-local nbr_of_rows=wordcount(`liste_instr')-1
+local nbr_of_rows=wordcount("`liste_instr'")-1
 graph combine `list_graph', iscale(.5) ///
 	scheme(s1mono) rows(`nbr_of_rows') ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level," "[OM] for the price evolution in other markets",justification(center))
 graph export firststage_a.eps, replace
 
-graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_`liste_instr'_a.pdf", replace
+graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_reg`regression'_`liste_instr'_non_uv.pdf", replace
 
 
 graph combine uv1.gph uv2.gph uv3.gph, iscale(.5) ///
 	scheme(s1mono) rows(1) ycommon xcommon note("Note: [UV] stands for unit values",justification(center))
 graph export firststage_b.eps, replace
 
-graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_`liste_instr'_b.pdf", replace
+graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_reg`regression'_`liste_instr'_uv.pdf", replace
 
 
 
@@ -348,4 +350,6 @@ foreach year of numlist 1963/2013 {
 
 concatenate, liste_instr(`liste_instr')
 */
-graphs, liste_instr(`liste_instr')
+graphs, liste_instr(`liste_instr') regression(individual)
+graphs, liste_instr(`liste_instr') regression(full)
+
