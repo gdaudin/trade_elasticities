@@ -215,12 +215,10 @@ foreach year of numlist 1963/2013 {
 	use "tmp_coefs_`liste_instr'_`year'.dta",clear
 	if `year'!=1963 append using "tmp_coefs_`liste_instr'.dta"
 	save "tmp_coefs_`liste_instr'.dta", replace
-	erase "tmp_coefs_`liste_instr'_`year'.dta"
 	foreach instr of local liste_instr {
 		use "tmp_coefs_`instr'_`year'.dta", clear
 		if `year'!=1963 append using "tmp_coefs_`instr'.dta"
 		save "tmp_coefs_`instr'.dta", replace
-		erase "tmp_coefs_`instr'_`year'.dta"
 	}
 }
 
@@ -276,7 +274,8 @@ foreach instr of local liste_instr {
 
 local nbr_of_rows=wordcount("`liste_instr'")-1
 graph combine `list_graph', iscale(.5) ///
-	scheme(s1mono) rows(`nbr_of_rows') ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level," "[OM] for the price evolution in other markets",justification(center))
+	scheme(s1mono) rows(`nbr_of_rows') ycommon xcommon note("Note: [GDP] stands for GDP price level, [OM] for the price evolution in other markets",justification(center))
+*[I] stands for investment price level," "
 graph export "firststage_reg`regression'_`liste_instr'_non_uv.eps", replace
 graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_reg`regression'_`liste_instr'_non_uv.pdf", replace
 
