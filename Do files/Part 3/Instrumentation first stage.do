@@ -224,9 +224,20 @@ foreach year of numlist 1963/2013 {
 	}
 }
 
+
+
+foreach year of numlist 1963/2013 {
+	erase "tmp_coefs_`liste_instr'_`year'.dta"
+	foreach instr of local liste_instr {
+		erase "tmp_coefs_`instr'_`year'.dta"
+	}
+}
+
 *recap graph: scheme s2mono 
 *local liste_instr uv gdpo om 
 *local liste_instr uv
+
+
 
 end
 
@@ -256,11 +267,13 @@ foreach instr of local liste_instr {
 		(fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)), ///
 		legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("`graph_title'") /// 
 		scheme(s1mono) saving(`instr'`lag', replace)
-		if "`instr'"!="uv" local list_graph `list_graph'`instr'`lag'.gph
+		if "`instr'"!="uv" local list_graph  `list_graph' `instr'`lag'.gph
 	}
 }
+
+local nbr_of_rows=wordcount(`liste_instr')-1
 graph combine `list_graph', iscale(.5) ///
-	scheme(s1mono) rows(3) ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level," "[OM] for the price evolution in other markets",justification(center))
+	scheme(s1mono) rows(`nbr_of_rows') ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level," "[OM] for the price evolution in other markets",justification(center))
 graph export firststage_a.eps, replace
 
 graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_`liste_instr'_a.pdf", replace
@@ -286,12 +299,7 @@ foreach instr of local liste_instr {
 
 
 
-foreach year of numlist 1963/2013 {
-	erase "tmp_coefs_`liste_instr'_`year'.dta"
-	foreach instr of local liste_instr {
-		erase "tmp_coefs_`instr'_`year'.dta"
-	}
-}
+
 */
 
 **alternative: use scheme(s1color); order legend differently (pass-through, then CI, then fit?)
@@ -305,6 +313,8 @@ end
 
 
 local liste_instr gdpo om uv
+
+/*
 *local liste_instr uv
 
 foreach year of numlist 1963/2013 {
@@ -337,4 +347,5 @@ foreach year of numlist 1963/2013 {
 }
 
 concatenate, liste_instr(`liste_instr')
+*/
 graphs, liste_instr(`liste_instr')
