@@ -249,7 +249,7 @@ foreach instr of local liste_instr {
 		(fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)), ///
 		legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("`graph_title'") /// 
 		scheme(s1mono) saving(`instr'`lag', replace)
-		if "`instr'"!="uv" list_graph `list_graph'`instr'`lag'.gph
+		if "`instr'"!="uv" local list_graph `list_graph'`instr'`lag'.gph
 	}
 }
 graph combine `list_graph', iscale(.5) ///
@@ -306,7 +306,6 @@ foreach year of numlist 1963/2013 {
 			if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`instr'_`year'.dta"
 			if `k'!=1 drop _merge
 			save "$dir/Résultats/Troisième partie/first_stage_`instr'_`year'.dta", replace
-			blif
 		}
 		if "`c(hostname)'" =="LAmacbook.local" {
 			if `k'!=1 merge 1:1  iso_d-ln_uv using "first_stage_`instr'_`year'.dta"
