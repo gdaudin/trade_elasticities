@@ -315,32 +315,33 @@ local liste_instr gdpo om uv
 
 *local liste_instr uv
 
-foreach year of numlist 1963/2013 {
-	local k 1
+local startyear 1963
+
+foreach year of numlist `startyear'/2013 {
 ***********************Tous les instrumets ensemble
 	first_stage_instr, year(`year') liste_instr(`liste_instr')
 	if strmatch("`c(username)'","*daudin*")==1 {
 		save "$dir/Résultats/Troisième partie/first_stage_together_`liste_instr'_`year'.dta", replace
 	}
 	if "`c(hostname)'" =="LAmacbook.local" {
-		if `k'!=1 merge 1:1  iso_d-ln_uv using "first_stage_together_`liste_instr'_`year'.dta"
-		if `k'!=1 drop _merge
+		if `year'!= `startyear' merge 1:1  iso_d-ln_uv using "first_stage_together_`liste_instr'_`year'.dta"
+		if `year'!= `startyear' drop _merge
 		save "first_stage_together_`liste_instr'_`lag'_`year'.dta", replace
 	}
 ******************************Instruments un par un
 	 foreach instr of local liste_instr {
 		first_stage_instr, year(`year') liste_instr(`instr')
 		if strmatch("`c(username)'","*daudin*")==1 {
-			if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`instr'_`year'.dta"
-			if `k'!=1 drop _merge
+			if `year'!= `startyear' merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`instr'_`year'.dta"
+			if `year'!= `startyear' drop _merge
 			save "$dir/Résultats/Troisième partie/first_stage_`instr'_`year'.dta", replace
 		}
 		if "`c(hostname)'" =="LAmacbook.local" {
-			if `k'!=1 merge 1:1  iso_d-ln_uv using "first_stage_`instr'_`year'.dta"
-			if `k'!=1 drop _merge
+			if `year'!= `startyear' merge 1:1  iso_d-ln_uv using "first_stage_`instr'_`year'.dta"
+			if `year'!= `startyear' drop _merge
 			save "first_stage_`instr'_`lag'_`year'.dta", replace
 		}
-		local k = `k'+1
+		
 	}
 }
 
