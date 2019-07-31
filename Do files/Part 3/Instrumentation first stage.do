@@ -271,19 +271,19 @@ foreach instr of local liste_instr {
 		scheme(s1mono) saving(`instr'`lag', replace)
 		if "`instr'"!="uv" local list_graph  `list_graph' `instr'`lag'.gph
 	}
+	 if "`regression'" == "full" use "tmp_coefs_`liste_instr'.dta", clear
 }
 
 local nbr_of_rows=wordcount("`liste_instr'")-1
 graph combine `list_graph', iscale(.5) ///
 	scheme(s1mono) rows(`nbr_of_rows') ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level," "[OM] for the price evolution in other markets",justification(center))
-graph export firststage_a.eps, replace
-
+graph export "firststage_reg`regression'_`liste_instr'_non_uv.eps", replace
 graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_reg`regression'_`liste_instr'_non_uv.pdf", replace
 
 
 graph combine uv1.gph uv2.gph uv3.gph, iscale(.5) ///
 	scheme(s1mono) rows(1) ycommon xcommon note("Note: [UV] stands for unit values",justification(center))
-graph export firststage_b.eps, replace
+graph export "firststage_reg`regression'_`liste_instr'_uv.eps", replace
 
 graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_reg`regression'_`liste_instr'_uv.pdf", replace
 
@@ -291,7 +291,7 @@ graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_reg`regressio
 
 
 **** When I am ready to erase
-/*
+
 *local liste_instr gdpo i om uv
 foreach instr of local liste_instr {
 	foreach lag of numlist 1/3 {
@@ -299,10 +299,6 @@ foreach instr of local liste_instr {
 	}
 }
 
-
-
-
-*/
 
 **alternative: use scheme(s1color); order legend differently (pass-through, then CI, then fit?)
 end
@@ -316,7 +312,7 @@ end
 
 local liste_instr gdpo om uv
 
-/*
+
 *local liste_instr uv
 
 foreach year of numlist 1963/2013 {
@@ -349,7 +345,7 @@ foreach year of numlist 1963/2013 {
 }
 
 concatenate, liste_instr(`liste_instr')
-*/
+
 graphs, liste_instr(`liste_instr') regression(individual)
 graphs, liste_instr(`liste_instr') regression(full)
 
