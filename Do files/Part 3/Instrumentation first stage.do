@@ -201,8 +201,8 @@ end
 
 
 
-capture program drop concatenate_and_graphs
-program  concatenate_and_graphs
+capture program drop concatenate
+program  concatenate
 syntax, liste_instr(string)
 
 
@@ -227,6 +227,13 @@ foreach year of numlist 1963/2013 {
 *recap graph: scheme s2mono 
 *local liste_instr uv gdpo om 
 *local liste_instr uv
+
+end
+
+capture program drop graphs
+program  graphs
+syntax, liste_instr(string)
+
 
 local list_graph
 foreach instr of local liste_instr {
@@ -267,12 +274,25 @@ graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_`liste_instr'
 
 
 
+
+**** When I am ready to erase
+/*
 *local liste_instr gdpo i om uv
 foreach instr of local liste_instr {
 	foreach lag of numlist 1/3 {
 		erase `instr'`lag'.gph
 	}
 }
+
+
+
+foreach year of numlist 1963/2013 {
+	erase "tmp_coefs_`liste_instr'_`year'.dta"
+	foreach instr of local liste_instr {
+		erase "tmp_coefs_`instr'_`year'.dta"
+	}
+}
+*/
 
 **alternative: use scheme(s1color); order legend differently (pass-through, then CI, then fit?)
 end
@@ -316,4 +336,5 @@ foreach year of numlist 1963/2013 {
 	}
 }
 
-concatenate_and_graphs, liste_instr(`liste_instr')
+concatenate, liste_instr(`liste_instr')
+graphs, liste_instr(`liste_instr')
