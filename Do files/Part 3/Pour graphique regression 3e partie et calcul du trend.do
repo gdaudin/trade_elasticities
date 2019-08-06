@@ -43,8 +43,7 @@ capture log using "logs/`c(current_time)' `c(current_date)'"
 
 capture program drop pour_graph_regression_3e_partie
 program pour_graph_regression_3e_partie
-args sample
-
+syntax anything(name=sample)
 
 ** baseline
 use "Résultats 1ere regression 3e partie_`sample'.dta", clear
