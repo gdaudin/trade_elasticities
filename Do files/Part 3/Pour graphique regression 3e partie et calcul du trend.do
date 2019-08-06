@@ -114,9 +114,11 @@ graph export graph7_with2008.eps, replace
 graph dir
 end
 
+pour_graph_regression_3e_partie instrumented_gdpo om uv_1lag
+/*
 pour_graph_regression_3e_partie instrumented_om_1lag
 pour_graph_regression_3e_partie instrumented_gdpo_1lag
-/*
+
 pour_graph_regression_3e_partie baseline
 pour_graph_regression_3e_partie superbal
 pour_graph_regression_3e_partie instrumented
