@@ -87,6 +87,7 @@ program first_stage_instr
 				egen blik = total(weight_lag_`lag'), by (iso_o prod_unit)
 				gen ln_rel_`instr'_lag`lag' = (blouk-blif)/(blik-weight_lag_`lag')
 				gen evolution_ln_moy_lag_`lag' = blouk/blik
+				*Je calcule evolution_ln_moy_lag_`lag' par curiosité : c'est l'évolution de tous les prix, y compris celui qui va être instrumenté	
 				drop blif blouk blik			
 			}
 		}
