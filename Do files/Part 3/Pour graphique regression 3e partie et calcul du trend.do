@@ -43,8 +43,7 @@ capture log using "logs/`c(current_time)' `c(current_date)'"
 
 capture program drop pour_graph_regression_3e_partie
 program pour_graph_regression_3e_partie
-args sample
-
+syntax anything(name=sample)
 
 ** baseline
 use "Résultats 1ere regression 3e partie_`sample'.dta", clear
@@ -114,9 +113,11 @@ graph export graph7_with2008.eps, replace
 graph dir
 end
 
+pour_graph_regression_3e_partie instrumented_gdpo om uv_1lag
+/*
 pour_graph_regression_3e_partie instrumented_om_1lag
 pour_graph_regression_3e_partie instrumented_gdpo_1lag
-/*
+
 pour_graph_regression_3e_partie baseline
 pour_graph_regression_3e_partie superbal
 pour_graph_regression_3e_partie instrumented

@@ -78,9 +78,12 @@ if strmatch("`c(username)'","*daudin*")==1 {
 	if "`sample'" == "instrumented" {
 	local instrument $instrument
 	local lag $lag
-		use "$dir/Résultats/Troisième partie/first_stage_gdpo i om_`year'", clear
+	*	use "$dir/Résultats/Troisième partie/first_stage_gdpo i om_`year'", clear
+		use "$dir/Résultats/Troisième partie/first_stage_gdpo om uv_`year'", clear
 	*	rename value value_`year'
+		local instrument = subinstr("`instrument'"," ","_",.)
 		gen uv_`year'=exp(ln_uv_`instrument'_`lag'lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
+		local instrument = subinstr("`instrument'"," ","_",.)
 	}
 
 
@@ -503,7 +506,8 @@ clear
 set obs 1
 gen year=.
 capture drop "$dir/temp_result.dta"
-global instrument gdpo
+*global instrument gdpo
+global instrument gdpo om uv
 global lag 1
 * ou gdp ou i...
 foreach year of num 1963(1)2013 {

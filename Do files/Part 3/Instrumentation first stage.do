@@ -36,7 +36,7 @@ if "`c(hostname)'" =="LAmacbook.local" {
 
 capture program drop first_stage_instr
 program first_stage_instr
-	syntax, year(integer) liste_instr(string) /*instr*/
+syntax, year(integer) liste_instr(string) /*instr*/
 
 	*years: 1963-2013
 	*instr: x
@@ -74,8 +74,11 @@ program first_stage_instr
 		gen	weight_lag_`lag' = value_lag_`lag'/uv_lag_`lag'
 		label var weight_lag_`lag' "Poids pour l'instrumentation par la prix des autres marchés"
 		foreach instr of local liste_instr {
-			if "`instr'" != "om" & "`instr'" !="ln_uv" {
+			if "`instr'" != "om" & "`instr'" != "uv"{
 				gen double ln_rel_`instr'_lag`lag'=ln(rel_`instr'_lag_`lag')
+			}
+			if "`instr'" == "uv" {
+				gen double ln_`instr'_lag`lag'=ln(`instr'_lag_`lag')
 			}
 			if "`instr'" == "om" {
 				** Pour calculer l'évolution du prix dans les autres marchés
@@ -84,6 +87,7 @@ program first_stage_instr
 				egen blik = total(weight_lag_`lag'), by (iso_o prod_unit)
 				gen ln_rel_`instr'_lag`lag' = (blouk-blif)/(blik-weight_lag_`lag')
 				gen evolution_ln_moy_lag_`lag' = blouk/blik
+				*Je calcule evolution_ln_moy_lag_`lag' par curiosité : c'est l'évolution de tous les prix, y compris celui qui va être instrumenté	
 				drop blif blouk blik			
 			}
 		}
@@ -103,15 +107,17 @@ program first_stage_instr
 	}
 	
 	encode prod_unit, generate (prod_unit_num)
+	
+	display "`liste_instr'"
 
 	foreach lag of numlist `laglist' {
 		local var_explicatives
 		foreach instr of local liste_instr {
-				if "`instr'" == "ln_uv" {
-					local var_explicatives `var_explicatives' `instr'_lag_`lag'
+				if "`instr'" == "uv" {
+					local var_explicatives `var_explicatives' ln_`instr'_lag_`lag'
 				}
-				if "`instr'" != "ln_uv" {
-					local var_explicatives `var_explicatives' ln_rel_`instr'_lag`lag'
+				if "`instr'" != "uv" {
+				local var_explicatives `var_explicatives' ln_rel_`instr'_lag`lag'
 				}
 				
 				if "`instr'" == "om" {
@@ -129,19 +135,17 @@ program first_stage_instr
 		}
 
 		
-	*	display "`var_explicatives'"
+		display "`var_explicatives'"
 	*	blouf
 		
-		if strpos("`liste_instr'","ln_uv_lag_1")==0 {
+		if strpos("`liste_instr'","uv")==0 {
 			reg explained_lag_`lag' `var_explicatives' /*, noconstant*/ 
 		}
 		
-		if strpos("`liste_instr'","ln_uv_lag_1")!=0 {
+		if strpos("`liste_instr'","uv")!=0 {
 			reg ln_uv `var_explicatives'
 		}
-		
-		
-		
+			
 		preserve
 		keep in 1
 		keep year
@@ -149,20 +153,26 @@ program first_stage_instr
 			gen coef_`v'=_b[`v']
 			ge se_`v'=_se[`v']
 			if `lag'!=1 {
-				joinby year using tmp_coefs_`liste_instr'_`year', unmatched(none)
+				joinby year using "tmp_coefs_`liste_instr'_`year'.dta", unmatched(none)
 			}
-			save tmp_coefs_`liste_instr'_`year', replace
+			save "tmp_coefs_`liste_instr'_`year'.dta", replace
 		}
 		restore
 		
 		predict predict
-		if strpos("`liste_instr'","ln_uv_lag_1")==0 {
+		
+		local liste_instr = subinstr("`liste_instr'"," ","_",.)
+		
+		if strpos("`liste_instr'","uv")==0 {
 			gen ln_uv_`liste_instr'_`lag'lag = predict + ln_uv_lag_`lag'
+			drop predict
 		}
-		if strpos("`liste_instr'","ln_uv_lag_1")!=0 {
+		if strpos("`liste_instr'","uv")!=0 {
 			rename predict ln_uv_`liste_instr'_`lag'lag
 		}
-		drop explained_lag_`lag' predict
+		
+		
+		drop explained_lag_`lag'
 		
 		if strmatch("`c(username)'","*daudin*")==1 {
 			outreg2 using "$dir/Résultats/Troisième partie/first_stage_results_`liste_instr'_`lag'", excel ctitle(`year'_`lag'lag) adds(F-test, `e(F)', Nbr obs, `e(N)')
@@ -176,6 +186,8 @@ program first_stage_instr
 		local predict_for_corr `predict_for_corr' uv_`liste_instr'_`lag'lag
 		local var_for_corr `var_for_corr' uv_lag_`lag'
 		
+		
+		local liste_instr = subinstr("`liste_instr'","_"," ",.)
 	
 	
 	}
@@ -189,80 +201,150 @@ program first_stage_instr
 end
 
 
-*PROGRAMS FIRST STAGE:
 
-
-*first_stage_instr, year(1970) liste_instr(ln_uv)
-
-
-
-local liste_instr gdpo i om ln_uv
-*local liste_instr ln_uv
-
-foreach year of numlist 1963/2013 {
-	local k 1
-	 foreach instr of local liste_instr {
-		first_stage_instr, year(`year') liste_instr(`instr')
-		if strmatch("`c(username)'","*daudin*")==1 {
-			if `k'!=1 merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`year'.dta"
-			if `k'!=1 drop _merge
-			save "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`year'.dta", replace
-		}
-		if "`c(hostname)'" =="LAmacbook.local" {
-			if `k'!=1 merge 1:1  iso_d-ln_uv using "first_stage_`liste_instr'_`year'.dta"
-			if `k'!=1 drop _merge
-			save "first_stage_`liste_instr'_`lag'_`year'.dta", replace
-		}
-		local k = `k'+1
-	}
-}
+capture program drop concatenate
+program  concatenate
+syntax, liste_instr(string)
 
 
 
 ** keep all estimated coefs in one file (per instrument: gdpo, i, om)
-local liste_instr gdpo i om
+*local liste_instr gdpo om uv
+*local liste_instr uv
 capture erase tmp_coefs_`instr', replace
-foreach instr of local liste_instr {
-	foreach year of numlist 1963/2013 {
-		use tmp_coefs_`instr'_`year', clear
-		if `year'!=1963 {
-			append using tmp_coefs_`instr'
-		}
-		save tmp_coefs_`instr', replace
-		erase tmp_coefs_`instr'_`year'.dta
+foreach year of numlist 1963/2013 {
+	use "tmp_coefs_`liste_instr'_`year'.dta",clear
+	if `year'!=1963 append using "tmp_coefs_`liste_instr'.dta"
+	save "tmp_coefs_`liste_instr'.dta", replace
+	foreach instr of local liste_instr {
+		use "tmp_coefs_`instr'_`year'.dta", clear
+		if `year'!=1963 append using "tmp_coefs_`instr'.dta"
+		save "tmp_coefs_`instr'.dta", replace
+	}
+}
+
+
+
+foreach year of numlist 1963/2013 {
+	erase "tmp_coefs_`liste_instr'_`year'.dta"
+	foreach instr of local liste_instr {
+		erase "tmp_coefs_`instr'_`year'.dta"
 	}
 }
 
 *recap graph: scheme s2mono 
-local liste_instr gdpo i om
+*local liste_instr uv gdpo om 
+*local liste_instr uv
+
+
+
+end
+
+capture program drop graphs
+program  graphs
+syntax, liste_instr(string) regression(string)
+*regression is either "full" or "individual"
+
+
+local list_graph
+if "`regression'" == "full" use "tmp_coefs_`liste_instr'.dta", clear
 foreach instr of local liste_instr {
-	use tmp_coefs_`instr', clear
+	if "`regression'" == "individual" use "tmp_coefs_`instr'.dta", clear
 	foreach lag of numlist 1/3 {
+		if "`instr'"=="uv" {
+			rename coef_ln_uv_lag_`lag' coef_ln_rel_`instr'_lag`lag'
+			rename se_ln_uv_lag_`lag' se_ln_rel_`instr'_lag`lag'
+			local graph_title lag `lag' [LP]
+		}
 		gen low_`lag'=coef_ln_rel_`instr'_lag`lag'-2*se_ln_rel_`instr'_lag`lag'
 		gen high_`lag'=coef_ln_rel_`instr'_lag`lag'+2*se_ln_rel_`instr'_lag`lag'
 		if "`instr'" == "gdpo" local graph_title lag `lag' [GDP]
 		if "`instr'" == "i" local graph_title lag `lag' [I]
 		if "`instr'" == "om" local graph_title lag `lag' [OM]
+		if "`instr'" == "uv" local graph_title lag `lag' [UV]
 		
 		graph twoway (rarea low_`lag' high_`lag' year, fintensity(inten20) lpattern(dot) lwidth(thin)) ///
 		(connected coef_ln_rel_`instr'_lag`lag' year, lwidth(medthin) lpattern(solid) msymbol(smcircle_hollow) msize(small)) ///
 		(fpfit coef_ln_rel_`instr'_lag`lag' year, est(degree(4)) lwidth(thin) lpattern(dash) lcolor(red)), ///
 		legend(order (`lag') label(1 "95% confidence interval" ) label( 2 "pass-through") label(3 "fractional polynomial fit")) title("`graph_title'") /// 
 		scheme(s1mono) saving(`instr'`lag', replace)
+		if "`instr'"!="uv" local list_graph  `list_graph' `instr'`lag'.gph
 	}
+	 if "`regression'" == "full" use "tmp_coefs_`liste_instr'.dta", clear
 }
-graph combine gdpo1.gph gdpo2.gph gdpo3.gph i1.gph i2.gph i3.gph om1.gph om2.gph om3.gph, iscale(.5) ///
-	scheme(s1mono) rows(3) ycommon xcommon note("Note: [GDP] stands for GDP price level, [I] stands for investment price level," "[OM] for the price evolution in other markets",justification(center))
-graph export firststage.eps, replace
 
-graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage.pdf", replace
+local nbr_of_rows=wordcount("`liste_instr'")-1
+graph combine `list_graph', iscale(.5) ///
+	scheme(s1mono) rows(`nbr_of_rows') ycommon xcommon note("Note: [GDP] stands for GDP price level, [OM] for the price evolution in other markets",justification(center))
+*[I] stands for investment price level," "
+graph export "firststage_reg`regression'_`liste_instr'_non_uv.eps", replace
+graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_reg`regression'_`liste_instr'_non_uv.pdf", replace
 
 
-local liste_instr gdpo i om
+graph combine uv1.gph uv2.gph uv3.gph, iscale(.5) ///
+	scheme(s1mono) rows(1) ycommon xcommon note("Note: [UV] stands for unit values",justification(center))
+graph export "firststage_reg`regression'_`liste_instr'_uv.eps", replace
+
+graph export "$dirgit/trade_elasticities/Rédaction/tex/firststage_reg`regression'_`liste_instr'_uv.pdf", replace
+
+
+
+
+**** When I am ready to erase
+
+*local liste_instr gdpo i om uv
 foreach instr of local liste_instr {
 	foreach lag of numlist 1/3 {
 		erase `instr'`lag'.gph
 	}
 }
 
+
 **alternative: use scheme(s1color); order legend differently (pass-through, then CI, then fit?)
+end
+
+*PROGRAMS FIRST STAGE:
+
+
+*first_stage_instr, year(1970) liste_instr(uv)
+
+
+
+local liste_instr gdpo om uv
+
+
+*local liste_instr uv
+
+local startyear 1963
+local start_instr = word("`list_instr'",1)
+
+foreach year of numlist 1963/2013 {
+***********************Tous les instruments ensemble
+	first_stage_instr, year(`year') liste_instr(`liste_instr')
+	if strmatch("`c(username)'","*daudin*")==1 {
+		save "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`year'.dta", replace
+	}
+	if "`c(hostname)'" =="LAmacbook.local" {
+		save "first_stage_`liste_instr'_`year'.dta", replace
+	}
+******************************Instruments un par un
+	 foreach instr of local liste_instr {
+		first_stage_instr, year(`year') liste_instr(`instr')
+		if strmatch("`c(username)'","*daudin*")==1 {
+			merge 1:1  iso_d-ln_uv using "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`year'.dta"
+			drop _merge
+			save "$dir/Résultats/Troisième partie/first_stage_`liste_instr'_`year'.dta", replace
+		}
+		if "`c(hostname)'" =="LAmacbook.local" {
+			merge 1:1  iso_d-ln_uv using "first_stage_`liste_instr'_`year'.dta"
+			drop _merge
+			save "first_stage_`liste_instr'_`year'.dta", replace
+		}	
+	}
+}
+
+concatenate, liste_instr(`liste_instr')
+
+graphs, liste_instr(`liste_instr') regression(individual)
+graphs, liste_instr(`liste_instr') regression(full)
+
