@@ -36,7 +36,7 @@ if "`c(hostname)'" =="LAmacbook.local" {
 
 capture program drop first_stage_instr
 program first_stage_instr
-	syntax, year(integer) liste_instr(string) /*instr*/
+syntax, year(integer) liste_instr(string) /*instr*/
 
 	*years: 1963-2013
 	*instr: x
