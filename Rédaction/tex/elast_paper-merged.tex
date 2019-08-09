@@ -558,7 +558,7 @@ Following \cite{SantosSilva2006}, we opt for the PPML estimator.
 
 Figure \ref{fig:DP_baseline} gives the results for the full sample.
 The distance elasticity $\delta_t$ increased by $4.5$\% between 1962-2013 but this increase is only marginally significant.
-Consistently with \cite{Head2013}, we find that the distance sensitivity of trade is best described as stable when the gravity model is estimated using the PPML.
+Consistently with \cite{Head2013} and \cite{Bosquet2015}, we find that the distance sensitivity of trade is best described as stable when the gravity model is estimated using the PPML.
 
 The large confidence intervals shown in Figure \ref{fig:DP_baseline} are linked to the implementation of the Huber-White correction of standard errors.\footnote{Switching to the panel approach with the full set of country-year dummies does not achieve significant improvement in precision.}
 Standard errors are reduced by an order of magnitude without this correction.  
@@ -571,8 +571,8 @@ Considering that \if 0 the PPML approach already takes into account heteroskedas
 
 \subsection{The magnitude of the sample composition effect} \label{subsec:data}
 
-\cite{Mayer2019} and \cite{Head2013} argue that the main consequence of choosing to estimate the model in multiplicative rather than in the loglinearized form is the relative weight given to small and big trade flows. 
-Also, \cite{Head2013} document that the loglinearized model picks up a stronger increase in the distance elasticity of trade, mainly because of the increasing number of new low volume trade relationships. 
+\cite{Mayer2019} and \cite{Head2013} argue that the main consequence of choosing to estimate gravity equations in multiplicative rather than in loglinearized form is the relative weight given to small and big trade flows. 
+The loglinearized model picks up a stronger increase in the distance elasticity of trade, mainly because of the increasing number of new low volume long-distance trade relationships (\cite{Head2013}). 
 Consequently, in this section we first evaluate the magnitude of sample composition effects and second check to what extent our PPML estimates of the distance elasticity are sensitive to changes in the set of trading pairs.
 % by also estimating (\ref{eqn:4}) in the sample of pairs trading both ways in each year, i.e. the ``superbalanced'' sample.
 
@@ -580,32 +580,23 @@ Figure \ref{fig:active_pairs} summarizes the main features of the country covera
 The number of active pairs increases more than fourfold in 1962-2013 (in dash, left scale), both because more countries report trade to COMTRADE and because more pairs have non-zero trade flows (\cite{Helpman2008}).
 Active pairs make up between 45\% and 73\% of the total number of possible trade relationships, with a clear upward trend (in red, right scale).
 
-%graph updated for 1962-2013
-\begin{figure}[h!]
-\caption{Active pairs in COMTRADE (1962-2013) \label{fig:active_pairs}}
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[height=2.5in]{part1_active_pairs.eps}}
-\end{center}
-\end{figure}
-
 If we focus on the set of pairs that report non-zero trade in at least one year, the share of active pairs increases by 22 percentage points between 1962 and 1990 and by 27 percentage points between 1993 and 2013 (in blue, right scale).
 \footnote{We split the sample in two subperiods, 1962-1990 and 1993-2013, to take into account country creation and disappearance in the early 1990s.}
 By the end of the sample about 2/3 of pairs which trade at least once between 1962 and 2013 are reporting non-zero trade.
 
+%graph updated for 1962-2013
+\begin{figure}[h!]
+	\caption{Active pairs in COMTRADE (1962-2013) \label{fig:active_pairs}}
+	\begin{center}
+		\setlength{\fboxrule}{1pt} %makes border lines thick
+		\setlength{\fboxsep}{.1in} %increases distance to border
+		\fbox{\includegraphics[height=2.5in]{part1_active_pairs.eps}}
+	\end{center}
+\end{figure}
 
 Hence, sample composition effects are substantial.
 Nonetheless, the bulk of total trade is attributable to the 786 pairs which trade both ways in every year.
-We refer to this set of stable reciprocal pairs as the `superbalanced' sample and use it to investigate the magnitude of the sample composition effect.
-\footnote{The superbalanced sample includes 32 countries listed in App. \ref{app:E}. The appendix discusses trade coverage.\label{fnsuperbalanced}}
-
-
-In the superbalanced sample (right pane) the increase in the distance effect $\delta_t$ is magnified to $18.2$\%, and this increase is strongly significant.\footnote{The annualized growth rate is 0.09\% in the full sample and 0.33\% in the superbalanced sample.}
-%The distance elasticity is clearly non-decreasing, and this finding holds in the set of stable partners.
-Moreover, the distance puzzle is exacerbated in the sample of stable trade relationships.\footnote{The opposite result holds in the loglinear specification (\cite{Head2013})
-In OLS the decrease in the distance elasticity due to the elimination of small trade flows between distant partners trumps the increase in the distance elasticity of stable trade relationships.}
-We take the results shown in Figure \ref{fig:compsample} as more evidence for the existence of the distance puzzle. 
+We refer to this set of stable reciprocal pairs as the `superbalanced' sample and use it to investigate the magnitude of the sample composition effect.\footnote{The superbalanced sample includes 32 countries listed in App. \ref{app:E}. The appendix discusses trade coverage.\label{fnsuperbalanced}}
 
 %graph updated to 1962-2013
 \begin{figure}[h!]
@@ -617,7 +608,11 @@ We take the results shown in Figure \ref{fig:compsample} as more evidence for th
 	\end{center}
 \end{figure}
 
-
+In the superbalanced sample (right pane) the increase in the distance effect $\delta_t$ is magnified to $18.2$\%, and this increase is strongly significant.\footnote{The annualized growth rate is 0.09\% in the full sample and 0.33\% in the superbalanced sample.}
+%The distance elasticity is clearly non-decreasing, and this finding holds in the set of stable partners.
+The distance puzzle is exacerbated in the sample of stable trade relationships.\footnote{The opposite result is documented by \cite{Head2013} for the full and balanced samples when the model is estimated in logs. The likely explanation is that the reduction 
+in the distance elasticity due to the elimination of small trade flows between distant partners trumps the increase in the distance elasticity of stable trade relationships.}
+We take the results shown in Figure \ref{fig:compsample} as more evidence for the existence of the distance puzzle. 
 
 \subsection{The magnitude of sectoral composition effects} \label{subsec:robustpuzzle}
 Next, we demonstrate that the distance puzzle is robust to product composition effects.
