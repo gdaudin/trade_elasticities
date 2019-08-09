@@ -502,27 +502,24 @@ It covers between 88\% and 99\% of reported trade in COMTRADE.
 %As trade data is of better quality for imports, the estimation is conducted on import flows.
 
 We follow the canonical \cite{Anderson2003} derivation of the gravity model to express aggregate bilateral trade $X_{ij}$ as a function of bilateral trade barriers $\tau_{ij}$, multilateral trade resistance terms in source $i$ and destination $j$ (resp.
-$\Pi_{i}$ and $P_{j}$), and nominal incomes $Y_{n}$ with $n\in\left\{i,j,w\right\}$ where $w$ is world income.
-\footnote{This formulation is not specific to the Armington framework.
+$\Pi_{i}$ and $P_{j}$), and nominal incomes $Y_{n}$ with $n\in\left\{i,j,w\right\}$ where $w$ is world income.\footnote{This formulation is not specific to the Armington framework.
 See footnote 20 in \cite{Eaton2002} and subsequent discussions of equivalence in  \cite{Arkolakis2012, Head2013}.}
 
 
 \begin{eqnarray}
-X_{ijt} & = & \left(\frac{Y_{it}Y_{jt}}{Y_wt}\right)\left(\frac{\tau_{ijt}}{\Pi_{it}P_{jt}}\right)^{\epsilon_t}\label{eqn:1}
+X_{ijt} & = & \left(\frac{Y_{it}Y_{jt}}{Y_{wt}}\right)\left(\frac{\tau_{ijt}}{\Pi_{it}P_{jt}}\right)^{\epsilon_t}\label{eqn:1}
 \end{eqnarray}
 %$X_{ij,t}$ is the value of goods from country $i$ consumed in country $j$ in year $t$, i.e. bilateral imports at cif prices.
 %Imports are a function of the nominal income of each trading partner $Y_{ij,t}$ and $Y_{j,t}$, of world income $Y_t$, of bilateral trade costs $\tau_{ij,t}$, and of inward and outward multilateral trade resistance terms $P_{j,t}$, $\Pi_{i,t}$.
 %\footnote{$\Pi_{i}$, $P_{j}$ are respectively inward and outward MR terms.} 
 
-We include the time subscript $t$ not only on each variable but also on the elasticity of trade flows to trade costs $\epsilon$ to underline that this parameter is subject to change.
-In the Armington framework $\epsilon_t=1-\sigma_t$ where $\sigma_t$ corresponds to the elasticity of substitution between goods of different national origin.
-We seek to quantify the evolution of the elasticity of aggregate trade flows to trade costs.
-Hence, the key parameter of interest for this paper is the Armington elasticity which captures perceived substitutability of composite goods which differ by their place of production.
-
+We include the time subscript $t$ on the elasticity of trade flows to trade costs $\epsilon$ in (\ref{eqn:1}) to underline that this parameter is subject to change. 
+The goal of this paper is to quantify the magnitude of this change. 
+In the Armington framework the elasticity of substitution between goods of different national origin, $\sigma_t$, determines the level of the trade elasticity: $\epsilon_t=1-\sigma_t$.
+We pin down the evolution of the perceived substitutability of country-specific composite goods over 1963-2013, thereby quantifying the evolution of the trade elasticity in the Armington framework.
 
 As total bilateral trade costs $\tau_{ijt}$ are not directly observed for each pair and year, we model them as a function of observable time-invariant bilateral controls which are distance, adjacency, and common language together with persistent but time-varying controls standard in the gravity literature which are historical and current colonial linkages as well as belonging or having once belonged to the same country.
-We include an unobserved bilateral trade cost component $\nu_{ijt}$ assumed to have mean zero conditional on the observables.
-\footnote{\if 0 This assumption can be questioned, in particular with respect to excluded trade cost controls which vary as a result of trade policy decisions.
+We include an unobserved bilateral trade cost component $\nu_{ijt}$ assumed to have mean zero conditional on the observables.\footnote{\if 0 This assumption can be questioned, in particular with respect to excluded trade cost controls which vary as a result of trade policy decisions.
 	\fi The error term contains bilateral variation in trade costs due to trade policy.
 	The question of possible changes in the distance distribution of trade costs as a consequence of policy decisions is beyond the scope of this paper.}
 %For consistency it would be good to redefine colonial linkages and same country as time-invariant controls: group 'having been /currently are' as single variable.
@@ -535,8 +532,7 @@ We denote distance $\eth_{ij}$, group the other time-invariant observables in th
 %\tau_{ij,t}&=&exp\left\{\rho_t\ln{dist_{ij}}+%{Z_{1,t}}'\beta_{1,t}+{Z_{2,t}}'\beta_{2,t}\right\} \label{eqn:20}
 %\end{eqnarray}
 
-Replacing (\ref{eqn:20}) in (\ref{eqn:1}), substituting source and destination specific variables with country fixed effects (resp.
-$f_{it}$ and $f_{jt}$), defining a constant $\xi_t$ and specifying a multiplicative error term $\xi_{ijt}$ which includes the exponentiated unobserved bilateral trade cost gives the equation to be estimated on aggregate bilateral trade: 
+Replacing (\ref{eqn:20}) in (\ref{eqn:1}), substituting source and destination specific variables with country fixed effects (resp. $f_{it}$ and $f_{jt}$), defining a constant $\xi_t$ and specifying a multiplicative error term $\xi_{ijt}$ which includes the exponentiated unobserved bilateral trade cost gives the equation to be estimated on aggregate bilateral trade: 
 \begin{eqnarray}
 X_{ijt}&=&\exp{\left(\xi_t-\delta_{t}\ln{\eth_{ij}}+{Z}'\zeta_t+{S_t}'\varsigma_t+f_{it}+f_{jt}\right)\xi_{ijt}} \label{eqn:4}
 \end{eqnarray}
@@ -545,13 +541,10 @@ X_{ijt}&=&\exp{\left(\xi_t-\delta_{t}\ln{\eth_{ij}}+{Z}'\zeta_t+{S_t}'\varsigma_
 %\end{eqnarray}
 %where $fe_{exp}$ and $fe_{imp}$ are respectively exporter and importer fixed effects and $\xi_{ij}$ is a multiplicative error term which includes the unobserved bilateral trade cost.
 
-
-To ensure consistency of the point estimates we do not loglinearize the model although switching to a non-linear estimator may entail a loss of efficiency (\cite{Manning1999}).
-We implement (\ref{eqn:4}) in the full and superbalanced samples using the PPML estimator (\cite{SantosSilva2006}).
-The estimation is conducted in cross section.
-The parameter of interest is the distance elasticity, $-\delta_t$, which corresponds to the product of the distance elasticity of trade costs $\rho_t$ and of the trade elasticity $\epsilon_t$.
-\footnote{We follow the notation in \cite{Head2013} (see equation (4), p.1205).}
-
+The parameter of interest is the distance elasticity, $-\delta_t$, which corresponds to the product of the distance elasticity of trade costs $\rho_t$ and of the trade elasticity $\epsilon_t$.\footnote{We follow the notation in \cite{Head2013} (see equation (4), p.1205).} 
+The estimation is conducted in cross section. 
+To ensure consistency of the point estimates, we do not loglinearize the model although working with a non-linear estimator may entail a loss of efficiency (\cite{Manning1999}).
+Following \cite{SantosSilva2006}, we opt for the PPML estimator.
 
 %graph updated to 1962-2013
 \begin{figure}[h!]
@@ -563,20 +556,25 @@ The parameter of interest is the distance elasticity, $-\delta_t$, which corresp
 	\end{center}
 \end{figure}
 
-Figure \ref{fig:DP_baseline} gives the results.
-In the full sample (left pane) the distance effect $\delta_t$ increased by $4.5$\% between 1962-2013 (left pane), but this increase is only marginally significant.
-Consistently with previous studies we find that the distance sensitivity of trade has not been reduced over time.
-We obtain the large confidence intervals shown in Figure \ref{fig:DP_baseline} when we implement the Huber-White correction of standard errors.
-\footnote{Switching to the panel approach with the full set of country-year dummies does not achieve significant improvement in precision.}
-Standard errors are reduced by an order of magnitude when this correction is not implemented. 
+Figure \ref{fig:DP_baseline} gives the results for the full sample.
+The distance elasticity $\delta_t$ increased by $4.5$\% between 1962-2013 but this increase is only marginally significant.
+Consistently with \cite{Head2013}, we find that the distance sensitivity of trade is best described as stable when the gravity model is estimated using the PPML.
+
+The large confidence intervals shown in Figure \ref{fig:DP_baseline} are linked to the implementation of the Huber-White correction of standard errors.\footnote{Switching to the panel approach with the full set of country-year dummies does not achieve significant improvement in precision.}
+Standard errors are reduced by an order of magnitude without this correction.  
 %\cite{SantosSilva2006} advocate this approach to account for possible misspecification of the conditional variance function.
 %Computing heteroskedasticity-robust standard errors yields the large confidence intervals shown in Figure \ref{fig:compsample}, putting in doubt even the existence of the distance puzzle
-%The loss of precision is due to computing heteroskedasticity robust standard errors \if 0 implementing the Huber-White correction of standard errors advocated by \cite{SantosSilva2006} \fi to account for possible misspecification of the conditional variance function.
-Considering that the PPML approach already takes into account heteroskedasticity, and that we are looking at these point estimates as if they were descriptive statistics on the whole population, we take the results shown in Figure \ref{fig:DP_baseline} as sufficient evidence for the existence of the distance puzzle. 
+Considering that \if 0 the PPML approach already takes into account heteroskedasticity, and that \fi we are looking at these point estimates as if they were descriptive statistics on the whole population, we take the results shown in Figure \ref{fig:DP_baseline} as sufficient evidence for the existence of the distance puzzle. 
 
-Still, the decrease in the absolute value of the estimated distance elasticity from the mid 1980s to the early 1990s is suspiciously concomitant with the entry of new countries in the dataset following the fall of the Soviet Bloc. The next section studies the potential effect of that change in sample.
+%Discussion on sample refocussed on loglinearized/multiplicative (to be in line with recent literature), rather on specific effect of Soviet bloc
+%Still, the decrease in the absolute value of the estimated distance elasticity from the mid 1980s to the early 1990s is suspiciously concomitant with the entry of new countries in the dataset following the fall of the Soviet Bloc. The next section studies the potential effect of that change in sample.
 
 \subsection{The magnitude of the sample composition effect} \label{subsec:data}
+
+\cite{Mayer2019} and \cite{Head2013} argue that the main consequence of choosing to estimate the model in multiplicative rather than in the loglinearized form is the relative weight given to small and big trade flows. 
+Also, \cite{Head2013} document that the loglinearized model picks up a stronger increase in the distance elasticity of trade, mainly because of the increasing number of new low volume trade relationships. 
+Consequently, in this section we first evaluate the magnitude of sample composition effects and second check to what extent our PPML estimates of the distance elasticity are sensitive to changes in the set of trading pairs.
+% by also estimating (\ref{eqn:4}) in the sample of pairs trading both ways in each year, i.e. the ``superbalanced'' sample.
 
 Figure \ref{fig:active_pairs} summarizes the main features of the country coverage of the data.
 The number of active pairs increases more than fourfold in 1962-2013 (in dash, left scale), both because more countries report trade to COMTRADE and because more pairs have non-zero trade flows (\cite{Helpman2008}).
