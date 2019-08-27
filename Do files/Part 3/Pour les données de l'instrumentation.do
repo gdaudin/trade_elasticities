@@ -29,6 +29,13 @@ if "`c(hostname)'" =="LAmacbook.local" {
 	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 }
 
+*for office laptop
+if "`c(username)'" =="archael" {
+	global dir "P:\ECFIN Public\Orbis\sitc"
+	global dirgit "P:\ECFIN Public\Orbis\sitc"
+	cd "P:\ECFIN Public\Orbis\sitc"
+}
+
 /*
 
 *****Test pour les BLX, BEL, LUX, FRG, DEU, SER, YUG : donne la liste des années pour lesquelles les pays sont présents
@@ -72,7 +79,7 @@ program calc_ms
 	if strmatch("`c(username)'","*daudin*")==1 {
 		use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
 	}
-	if "`c(hostname)'" =="LAmacbook.local" {
+	if "`c(hostname)'" =="LAmacbook.local" | "`c(username)'"=="archael" {
 		use prepar_cepii_`year', clear
 	}
 	
@@ -183,7 +190,7 @@ program prep_instr
 	if strmatch("`c(username)'","*daudin*")==1 {
 		joinby iso_o year using "$dir/Data_Interm/Third_Part/PWT/tmp_pwt90_`year'", unmatched(master)
 	}
-	if "`c(hostname)'" =="LAmacbook.local" {
+	if "`c(hostname)'" =="LAmacbook.local" | "`c(username)'"=="archael" {
 		joinby iso_o year using "tmp_pwt90_`year'", unmatched(master)
 	}
 	drop _merge
@@ -195,12 +202,11 @@ end
 
 
 *PROGRAMS FIRST STAGE:
-/*
-foreach n of numlist 1962/2013 {
+
+foreach n of numlist 1963/2013 {
 	calc_ms `n'
 }
 
-*/
 
 foreach n of numlist 1963/2013 {
 *local years 1963 1986 2005
