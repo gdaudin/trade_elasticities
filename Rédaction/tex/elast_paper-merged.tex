@@ -231,11 +231,10 @@ A more densely populated product space may translate into an increase in the per
 We work with the canonical \cite{Anderson2003} framework to quantify the contribution of this mechanism.
 We find that the non-decreasing distance elasticity of trade can be explained by the increase in the perceived similarity of product bundles of different national origin. 
 
-
 %Limitation of our approach: we do not provide a model which delivers an endogenous increase in the price elasticity of demand b/c we want first to assess whether empirical evidence corroborates this explanation.
 %Further work: verification in other frameworks how $\gamma$ or $\theta$ evolve and/or theoretical investigation.
-One way to rationalize the evolution of the elasticity is to notice that the increasing similarity of product bundles means that more varieties of any given product are available in the market. 
-A more densely populated product space may translate into a higher perceived substitutability of varieties of different national origin and result in higher measured substitutability of exporter-specific product bundles.
+%One way to rationalize the evolution of the elasticity is to notice that the increasing similarity of product bundles means that more varieties of any given product are available in the market. 
+%A more densely populated product space may translate into a higher perceived substitutability of varieties of different national origin and result in higher measured substitutability of exporter-specific product bundles.
 
 \subsection*{Prominent explanations of the distance puzzle}
 %1.econometric approach; 2.trade cost function approach; next subsection: focus on trade elasticity and network approach (Chaney) + us
@@ -607,7 +606,7 @@ Nonetheless, the bulk of total trade is attributable to the 786 pairs which trad
 We refer to this set of stable reciprocal pairs as the `superbalanced' sample and use it to investigate the magnitude of the sample composition effect.\footnote{The superbalanced sample includes 32 countries listed in App. \ref{app:E}. The appendix discusses trade coverage.\label{fnsuperbalanced}}
 
 %graph updated to 1962-2013
-\begin{figure}[h!]
+\begin{figure}[H]
 	\caption{Sample composition effect on the distance puzzle\label{fig:compsample}}
 	\begin{center}
 		\setlength{\fboxrule}{1pt} %makes border lines thick
@@ -623,10 +622,10 @@ in the distance elasticity due to the elimination of small trade flows between d
 We take the results shown in Figure \ref{fig:compsample} as more evidence for the existence of the distance puzzle. 
 
 \subsection{The magnitude of sectoral composition effects} \label{subsec:robustpuzzle}
-In this section we evaluate the sensitivity of the distance elasticity to changes in the sectoral composition of trade. 
+In this section we evaluate the sensitivity of the distance elasticity to changes in the sectoral composition of trade in two complementary ways. 
 %Specifically, we document that the non-linearity in the evolution of the distance coefficient disappears once we control for sectoral composition effects.
 \if 0 (see Figure \ref{fig:compbundle} below).\fi
-We assess the incidence of sectoral composition effects in two ways.
+%We assess the incidence of sectoral composition effects in two ways.
 The first exercise consists in fixing the sectoral composition of world trade.
 The second exercise consists in fixing the sectoral composition of the bundle supplied by each exporter to the world market.
 
@@ -640,7 +639,6 @@ Denoting each 4-digit sector $k$ and the annual share of the sector in world tra
 The reweighted sectoral bilateral flow is $\tilde{X}^k_{ijt}=X^k_{ijt}*\frac{s^k_{w,1962}}{s^k_{w,t}}$.
 The reweighted sectoral flows are summed for each pair, and the gravity equation is estimated in each year for aggregate bilateral trade.
 
-
 Results are shown in Figure \ref{fig:compworld}.
 \if 0 The non-linearity in the evolution of the distance coefficient is substantially reduced in the full sample (left pane),\fi The evolution of the distance coefficient becomes much more linear in the full sample (left pane), and this exacerbates the distance puzzle to a 14.5\% increase in $\delta_t$.
 The impact of this reweighting procedure is about nil in the sample of stable pairs (right pane) where $\delta_t$ increases by 18.4\%.\footnote{The annualized growth rate is 0.26(0.33)\% in the full (superbalanced) sample.
@@ -650,23 +648,22 @@ Indeed, the main incidence of fixing the sectoral composition of world trade is 
 As this sector plays a relatively minor role in trade of stable reciprocal partners, the reweighting procedure has little incidence on the distribution of trade over distance in this sample.
 %\footnote{Results on the incidence of the energy sector on the distance puzzle are available upon request.}.
 
-%graph updated for 1962-2013
-\begin{figure}[h!]
-\caption{Product composition effect: fixing the world bundle  \label{fig:compworld}}
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.5in]{product_composition_effect_world_1962.eps}}
-\end{center}
-\end{figure}
-
 %This exercise is only possible for countries that exist as partners (!) in 1962, so sample only includes countries that are listed as partners by reporters that exist in 1962
 In the second exercise we fix the composition of the bundle supplied by each exporter $i$ to the world market.
 Denoting the annual share of the sector in world imports from $i$ by $s^{k}_{i,t}$, the reweighting fixes the share of each 4-digit sector in world imports from $i$ to its share in 1962.
 The reweighted sectoral bilateral flow is $\tilde{X}^k_{ijt}=X^k_{ijt}*\frac{s^k_{i,1962}}{s^k_{i,t}}$.
 The resulting sectoral flows are summed for each pair, and the gravity equation is estimated on total reweighted bilateral trade.
 %This investigation is complementary to \cite{Berthelon2008} who find that changes in the relative weight of products in 1985-2005 are not explanatory of movements in the distance coefficient.
- 
+
+%graph updated for 1962-2013
+\begin{figure}[H]
+	\caption{Product composition effect: fixing the world bundle  \label{fig:compworld}}
+	\begin{center}
+		\setlength{\fboxrule}{1pt} %makes border lines thick
+		\setlength{\fboxsep}{.1in} %increases distance to border
+		\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.5in]{product_composition_effect_world_1962.eps}}
+	\end{center}
+\end{figure}
 
 %graph updated for 1962-2013
 \begin{figure}[h!]
@@ -678,17 +675,14 @@ The resulting sectoral flows are summed for each pair, and the gravity equation 
 \end{center}
 \end{figure}
 
-As illustrated in Figure \ref{fig:compbundle}, fixing the composition of the country-specific composite good \if 0 eliminates the non-linearity in the evolution of the distance coefficient and \fi
-exacerbates the magnitude of the distance puzzle.
+Results are shown in Figure \ref{fig:compbundle}. The magnitude of the distance puzzle is amplified when we fix the composition of the country-specific composite good.
 %\footnote{This is consistent with \cite{Berthelon2008} who find that products initially perceived as more homogeneous are more likely to have experienced an increase in the distance elasticity. Applying the \cite{Rauch1999} classification we find that the share of differentiated goods in total trade has increased by almost 20 percentage points (from 42 to 60\% of total trade in 1962-2000).}.
-
-Further, while the degree of precision in the estimation of the gravity equation with the Huber-White correction of standard errors remains similar to the benchmark specification, 87\% of the variation in the distance coefficient is attributable to the time trend in the full sample, against just 7\% in the benchmark specification.
-\footnote{In the superbalanced sample 77\% of the variation is attributable to the time trend when the product bundle is fixed against 49\% when the product bundle is not fixed.}
+Although the degree of precision in the estimation of the gravity equation with the Huber-White correction of standard errors remains similar to the benchmark specification, 87\% of the variation in the distance coefficient is here attributable to the time trend, against just 7\% in the baseline specification for the full sample.\footnote{In the superbalanced sample 77\% of the variation is attributable to the time trend when the product bundle is fixed against 49\% when the product bundle is not fixed.}
 The corresponding annualized growth rate is .40\% in the full, and .54\% in the stable sample.
 This corresponds to a 22.7\% increase in the distance sensitivity of trade between 1962 and 2013 in the full sample, and to a 31.4\% increase in the sample of stable pairs.
 
-We conclude that short-term fluctuations in the distance effect $\delta_t$ are likely attributable to product and sample composition effects.
-But the long-term evolution of the distance effect appears linked to structural changes.
+We conclude that short-term fluctuations in the estimated distance elasticity $\delta_t$ are likely attributable to product and sample composition effects.
+At the same time, the long-term evolution of the distance elasticity appears linked to structural changes.
 These structural changes are more pronounced in the set of stable trade relationships.
 
 %this pattern is reinforced in the set of stable trade relationships.
@@ -709,11 +703,9 @@ However, institutional and informational trade barriers may have been disproport
 %if local trade costs decrease faster than long-distance trade costs (which shows up as regionalization), then we pick up an increasing distance elasticity of trade b/c the measured elasticity of trade costs to distance would increase due to assumption of loglinear relationship (misspecification).
 Measure this with formation of FTAs: not just reduction in tariffs but also in associated NTBs: standards, hurdles, information costs.
 
-
 \cite{Bosquet2015} investigate the impact of FTA formation on the distance puzzle while controlling for the endogeneity of country selection into FTAs with the \cite{Baier2007} methodology.
 Constraining the trade creating effect of FTAs to be identical in each year and for all FTAs, \cite{Bosquet2015} find that FTAs have had no impact on the evolution of the distance elasticity.
 This result may seem puzzling because the trade-creating effect of FTAs is expected to be reinforced by controlling for endogenous selection (\cite{Baier2007}, \cite{Egger2011}).
-
 
 We adopt a more flexible approach to allow the trade creating effect of FTAs to vary across FTAs and overtime.
 
@@ -728,7 +720,6 @@ The distance elasticity is reduced by $2$\% (resp.$1.5$\%) per year with the cur
 fixed) product bundle.}
 %The distance elasticity estimated in the naive specification is pointwise corrected for the magnitude of the selection effect to obtain the distance elasticity in the specification which controls for the structural effect of FTA formation.
 The annual growth rate in the distance elasticity controlling for the exogenous effect of FTAs is computed on the basis of this adjusted distance coefficient.
-
 
 \begin{figure}[h!]
 \caption{Evolution of the distance elasticity with FTA controls \label{fig:ftabench}}
@@ -747,7 +738,6 @@ The reweighting is done separately for the full, within-FTA, and out-of-FTA samp
 See app.\ref{app:distprofile}}
 The naive FTA effect is $\delta_{fta}/\delta_{base}$, and the correction factor is $\delta_{distfix,fta}/\delta_{distfix,base}$.
 
-
 The intuition of this correction procedure is simple.
 If the naive FTA effect captures the `intensive margin', e.g.
 trade regionalization attributable to reduced relative costs of within-FTA trade, the distance distribution of within-FTA trade will be stable while the distance distribution of total trade will be characterized by increasing densities in the distance range covered by FTAs.
@@ -757,7 +747,6 @@ The correction factor will not exceed one and the naive FTA effect will be fully
 If the naive effect captures the `extensive margin', e.g.
 changes in the distance elasticity due to non-random country selection into FTAs, the distance distribution of total trade will be stable while shifts in the distance distribution of trade within and outside of FTAs will be observed as a consequence of increasing geographic scope of FTAs and their increasing coverage of short-distance trade.
 In this case, the correction factor will exceed one and the naive FTA effect will exceed the structural effect of FTA formation.
-
 
 Hence, it is sufficient to characterize the impact on the distance elasticity of changes in the distance profile of trade within and out of FTAs relatively to the impact on the distance elasticity of changes in the distance profile of total trade to quantify the magnitude of the selection effect.
 
@@ -771,7 +760,6 @@ The naive FTA effect is given by the difference in the growth rate of the distan
 The selection effect is given by the difference in the growth rate of the distance coefficient obtained by fixing the distance profile of within- and out-of-FTA trade relatively to fixing the distance profile of total trade: $e_{endog}=r_{distfix,fta}-r_{distfix,base}$.
 The structural FTA effect is equal to: $r_{base}+(e_{naif}-e_{endog})$.
 
-
 App.\ref{app:distprofile} reports a number of stylized facts on the stability of the distance distribution of total trade and on shifts in the distance distribution of trade within and out of FTAs.
 A salient example is the increase in FTA coverage of trade taking place at less than 2000 km from 40 to 80\% in 1963-2009 (Figure \ref{fig:ftascontig}) while the share of trade taking place at less than 2000 km in total trade has remained stable at 40\% (Figure \ref{fig:qqfull}).
 The geographic scope of within-FTA trade has increased as well (Figure \ref{fig:qqinfta}).
@@ -780,7 +768,6 @@ Correspondingly, the distribution of non-FTA trade has become increasingly dispe
 The first 5\% of non-FTA trade took place at less than 460 km in 1963 while the corresponding figure is 1150 km in 2009.
 Hence, the naive FTA effect is likely to be at least partly attributable to the extensive margin.
  
-
 \begin{figure}[h!]
 \caption{Structural impact of FTA formation in the full sample (current bundle) \label{fig:ftacorrfull}}
 \begin{center}
@@ -802,7 +789,6 @@ Hence, the naive FTA effect is likely to be at least partly attributable to the 
 Figure \ref{fig:ftacorrfull} reports the results for each component of the correction procedure without fixing the sectoral composition of trade while Figure \ref{fig:ftacorrfullc63} reports estimations implemented while fixing the sectoral composition of country-specific product bundles to the initial year of the sample.
 Grey circles correspond to specifications without FTA controls: full circles report the baseline elasticity $-\delta_{base}$, hollow circles report the baseline while fixing the distance profile of trade  $-\delta_{distfix,base}$.
 Red diamonds report specifications with FTA controls: full diamonds report results of the naive FTA estimation $-\delta_{fta}$,  hollow diamonds correspond to the specification which fixes the distance profile of trade within and out of FTAs $-\delta_{distfix,fta}$.
-
 
 The elasticity in the corrected FTA specification $-\delta_{fta,corr}$ is reported with crosses.
 The distance puzzle is not attributable to the intensification of within-FTA trade.
@@ -889,15 +875,14 @@ through the increasing geographic scope of FTAs and their increasing coverage of
 \fi
 These results motivate our focus on structural heterogeneity as a possible alternative explanation of the non-decreasing distance elasticity.
 
+%\clearpage
 
-\clearpage
-
-\section{ Interpreting the distance coefficient}
+\section{Interpreting the distance coefficient}
 In the three canonical microfoundations of the gravity model, the distance coefficient $\delta $ is the product of two elasticities: the elasticity of trade costs to distance $ \rho $ and the elasticity of trade flows to trade costs $ \epsilon $.
 The question addressed in this paper is very simple.
 Have trade flows become more sensitive to trade costs (increasing $ |\epsilon| $), or have trade costs become more sensitive to distance (increasing $\rho$)? 
 The three main microfoundations of the gravity model of trade give structurally different interpretations to $ \epsilon $ but not to $ \rho $. 
-In this section, we briefly discuss the interpretation of the structural parameter $ \epsilon $ in each model and review the evidence on its evolution. 
+In this section, we briefly discuss the interpretation of the structural parameter $ \epsilon $ in each model and review the evidence on its evolution.\footnote{We refer the reader to \cite{Head2014} for a comprehensive review of theories underpinning structural gravity and a meta-analysis of available estimates of the trade elasticities.} 
 %Assuming that the magnitude of $ \rho $ is determined by the structural features of the transport sector (global trade system), and as such invariant to the microfoundation of the gravity model, the evolution of the trade elasticity $ |\epsilon| $ is also expected to be model-independent.  
 We then provide details on the procedure used in section {\hyperref[ref-003]{3}} to pin down the evolution of $ \epsilon $ in one of these canonical microfoundations, namely the Armington framework. 
 
@@ -911,8 +896,8 @@ If sectoral productivity draws become more similar, trade flows become more resp
 In the \cite{Melitz2003}-\cite{Chaney2008} framework the heterogeneity dimension captured by the trade elasticity $ \epsilon $ is intrasectoral.
 Consumers value firm-specific varieties of goods which they acquire in monopolistic competition markets.
 $ |\epsilon| $ is decreasing in the degree of intrasectoral productivity dispersion.
-If firm productivity draws become more similar, trade flows become more responsive to trade costs.
-
+If firm productivity draws become more similar, trade flows become more responsive to trade costs.\footnote{\cite{Gabaix2016} study transition dynamics in random growth processes which stationary distributions follow a power law in the upper tail. They show that shocks to the parameters of the random growth process translate very slowly into changes in the exponent of the power law. Speeding up the transition requires deviations from Gibrat's law, i.e. allowing the parameters of the random growth process to depend on firm types.}  
+ 
 In \cite{Anderson2003} there is no heterogeneity in productive efficiency, and
 %The production process in each country and sector is constant returns to scale.
 product markets in each country are competitive.
@@ -924,17 +909,39 @@ The trade elasticity $\epsilon$ equals $1-\sigma$, where $\sigma$ denotes the lo
 The lower-tier one measures substitutability between importers of a given good.
 See \cite{Sato1967}, \cite{Reinert1991}, \cite{Saito2004}, and \cite{Feenstra2018}.} 
 
+The defining feature of the trade elasticity is that it captures the extent of structural heterogeneity in the economy. 
+Specific functional form assumptions in the canonical derivations of the gravity equation deliver the result that the trade elasticity depends either on the dissimilarity of production technologies or on the dissimilarity of goods as perceived by consumers. 
+The trade elasticity depends simultaneously on supply- and demand-side heterogeneity under less restrictive assumptions.\footnote{See for example \cite{Feenstra2018a} and \cite{Bas2017}, as well as discussion in \cite{Head2014}.}
+The bottom line is that trade flows become more responsive to trade costs in more homogeneous economies.
+%The canonical microfoundations of the gravity model rely on the implicit assumption of stability in the structural parameters. 
+%Neither model incorporates a theoretical mechanism that would deliver a change in the trade elasticity.
+%A shock to consumer preferences or to the variability of technology draws would be required. 
+The open question is whether trading partners' economies have become more homogeneous since the 1960s, and if so, whether shocks to structural parameters can be identified with the trade data at hand.
+
 \subsection{What do we know about the evolution of the trade elasticity?}
 
-Neither of these models incorporates a theoretical mechanism that would explain a change in the trade elasticity.
-A shock to consumer preferences or to the shape parameter of the productivity distribution would be required. This implicit assumption of stability in the structural parameters, together with data availability constraints, explain why there is only scant empirical evidence on the evolution of sectoral or aggregate trade elasticities in either model. 
+Recent work on the trade elasticity has been mainly concerned with the level of the aggregate trade elasticity and with the heterogeneity underpinning the aggregate parameter.\footnote{On the level of the trade elasticity, see the discussion in \cite{Allen2019} as well as \cite{Head2013,Head2014}; on the heterogeneity underpinning the aggregate trade elasticity, see for example \cite{Feenstra2018}, \cite{Bas2017}, \cite{Imbs2015}.}
+Evidence on the evolution of either sectoral or aggregate trade elasticities is scant. 
+Data constraints play a role in explaining this situation.
+An additional explanatory factor is the focus on counterfactual analysis for which stability in structural parameters is the standard assumption.
 
-There is no direct evidence on the evolution of productivity dispersion across firms over 1960-2010.\footnote{There is some evidence of an increasing productivity dispersion in the set of surviving firms over 2000-2015, but the latter may be a consequence of more integrated global markets (\cite{DiGiovanni2011}).}
-Different theoretically grounded methods have been used to estimate the intersectoral productivity dispersion parameter, i.e. the trade elasticity in the Ricardian framework, but only in a specific year.\footnote{\cite{Eaton2002}; \cite{Simonovska2014}; \cite{Costinot2012a}; \cite{Caliendo2015}.}  To our knowledge, \cite{Levchenko2016} is the only paper that looks into  the evolution of intersectoral productivity dispersion. They find evidence of within-country convergence in sectoral knowledge stocks over 1960-2010.
+On the supply side, there is no direct evidence on the evolution of the structural parameter that captures technological dissimilarity in production either between sectors or between firms.  
+\cite{Levchenko2016} is the only paper that tracks technological dissimilarity at the intersectoral level over a 50 year horizon.
+\cite{Levchenko2016} do not estimate the structural heterogeneity parameter in the \cite{Eaton2002} framework, but they do find evidence of within-country convergence in sectoral knowledge stocks over 1960-2010.\footnote{Different theoretically grounded methods have been used to estimate the trade elasticity in the Ricardian framework, but only in a specific year. See \cite{Eaton2002}; \cite{Simonovska2014}; \cite{Costinot2012a}; \cite{Caliendo2015}.} 
 %As there is less heterogeneity in producer efficiency across the set of goods comparative advantage exerts a weaker force against trade resistance imposed by trade barriers.
-Reduced dispersion in sectoral productivity draws would translate into an increasing $|\epsilon|$ in the Ricardian framework.
+Increasing similarity of sectoral production technologies would translate into an increasing trade elasticity $|\epsilon|$ in the Ricardian framework.
 
-Evidence on the evolution of lower-tier Armington elasticities of substitution measured on aggregate data is scarce.
+%As noted by \cite{Head2013}, most of the available evidence on productivity differences among firms suggests stability in the structural parameter of the Melitz-Chaney framework.
+\cite{Andrews2016} track technological dissimilarity at the intrasectoral level over a 25 year horizon.
+\cite{Andrews2016} do not estimate the structural heterogeneity parameter in the \cite{Melitz2003}-\cite{Chaney2008} framework, but they do find evidence of divergence in labour and multifactor productivity over 1997-2014 in a sample covering 24 OECD countries.
+Increasing dissimilarity of firm production technologies would translate into a decreasing trade elasticity $|\epsilon|$ in the heterogeneous firms' framework.
+The difficulty in interpreting \cite{Andrews2016}' findings in terms of structural heterogeneity resides in the fact that measured productivity dispersion increases mechanically in the extent of market integration in a sample which includes exporting and non-exporting firms.\footnote{See \cite{DiGiovanni2011} who show that measured productivity dispersion among firms of which some are exporters is systematically higher than the underlying `true' extent of technological heterogeneity among domestic firms.
+This wedge is more pronounced in sectors that are more open to trade.}
+\cite{Autor2017} document the increasing importance of foreign sales in the sample of the 500 biggest U.S. firms over 1982-2012.\footnote{Foreign sales accounted for 30\% of total sales in the 1980s and grew to 60\% of total sales by 2010.}
+Hence, the findings of \cite{Andrews2016} do not suffice to conclude that firm production technologies have become more dissimilar since the mid-1990s.
+
+%REFER TO PAPER THAT HEAD AND MAYER MENTION IN FOOTNOTE
+On the demand side, evidence on the evolution of lower-tier Armington elasticities of substitution measured on aggregate data is scarce.
 For France, \cite{Welsch2006} provides estimates of aggregate lower-tier Armington elasticities since the 1970s.
 He finds that among exporters to the French market the elasticity peaked in the 1970s, and progressively decreased in the 1990s.
 \cite{Broda2006} provide evidence on the evolution of Armington lower-tier elasticities between 1972-1988 and 1990-2001 for American imports.
