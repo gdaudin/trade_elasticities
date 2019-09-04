@@ -206,20 +206,22 @@ if "`sample'" != "instrumented" {
 
 *NB* inserted here: selection on destinations: at least 3 suppliers per product (10-20,mil such obs) and 50 products per destination (few such dest)
 *NOTICE: this is implemented for instrumented specification in August 2019; but was not used in all other regressions (!)
-	drop if uv_presente>=. | uv_presente<=0
-	bysort iso_d prod_unit: gen nb_obs=_N
-	drop if nb_obs<3
-	preserve
-	bysort iso_d prod_unit: drop if _n!=1
-	bysort iso_d: gen nb=_N
-	by iso_d, sort: drop if _n!=1
-	keep iso_d nb
-	drop if nb<50
-	save tmp, replace
-	restore
-	joinby iso_d using tmp, unmatched(none)
-	erase tmp.dta
-
+*TO AVOID CONFUSION: written as if this selection only required for instrumented data
+	if "`sample'" == "instrumented" {
+		drop if uv_presente>=. | uv_presente<=0
+		bysort iso_d prod_unit: gen nb_obs=_N
+		drop if nb_obs<3
+		preserve
+		bysort iso_d prod_unit: drop if _n!=1
+		bysort iso_d: gen nb=_N
+		by iso_d, sort: drop if _n!=1
+		keep iso_d nb
+		drop if nb<50
+		save tmp, replace
+		restore
+		joinby iso_d using tmp, unmatched(none)
+		erase tmp.dta
+	}
 save "$dir/temp_`year'", replace
 
 
