@@ -1,3 +1,11 @@
+*Aug 2019 adjusts $dir and checks that at least 3 suppliers per product and 50 products per destination
+
+*Note1: at no point in second stage do we check that at least 3 (5?) suppliers per product, and at least 50 (?) products per destination
+* destination-supplier selection to be inserted for all second stage variants? [here inserted before running instrumented specification]
+
+*Note 2: we crop unit values in non instrumented specifications, before running first stage, but not before running second stage
+* this means that for instrumented data, we only do cropping on pre-estimation of first stage sample: ok?
+
 *Dec 2018 adjusts $dir 
 
 *22/01/2013 Guillaume Daudin
@@ -38,11 +46,13 @@ if "`c(hostname)'" =="LAmacbook.local" {
 	cd "$dir/sitcrev1_4dgt_light_1962_2013_in2018"
 }
 
-*for laptopEC Liza 
-if "`c(hostname)'" =="L184355620" {
-	global dir "P:\ECFIN Public\Orbis\trade"
-	cd "$dir"
+*for office laptop
+if "`c(username)'" =="archael" {
+	global dir "P:\ECFIN Public\Orbis\sitc"
+	global dirgit "P:\ECFIN Public\Orbis\sitc"
+	cd "P:\ECFIN Public\Orbis\sitc"
 }
+
 ****************************************************************************************************************************************************************
 capture log using "logs/`c(current_time)' `c(current_date)'"
 *timer clear 1
@@ -78,12 +88,14 @@ if strmatch("`c(username)'","*daudin*")==1 {
 	if "`sample'" == "instrumented" {
 	local instrument $instrument
 	local lag $lag
-	*	use "$dir/Résultats/Troisième partie/first_stage_gdpo i om_`year'", clear
-		use "$dir/Résultats/Troisième partie/first_stage_gdpo om uv_`year'", clear
+*NB* name of file adjusted to run on revised version of first stage
+	*	use "$dir/Résultats/Troisième partie/first_stage_gdpo om uv_`year'", clear
+		use "$dir/Résultats/Troisième partie/first_stage_uv gdpo om_`year'", clear
 	*	rename value value_`year'
 		local instrument = subinstr("`instrument'"," ","_",.)
 		gen uv_`year'=exp(ln_uv_`instrument'_`lag'lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
-		local instrument = subinstr("`instrument'"," ","_",.)
+*NB* This line suppressed: repeats what is already done 2 lines above?
+	*		local instrument = subinstr("`instrument'"," ","_",.)
 	}
 
 
@@ -98,7 +110,7 @@ if strmatch("`c(username)'","*daudin*")==1 {
 
 
 
-if strmatch("`c(hostname)'","LAmacbook.local")==1 | strmatch("`c(hostname)'","L184355620")==1 {
+if strmatch("`c(hostname)'","LAmacbook.local")==1 | | "`c(username)'" =="archael" {
 /*On va chercher les données*/
 	if "`sample'" == "prepar_cepii" | "`sample'" == "prepar_baci" use "`sample'_`year'", clear
 	if "`sample'" == "prepar_cepii_superbal" {
@@ -107,17 +119,23 @@ if strmatch("`c(hostname)'","LAmacbook.local")==1 | strmatch("`c(hostname)'","L1
 	}	
 		
 	if "`sample'" == "instrumented" {
-		use "first_stage_gdpo i om_`year'", clear
+		local instrument $instrument
 		local lag $lag
-			use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
-	*	rename value value_`year'
-		gen uv_`year'=exp(ln_uv_`instrument'_`lag'lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
+		use "first_stage_uv gdpo om_`year'", clear
+*NB*    suppress next line: no such file exists (maybe previous version?)
+*		use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
+*		rename value value_`year'
+		local instrument = subinstr("`instrument'"," ","_",.)
+*C'est ici qu'on choisit le prix instrumenté qu'on utilise dans second stage*
+*huge variability in instrumented uv; but much less than in raw uv, for nearly same median
+		gen double uv_`year'=exp(ln_uv_`instrument'_`lag'lag) 
+*NB* This line suppressed: repeats what is already done 2 lines above?
+*		local instrument = subinstr("`instrument'"," ","_",.)
 	}
 	
-	
-		**À changer pour Liza
+*NB* adjusted to run on Liza laptop (pour faire tourner prix imputes, sans instrumentation)
 	if "`sample'" == "prepar_cepii_calc" {
-		use "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_cepii_`year'.dta"", clear
+		use "Prix calculés par stepwise_cepii_`year'.dta"", clear
 		replace uv_`year' = rel_price
 		label var uv_`year' "Attention il s'agit des prix relatifs calculés"
 	}
@@ -186,10 +204,24 @@ if "`sample'" != "instrumented" {
 }	
 
 
-if strmatch("`c(hostname)'","L184355620")==1 save "temp_`year'", replace
-		else save "$dir/temp_`year'", replace
+*NB* inserted here: selection on destinations: at least 3 suppliers per product (10-20,mil such obs) and 50 products per destination (few such dest)
+*NOTICE: this is implemented for instrumented specification in August 2019; but was not used in all other regressions (!)
+	drop if uv_presente>=. | uv_presente<=0
+	bysort iso_d prod_unit: gen nb_obs=_N
+	drop if nb_obs<3
+	preserve
+	bysort iso_d prod_unit: drop if _n!=1
+	bysort iso_d: gen nb=_N
+	by iso_d, sort: drop if _n!=1
+	keep iso_d nb
+	drop if nb<50
+	save tmp, replace
+	restore
+	joinby iso_d using tmp, unmatched(none)
+	erase tmp.dta
 
-*/
+save "$dir/temp_`year'", replace
+
 
 end 
 
@@ -290,8 +322,8 @@ program reg_nlin
 timer clear 1
 timer on 1
  
-if strmatch("`c(hostname)'","L184355620")==1	use "temp_`year'", clear
-		use "$dir/temp_`year'", clear
+*NB* adjusted here: always same directory used
+use "$dir/temp_`year'", clear
 	
 	
 *********Calcul des ms définitifs
@@ -390,23 +422,15 @@ bys iso_d iso_o	: replace weight = 1/_N
 	generate time=r(t2)
 	generate ordinateur="Lysandre"
 	drop iso_o_*
-		
-	if strmatch("`c(hostname)'","L184355620")==1 {
-		save "temp_`year'_result", replace
-		keep if _n==1
-		keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
-		append using "temp_result"
-		save "temp_result", replace
-	}
 
-	else {
-		save "$dir/temp_`year'_result", replace
-		keep if _n==1
-		keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
-		append using "$dir/temp_result"
-		save "$dir/temp_result", replace
+*NB*adjusted: same directory for all computers
+	save "$dir/temp_`year'_result", replace
+	keep if _n==1
+	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
+	append using "$dir/temp_result"
+	save "$dir/temp_result", replace
 
-	}
+
 		
 
 	
@@ -505,9 +529,13 @@ save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_pr
 clear
 set obs 1
 gen year=.
-capture drop "$dir/temp_result.dta"
+*NB* erreur corrigee ici: capture save (!) not "capture drop" file
+capture save "$dir/temp_result.dta"
+
+*NB* order of instruments adjusted so that runs on revised version of first stage 
+*!* remember to change list of years if lag 2 or 3 used!
 *global instrument gdpo
-global instrument gdpo om uv
+global instrument uv gdpo om
 global lag 1
 * ou gdp ou i...
 foreach year of num 1963(1)2013 {
@@ -520,10 +548,17 @@ foreach year of num 1963(1)2013 {
 	erase "$dir/temp_`year'.dta"
 }
 use "$dir/temp_result.dta", clear
-save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_instrumented_${instrument}_${lag}lag", replace
+*NB*adjusted here to save results in correct directory on different computers
+if strmatch("`c(username)'","*daudin*")==1 {
+	save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_instrumented_${instrument}_${lag}lag", replace
+}
+else {
+		save "Résultats 1ere regression 3e partie_instrumented_${instrument}_${lag}lag", replace
+}
 
+capture log close
 ****************************************************************************
-*/
+
 
 
 
@@ -541,6 +576,6 @@ timer list 1
 
 log close	
 
-
+*/
 
 
