@@ -37,6 +37,12 @@ if "`c(hostname)'" =="LAmacbook.local" {
 	cd "$dir/Résultats/Troisième partie/"
 }
 
+*for office laptop
+if "`c(username)'" =="archael" {
+	global dir "P:\ECFIN Public\Orbis\sitc"
+	global dirgit "P:\ECFIN Public\Orbis\sitc"
+	cd "P:\ECFIN Public\Orbis\sitc"
+}
 
 capture log using "logs/`c(current_time)' `c(current_date)'"
 ****************************************************************************************************************************************************************
@@ -89,7 +95,10 @@ graph export graph7_without2008.eps, replace
 twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) (connected one_minus_sigma year, msize(vsmall)) /*
 	*/ (lfit one_minus_sigma year), /*
 	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "linear fit")) scheme(s1mono)
-graph export "$dirgit/trade_elasticities/Rédaction/tex/1ere regression 3e partie_`sample'.pdf", replace
+*NB*adjusted for directory on different computers
+if "`c(username)'" !="archael" {
+	graph export "$dirgit/trade_elasticities/Rédaction/tex/1ere regression 3e partie_`sample'.pdf", replace
+}
 graph export "1ere regression 3e partie_`sample'.pdf", replace
 
 
@@ -113,7 +122,8 @@ graph export graph7_with2008.eps, replace
 graph dir
 end
 
-pour_graph_regression_3e_partie instrumented_gdpo om uv_1lag
+*NB*adjusted for change in order of instruments
+pour_graph_regression_3e_partie instrumented_uv gdpo om_1lag
 /*
 pour_graph_regression_3e_partie instrumented_om_1lag
 pour_graph_regression_3e_partie instrumented_gdpo_1lag
