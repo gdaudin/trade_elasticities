@@ -180,8 +180,8 @@ X_{ij,t} & = & \left(\frac{Y_{i,t}Y_{j,t}}{Y_t}\right)\left(\frac{\tau_{ij,t}}{\
 \item Trade costs: 
 	\begin{itemize}
 	\item distance parameter: $\eth_{ij}$
-	\item time-invariant cost vector of controls (adjacency,...): $Z$
-	\item time-varying cost vector of controls (policy: FTAs,...): $S_t$
+	\item time-invariant cost vector of controls (adjacency,...): $Z_{ij}$
+	\item time-varying cost vector of controls (policy: FTAs,...): $S_{ijt}$
 	\item unobserved bilateral trade cost component assumed to have mean zero conditional on the observables: $\nu_{ijt}$ 
 	%potentially time-varying, therefore includes same country, colonial linkages, so on
 
@@ -222,23 +222,7 @@ X_{ij,t}=\exp{\left(\xi_t-\delta_{t}\ln{\eth_{ij}}+{Z_{ij}}\tilde{\zeta_{t}}+{S_
 Increase in absolute value of 4.5\% : basically stable
 \end{frame}
 
-\if 0
-\begin{frame}[plain]\frametitle{Logit baseline ZIP regression}
-\begin{figure}[h!]
-%\caption{Distance coefficient in the logit baseline ZIP regression (first part)\label{fig:distcoefbaselinelogit}}
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{graph3.pdf}}
-\end{center}
-\end{figure}
-%\vspace{0.3cm}
-%circumscribe puzzle: formation of trading relationships is less sensitive to distance; distance puzzle specific to existing trade relationships
-
-\end{frame}
-\fi
-
-\subsection{Composition, sample, FTA effects}
+\subsection{Composition and sample effects}
 \begin{frame}\frametitle{Sample composition effect}
 \begin{itemize}
 \item We know the country sample potentially matters
@@ -279,65 +263,57 @@ Increase in absolute value of 4.5\% : basically stable
 			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{sample_composition_effect_1962.eps}}
 		\end{center}
 	\end{figure}
-Increase in absolute value of 18.2\% : basically stable
+Increase in absolute value of 18.2\%
 \end{frame}
 
 
 
-\if 0
-\begin{frame}[plain]\frametitle{Sample}
-\begin{figure}[h!]
-%\caption{Distance coefficient in sample of stable pairs (PPML) \label{fig:distcoefbaselinesuperbal}}
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{graph4.pdf}}
-\end{center}
-\end{figure}
-\end{frame}
-\fi
-%say: I only show composition and FTA results
-\begin{frame}[plain]\frametitle{FTAs(1)}
-\begin{figure}[h!]
-%\caption{Distance coefficient controlling for FTAs (full sample) \label{fig:ftas}}
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{graph6.pdf}}
-\end{center}
-\end{figure}
-\end{frame}
 
-\begin{frame}[plain]\frametitle{FTAs(2)}
-\begin{figure}[h!]
-\caption{Share of intra-FTA trade among nearby countries (2000km or less)
-\label{fig:ftascontig}}
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{fta_proximity.pdf}}
-\end{center}
-\end{figure}
-\end{frame}
 
 \begin{frame}[plain]\frametitle{Sector composition}
-\vspace{0.3cm}
-\begin{itemize}
-	\item Test: suppose the composition of trade constant i.e. at 1962 shares for 4 digit goods
-	\item It deepens the puzzle (increse in manuf share)
-	%The share of manufacture goods increases : these are less sensible to distance
-\end{itemize}
-\vspace{0.3cm}
-%Remark: most short-term fluctuations of the distance coefficient seem to be explained by sample and composition effects.
 
 \begin{itemize}
-	\item FTAs
-	\item Test: introduce FTA variables
-	\item It `solves' the puzzle
-	\item But what does it mean ? 
-	\item Increasing number of proximity controls overtime 
-	\item Mechanically reduces the effect of distance
+	\item We do not expect the elasticity of trade to distance to be constant by sector
+	\begin{itemize}
+		\item Some sectors can only be procured in specific places (oil), other are more mobile (textile)
+		\item In the long-term, the decline of the share of oil should increase the absolute value of the elasticity of trade to distance
+		\item In the short-term, price variation of primary products change their share in trade and hence the elasticity of trade to distance
+	\end{itemize}
+	\item We use two tests
+	\begin{enumerate}
+		\item Fixing the sectoral compositon of total trade to 1962. We modify all trade flows by a sector-specific factor.
+		\begin{eqnarray}
+		\tilde{X}^k_{ijt}=X^k_{ijt}*\frac{s^k_{w,1962}}{s^k_{w,t}} \nonumber
+		\end{eqnarray}
+		\item Fixing the sectoral composition of each country's export to 1962. We modify all trade flows by a sector and country-specific factor
+		\begin{eqnarray}
+		\tilde{X}^k_{ijt}=X^k_{ijt}*\frac{s^k_{i,1962}}{s^k_{i,t}} \nonumber
+		\end{eqnarray}
+	\end{enumerate}
 \end{itemize}
+
+\end{frame}
+
+\begin{frame}[plain]\frametitle{Product composition effect: fixing the world bundle}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{product_composition_effect_world_1962.eps}}
+		\end{center}
+	\end{figure}
+	Increase in absolute value of 14.5 and 18.4\%
+\end{frame}
+
+\begin{frame}[plain]\frametitle{Product composition effect: fixing the country  bundle}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{product_composition_effect_country_1962.eps}}
+		\end{center}
+	\end{figure}
+	Increase in absolute value of 22.7 and 31.4\%
 \end{frame}
 
 

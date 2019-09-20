@@ -1,7 +1,7 @@
 \beamer@endinputifotherversion {3.36pt}
 \beamer@sectionintoc {1}{The distance puzzle in our data}{9}{0}{1}
 \beamer@subsectionintoc {1}{1}{Benchmark estimation}{9}{0}{1}
-\beamer@subsectionintoc {1}{2}{Composition, sample, FTA effects}{12}{0}{1}
+\beamer@subsectionintoc {1}{2}{Composition and sample effects}{12}{0}{1}
 \beamer@sectionintoc {2}{Interpreting properly the distance coefficient}{19}{0}{2}
 \beamer@subsectionintoc {2}{1}{The heterogeneity dimension in each model}{19}{0}{2}
 \beamer@subsectionintoc {2}{2}{The heterogeneity dimension captured in our data}{23}{0}{2}
