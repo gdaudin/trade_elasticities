@@ -113,24 +113,24 @@
 \begin{frame}[plain]\frametitle{Summary of results}
 \vspace{0.3cm}
 \begin{itemize}
-\item Robustness of distance puzzle in 1962-2009: increase in distance coefficient 
+\item Robustness of distance puzzle in 1962-2013: increase in distance coefficient 
 %Working with COMTRADE bilateral trade data at the 4-digit level 
 \begin{itemize}
-\item 7\% controlling for estimation strategy
-\item 14\% controlling for composition and sample effects
+\item +5\% controlling for estimation strategy
+\item +31\% controlling for composition and sample effects
 \end{itemize}
 \vspace{0.3cm}
 \item Evolution of heterogeneity parameter:
 \begin{itemize}
-\item 13\% increase in 1963-2009 (19\% in 1970-2009)
+\item ??\% increase in 1963-2013 (??\% in 1970-2013)
 \item this estimate is likely to be a lower bound 
 \end{itemize}
 \vspace{0.3cm}
 \item Elasticity of trade costs to distance has not increased
 \begin{itemize}
-\item 5-7\% decrease in 1963-2009
+\item ???\% decrease in 1963-2013
 %depending on whether we work with evolution of ratio or with ratio of trends 
-\item 17\% decrease in 1970-2009 
+\item ??\% decrease in 1970-2013
 %in our data: the increase in the distance elasticity mainly driven by 62-70 period; since 70s distance elasticity flat
 %this is also caveat of what we do: magnitude of results (their statistical robustness) is period-sensitive, but the direction of the change is robust to the time period
 \end{itemize}
@@ -157,53 +157,54 @@
 \subsection{Benchmark estimation}
 \begin{frame}\frametitle{Estimation procedure (1)}
 \begin{itemize}
-\item Microfounded gravity equation:
+	\item run gravity equations (obviously)
+	\begin{itemize}
+		\item COMTRADE data, 1962-2009 STIC 4 digits (1962-2009 )
+		\item cross section, no panel
+		\item focus on evolution of distance elasticity overtime
+		\item using the PPML estimator (consistency \& efficiency)
+	\end{itemize}
+\item Microfounded gravity equation (Anderson \& Wincoop (2003)):
 \begin{eqnarray}
-X_{ij,t} & = & \left(\frac{Y_{i,t}Y_{j,t}}{Y_t}\right)\left(\frac{\tau_{ij,t}}{\Pi_{i,t}P_{j,t}}\right)^{-\zeta_t} \nonumber
+X_{ij,t} & = & \left(\frac{Y_{i,t}Y_{j,t}}{Y_t}\right)\left(\frac{\tau_{ij,t}}{\Pi_{i,t}P_{j,t}}\right)^{\epsilon_t} \nonumber
 \end{eqnarray}
 %where the above formula is the standard gravity equation which can be derived across frameworks
-\item heterogeneity parameter: $\zeta_t$: $\sigma_{t}-1$ in Armington 
+\item heterogeneity parameter: $\epsilon_t$: $1-\sigma_{t}$ in Armington (sector or firm productivity heterogeneity in Metlitz and Eaton \& Kortum framworks )
 \vspace{.3cm}
-%$X_{ij,t}$ is the value of goods from country $i$ consumed in country $j$ in year $t$, i.e. bilateral imports at cif prices. Imports are a function of the nominal income of each trading partner $Y_{ij,t}$ and $Y_{j,t}$, of world income $Y_t$, of bilateral trade costs $\tau_{ij,t}$, and of inward and outward multilateral trade resistance terms $\Pi_{i,t}$, $P_{j,t}$.
-\item Trade costs: 
-\begin{itemize}
-\item time-invariant cost controls (adjacency,...): $Z_1$
-\item time-varying cost controls (policy: FTAs,...): $Z_2$
-%potentially time-varying, therefore includes same country, colonial linkages, so on
-\end{itemize}
-\begin{gather}
-\tau_{ij,t}=exp\left\{\rho_t\ln{dist_{ij}}+{Z_{1}}'\beta_{1,t}+{Z_{2,t}}'\beta_{2,t}\right\} \nonumber
-\end{gather}
-\item $\rho_t$ is the `world shrinkage' parameter \\ 
-\hspace{1cm} i.e. elasticity of trade costs to distance
-% (`shrinkage') 
-%As is standard in the gravity literature, we model bilateral trade costs as a function of bilateral distance $dist_{ij}$, a vector $Z_1$ of bilateral trade cost controls such as adjacency, common language, colonial linkages, belonging or having once belonged to the same country, and a vector $Z_2$ of trade cost controls linked to trade policy such as common membership of GATT/WTO and common membership of an FTA. 
+%$X_{ij,t}$ is the value of goods from country $i$ consumed in country $j$ in year $t$, i.e. bilateral imports at cif prices. Imports are a function of the nominal income of each trading partner $Y_{ij,t}$ and $Y_{j,t}$, of world income $Y_t$, of bilateral trade costs $\tau_{ij,t}$, and of inward and outward multilateral trade resistance terms $\Pi_{i,t}$, $P_{j,t}$. 
 \end{itemize}
 \end{frame}
 
 \begin{frame}[plain]\frametitle{Estimation procedure (2)}
 \begin{itemize}
-\item COMTRADE data, 4-digit level (SITC), 1962-2009
-%600-700 goods, little sensitivity to changes in classification: within-sitc rev.1 splits, seldom shuffling of goods across categories b/c all following revisions give more detail than initial sitc rev 1.
-\vspace{.3cm}
-\item run gravity equations (obviously)
-\item cross section, no panel
-\item focus on evolution of distance elasticity overtime
-\vspace{.3cm}
-\item using the PPML estimator (consistency \& efficiency)
-%to deal with heteroskedasticity of trade equation in levels and to take into account zero flows
-%Santos Silva and Tenreyro have shown that slope estimates from the log linear estimation of the gravity equation will generally be biased because the trade equation in levels is subject to heteroskedasticity. The structure of trade data is such that in general the additive error term in the log-linearized model is heteroscedastic, and its variance depends on the regressors. In this case, OLS does not generally give consistent slope estimates. PPML consistent and efficient: the mean and variance function this estimator assumes is closest to the underlying conditional variance function in raw trade data. The PPML is likely to be an efficient estimator because it assumes that the conditional variance of the raw data is proportional to the conditional mean. This fits trade data better than alternative assumptions on conditional variance of other non-linear estimators.
-%Say: PPML implied functional form not consistent with the prevalence of zero trade observations (Vuong test), and therefore we have tested that results not sensitive to switching to a two-part approach where the proba of trading is estimated in the first step. The fact of the matter is that using ZIP does not change results conditional on trading but the implementation encounters convergence problems in certain years. Therefore, benchmark estimation in PPML while robustness check with two part approach which couples the PPML estimator with a logit estimation of the chances of being in the zero category.
-\vspace{.3cm}
+\item Trade costs: 
+	\begin{itemize}
+	\item distance parameter: $\eth_{ij}$
+	\item time-invariant cost vector of controls (adjacency,...): $Z$
+	\item time-varying cost vector of controls (policy: FTAs,...): $S_t$
+	\item unobserved bilateral trade cost component assumed to have mean zero conditional on the observables: $\nu_{ijt}$ 
+	%potentially time-varying, therefore includes same country, colonial linkages, so on
+
+\begin{gather}
+\tau_{ijt}=\exp\left\{\rho_t\ln{\eth_{ij}}+{Z_{ij}}\zeta_{t}+{S_{ijt}}\varsigma_{t}+\nu_{ijt}\right\} \nonumber
+\end{gather}
+	\item $\rho_t$ is the `world shrinkage' parameter \\ 
+\hspace{1cm} i.e. elasticity of trade costs to distance
+	\end{itemize}
+% (`shrinkage') 
+%As is standard in the gravity literature, we model bilateral trade costs as a function of bilateral distance $dist_{ij}$, a vector $Z_1$ of bilateral trade cost controls such as adjacency, common language, colonial linkages, belonging or having once belonged to the same country, and a vector $Z_2$ of trade cost controls linked to trade policy such as common membership of GATT/WTO and common membership of an FTA.
 \item Estimated equation:
 \begin{gather}
-X_{ij,t}=\exp{\left(cons_t-\alpha_{t}\ln{dist_{ij}}+{Z_1}'\beta_{1,t}+{Z_{2,t}}'\beta_{2,t}+fe_{i,t}+fe_{j,t}\right)\epsilon_{ij,t}} \nonumber
+X_{ij,t}=\exp{\left(\xi_t-\delta_{t}\ln{\eth_{ij}}+{Z_{ij}}\tilde{\zeta_{t}}+{S_{ijt}}\tilde{\varsigma_{t}}+f_{it}+f_{jt}\right)\eta_{ijt}} \nonumber
 \end{gather}
 %multiplicative model
-\item distance elasticity: $\alpha_{t}=\zeta_{t}\rho_t$
+	\begin{itemize}
+	\item $f_{it}$ and $f_{jt}$are fixed effects to control for price levels
+	\item $\xi_{ijt}$ is a multiplicative error term which includes the exponentiated unobserved bilateral trade cost
+	\item distance elasticity: $-\delta_{t}=\epsilon_{t}\rho_t$
 %exporter and importer dummies: $fe_{i,t}$, $fe_{j,t}$
-\vspace{.3cm}
-\item Baseline: trade policy controls excluded (FTAs)
+%\item Baseline: trade policy controls excluded (FTAs)
+	\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -213,11 +214,12 @@ X_{ij,t}=\exp{\left(cons_t-\alpha_{t}\ln{dist_{ij}}+{Z_1}'\beta_{1,t}+{Z_{2,t}}'
 \begin{center}
 \setlength{\fboxrule}{1pt} %makes border lines thick
 \setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.5in]{graph1.pdf}}
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip, height=2.5in]{DP_baseline.pdf}}
 \end{center}
 \end{figure}
 %\vspace{0.3cm}
 %8\% increase in distance elasticity
+Decline of 4.5\% : basically stable
 \end{frame}
 
 \if 0
@@ -232,48 +234,38 @@ X_{ij,t}=\exp{\left(cons_t-\alpha_{t}\ln{dist_{ij}}+{Z_1}'\beta_{1,t}+{Z_{2,t}}'
 \end{figure}
 %\vspace{0.3cm}
 %circumscribe puzzle: formation of trading relationships is less sensitive to distance; distance puzzle specific to existing trade relationships
+
 \end{frame}
 \fi
 
 \subsection{Composition, sample, FTA effects}
-\begin{frame}\frametitle{Robustness of puzzle}
-\vspace{0.3cm}
-%Explore three issues:
+\begin{frame}\frametitle{Sample composition effect}
 \begin{itemize}
-\item Sample
-\begin{itemize}
+\item We know the country sample potentially matters
+	\begin{itemize}
+	\item Increasing number of new low volume long-distance relationship
+	\item Potentially increases the distance elasticity of trade (Mayer et al. (2019), Head \& Mayer (2013) ) 
+	\item Though it should be less of an issue with PPML
+	\end{itemize}
+\item There are big sample issues in the data	
 \item Test: keep only trading pairs that have reciprocal non-zero trade every year from 1962 to 2009
 %similar results if square: all with all in each year
-\item It deepens the puzzle 
-\end{itemize}
-\vspace{0.3cm}
-\item Composition
-\begin{itemize}
-\item Test: suppose the composition of trade constant i.e. at 1962 shares for 4 digit goods
-\item It deepens the puzzle (increse in manuf share)
-%The share of manufacture goods increases : these are less sensible to distance
-\end{itemize}
-\vspace{0.3cm}
-%Remark: most short-term fluctuations of the distance coefficient seem to be explained by sample and composition effects.
-\item FTAs
-\begin{itemize}
-\item Test: introduce FTA variables
-\item It `solves' the puzzle
-\item But what does it mean ? 
-\item Increasing number of proximity controls overtime 
-\item Mechanically reduces the effect of distance
-\end{itemize}
+	\begin{itemize}
+	\item It deepens the puzzle 
+	\end{itemize}
 \end{itemize}
 \end{frame}
+
+
+
 %interpretation of composition and sample effects.
 %composition: consistent with increasing share of manuf goods in trade (commodities and reference priced goods are more substitutable); sample: consistent with idea that countries which are stable trade partners may have witnessed relatively more similarity of export bundles than if all changes in sample of trading pairs allowed). Notice that cumulated effect composition and sample still at +14\% which means that stable partners are maybe also those which have experienced less changes in terms of composition of traded goods (manuf already in 62, and therefore no additional kick from composition effects). Thus, our analysis of composition and sample effects does tell a convincing story about world trade patterns: for unstable partners, more heterogeneity in bundles but stronger increase in share of manuf overtime; for stable partners, less movement in share of manuf but more movement in terms of reduced heterogeneity of exchanged varieties in manuf. 
-\begin{frame}[plain]\frametitle{Composition}
+\begin{frame}[plain]\frametitle{Share of active pairs}
 \begin{figure}[h!]
-%\caption{Distance coefficient controlling for composition (1962 weights) \label{fig:comp}}
 \begin{center}
 \setlength{\fboxrule}{1pt} %makes border lines thick
 \setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{graph5.pdf}}
+\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{part1_active_pairs.eps}}
 \end{center}
 \end{figure}
 \end{frame}
@@ -313,6 +305,31 @@ X_{ij,t}=\exp{\left(cons_t-\alpha_{t}\ln{dist_{ij}}+{Z_1}'\beta_{1,t}+{Z_{2,t}}'
 \end{center}
 \end{figure}
 \end{frame}
+
+\begin{frame}[plain]\frametitle{Sector composition}
+\vspace{0.3cm}
+\begin{itemize}
+	\item Test: suppose the composition of trade constant i.e. at 1962 shares for 4 digit goods
+	\item It deepens the puzzle (increse in manuf share)
+	%The share of manufacture goods increases : these are less sensible to distance
+\end{itemize}
+\vspace{0.3cm}
+%Remark: most short-term fluctuations of the distance coefficient seem to be explained by sample and composition effects.
+
+\begin{itemize}
+	\item FTAs
+	\item Test: introduce FTA variables
+	\item It `solves' the puzzle
+	\item But what does it mean ? 
+	\item Increasing number of proximity controls overtime 
+	\item Mechanically reduces the effect of distance
+\end{itemize}
+\end{frame}
+
+
+
+
+
 
 \begin{frame}[plain]\frametitle{Summary (PPML)}
 \begin{table}[H]

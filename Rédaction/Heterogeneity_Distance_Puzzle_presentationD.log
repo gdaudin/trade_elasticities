@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.1.20)  20 SEP 2019 12:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.1.20)  20 SEP 2019 15:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -971,67 +971,81 @@ LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
 ] [9
 
 ]
-Overfull \hbox (11.2397pt too wide) in paragraph at lines 208--208
-[]  
- []
+Missing character: There is no Â in font cmss10!
+Missing character: There is no   in font cmss10!
+ [10
 
-[10
-
-] <graph1.pdf, id=177, 397.485pt x 289.08pt>
-File: graph1.pdf Graphic file (type pdf)
- <use graph1.pdf>
-Package pdftex.def Info: graph1.pdf used on input line 221.
+]
+<DP_baseline.pdf, id=178, 397.485pt x 289.08pt>
+File: DP_baseline.pdf Graphic file (type pdf)
+ <use DP_baseline.pdf>
+Package pdftex.def Info: DP_baseline.pdf used on input line 223.
 (pdftex.def)             Requested size: 274.05266pt x 180.67499pt.
  [11
 
- <./graph1.pdf>] [12
+ <./DP_baseline.pdf>] [12
 
-] <graph5.pdf, id=200, 397.485pt x 289.08pt>
-File: graph5.pdf Graphic file (type pdf)
- <use graph5.pdf>
-Package pdftex.def Info: graph5.pdf used on input line 279.
+]
+Package epstopdf Info: Source file: <part1_active_pairs.eps>
+(epstopdf)                    date: 2019-08-09 17:18:44
+(epstopdf)                    size: 1903797 bytes
+(epstopdf)             Output file: <part1_active_pairs-eps-converted-to.pdf>
+(epstopdf)                    date: 2019-08-09 17:18:44
+(epstopdf)                    size: 19700 bytes
+(epstopdf)             Command: <repstopdf --outfile=part1_active_pairs-eps-con
+verted-to.pdf part1_active_pairs.eps>
+(epstopdf)             \includegraphics on input line 271.
+Package epstopdf Info: Output file is already uptodate.
+
+<part1_active_pairs-eps-converted-to.pdf, id=202, 397.485pt x 289.08pt>
+File: part1_active_pairs-eps-converted-to.pdf Graphic file (type pdf)
+
+<use part1_active_pairs-eps-converted-to.pdf>
+Package pdftex.def Info: part1_active_pairs-eps-converted-to.pdf used on input 
+line 271.
 (pdftex.def)             Requested size: 274.05266pt x 180.67499pt.
  [13
 
- <./graph5.pdf>] <graph6.pdf, id=220, 397.485pt x 289.08pt>
+ <./part1_active_pairs-eps-converted-to.pdf>] <graph6.pdf, id=216, 397.485pt x 
+289.08pt>
 File: graph6.pdf Graphic file (type pdf)
  <use graph6.pdf>
-Package pdftex.def Info: graph6.pdf used on input line 303.
+Package pdftex.def Info: graph6.pdf used on input line 295.
 (pdftex.def)             Requested size: 274.05266pt x 180.67499pt.
 
 [14
 
- <./graph6.pdf>] <fta_proximity.pdf, id=239, 397.485pt x 289.08pt>
+ <./graph6.pdf>] <fta_proximity.pdf, id=235, 397.485pt x 289.08pt>
 File: fta_proximity.pdf Graphic file (type pdf)
 
 <use fta_proximity.pdf>
-Package pdftex.def Info: fta_proximity.pdf used on input line 315.
+Package pdftex.def Info: fta_proximity.pdf used on input line 307.
 (pdftex.def)             Requested size: 274.05266pt x 180.67499pt.
  [15
 
- <./fta_proximity.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 345--345
+ <./fta_proximity.pdf>] [16
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 362--362
 []|\OT1/cmss/bx/n/10.95 % change
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 345--345
+Underfull \hbox (badness 10000) in paragraph at lines 362--362
 \OT1/cmss/bx/n/10.95 rel-a-tively to
  []
 
 
-Underfull \hbox (badness 4647) in paragraph at lines 345--345
+Underfull \hbox (badness 4647) in paragraph at lines 362--362
 []|\OT1/cmss/bx/n/10.95 Total change
  []
 
 
-Overfull \hbox (16.8657pt too wide) in paragraph at lines 345--345
+Overfull \hbox (16.8657pt too wide) in paragraph at lines 362--362
  [] 
  []
 
-[16
-
-] [17
+[17
 
 ] [18
 
@@ -1041,20 +1055,22 @@ Overfull \hbox (16.8657pt too wide) in paragraph at lines 345--345
 
 ] [21
 
+] [22
+
 ]
-Overfull \hbox (10.65524pt too wide) in alignment at lines 487--487
+Overfull \hbox (10.65524pt too wide) in alignment at lines 504--504
  [][][] []
  []
 
-[22
-
-] [23
+[23
 
 ] [24
 
 ] [25
 
 ] [26
+
+] [27
 
 ]
 Package epstopdf Info: Source file: <elast_bench.eps>
@@ -1065,17 +1081,17 @@ Package epstopdf Info: Source file: <elast_bench.eps>
 (epstopdf)                    size: 12559 bytes
 (epstopdf)             Command: <repstopdf --outfile=elast_bench-eps-converted-
 to.pdf elast_bench.eps>
-(epstopdf)             \includegraphics on input line 597.
+(epstopdf)             \includegraphics on input line 614.
 Package epstopdf Info: Output file is already uptodate.
 
-<elast_bench-eps-converted-to.pdf, id=315, 397.485pt x 289.08pt>
+<elast_bench-eps-converted-to.pdf, id=316, 397.485pt x 289.08pt>
 File: elast_bench-eps-converted-to.pdf Graphic file (type pdf)
 
 <use elast_bench-eps-converted-to.pdf>
-Package pdftex.def Info: elast_bench-eps-converted-to.pdf used on input line 59
-7.
+Package pdftex.def Info: elast_bench-eps-converted-to.pdf used on input line 61
+4.
 (pdftex.def)             Requested size: 248.4275pt x 180.67499pt.
- [27
+ [28
 
  <./elast_bench-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <elast_baci_1995_2009.eps>
@@ -1087,20 +1103,20 @@ Package epstopdf Info: Source file: <elast_baci_1995_2009.eps>
 (epstopdf)                    size: 5501 bytes
 (epstopdf)             Command: <repstopdf --outfile=elast_baci_1995_2009-eps-c
 onverted-to.pdf elast_baci_1995_2009.eps>
-(epstopdf)             \includegraphics on input line 609.
+(epstopdf)             \includegraphics on input line 626.
 Package epstopdf Info: Output file is already uptodate.
- <elast_baci_1995_2009-eps-converted-to.pdf, id=325, 397.485pt x 289.08pt>
+ <elast_baci_1995_2009-eps-converted-to.pdf, id=326, 397.485pt x 289.08pt>
 File: elast_baci_1995_2009-eps-converted-to.pdf Graphic file (type pdf)
 
 <use elast_baci_1995_2009-eps-converted-to.pdf>
 Package pdftex.def Info: elast_baci_1995_2009-eps-converted-to.pdf used on inpu
-t line 609.
+t line 626.
 (pdftex.def)             Requested size: 248.4275pt x 180.67499pt.
- [28
+ [29
 
- <./elast_baci_1995_2009-eps-converted-to.pdf>] [29
+ <./elast_baci_1995_2009-eps-converted-to.pdf>] [30
 
-] [30
+] [31
 
 ]
 Package epstopdf Info: Source file: <elast_instr_1lag_v7.eps>
@@ -1111,17 +1127,17 @@ Package epstopdf Info: Source file: <elast_instr_1lag_v7.eps>
 (epstopdf)                    size: 11182 bytes
 (epstopdf)             Command: <repstopdf --outfile=elast_instr_1lag_v7-eps-co
 nverted-to.pdf elast_instr_1lag_v7.eps>
-(epstopdf)             \includegraphics on input line 661.
+(epstopdf)             \includegraphics on input line 678.
 Package epstopdf Info: Output file is already uptodate.
 
-<elast_instr_1lag_v7-eps-converted-to.pdf, id=345, 397.485pt x 289.08pt>
+<elast_instr_1lag_v7-eps-converted-to.pdf, id=347, 397.485pt x 289.08pt>
 File: elast_instr_1lag_v7-eps-converted-to.pdf Graphic file (type pdf)
 
 <use elast_instr_1lag_v7-eps-converted-to.pdf>
 Package pdftex.def Info: elast_instr_1lag_v7-eps-converted-to.pdf used on input
- line 661.
+ line 678.
 (pdftex.def)             Requested size: 248.4275pt x 180.67499pt.
- [31
+ [32
 
  <./elast_instr_1lag_v7-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <elast_l1_l10.eps>
@@ -1132,19 +1148,19 @@ Package epstopdf Info: Source file: <elast_l1_l10.eps>
 (epstopdf)                    size: 10834 bytes
 (epstopdf)             Command: <repstopdf --outfile=elast_l1_l10-eps-converted
 -to.pdf elast_l1_l10.eps>
-(epstopdf)             \includegraphics on input line 678.
+(epstopdf)             \includegraphics on input line 695.
 Package epstopdf Info: Output file is already uptodate.
 
-<elast_l1_l10-eps-converted-to.pdf, id=358, 397.485pt x 289.08pt>
+<elast_l1_l10-eps-converted-to.pdf, id=359, 397.485pt x 289.08pt>
 File: elast_l1_l10-eps-converted-to.pdf Graphic file (type pdf)
 
 <use elast_l1_l10-eps-converted-to.pdf>
 Package pdftex.def Info: elast_l1_l10-eps-converted-to.pdf used on input line 6
-78.
+95.
 (pdftex.def)             Requested size: 248.4275pt x 180.67499pt.
- [32
+ [33
 
- <./elast_l1_l10-eps-converted-to.pdf>] [33
+ <./elast_l1_l10-eps-converted-to.pdf>] [34
 
 ]
 \tf@nav=\write6
@@ -1156,29 +1172,29 @@ Package pdftex.def Info: elast_l1_l10-eps-converted-to.pdf used on input line 6
 \tf@snm=\write8
 \openout8 = `Heterogeneity_Distance_Puzzle_presentationD.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 715.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 715.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 732.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 732.
  (./Heterogeneity_Distance_Puzzle_presentationD.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 715.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 715.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 732.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 732.
 Package rerunfilecheck Info: File `Heterogeneity_Distance_Puzzle_presentationD.
 out' has not changed.
-(rerunfilecheck)             Checksum: C67271C27FC7ACD45D6E414410D88E83;736.
+(rerunfilecheck)             Checksum: 3AA40EFAECBD7AC31F657530E2A3709B;736.
 
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 715.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 732.
  ) 
 Here is how much of TeX's memory you used:
- 17013 strings out of 493014
- 326279 string characters out of 6133351
- 392791 words of memory out of 5000000
- 20063 multiletter control sequences out of 15000+600000
+ 17017 strings out of 493014
+ 326467 string characters out of 6133351
+ 393791 words of memory out of 5000000
+ 20065 multiletter control sequences out of 15000+600000
  16131 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 56i,12n,55p,1209b,511s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,13n,55p,1209b,511s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></
@@ -1194,12 +1210,13 @@ al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local
 /texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/t
 exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/tex
 live/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local
-/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb>
-Output written on Heterogeneity_Distance_Puzzle_presentationD.pdf (33 pages, 34
-6118 bytes).
+/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/lo
+cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Heterogeneity_Distance_Puzzle_presentationD.pdf (34 pages, 36
+7284 bytes).
 PDF statistics:
- 444 PDF objects out of 1000 (max. 8388607)
- 354 compressed objects within 4 object streams
- 79 named destinations out of 1000 (max. 500000)
+ 448 PDF objects out of 1000 (max. 8388607)
+ 357 compressed objects within 4 object streams
+ 81 named destinations out of 1000 (max. 500000)
  209 words of extra memory for PDF output out of 10000 (max. 10000000)
 
