@@ -78,7 +78,7 @@ foreach s of local sample {
 	, legend(order(/*2*/ 1 3) /*label(2 "coef_estim")*/ /*
 	*/ label(1 "confindence interval") label(3 "linear fit") row(1)) xtitle(year) ytitle(estimate of the distance elasticity) title("`stitle' sample") saving(`s', replace) scheme(s1mono)
 	
-	if "`s'"=="full" graph export "$dir/Git/trade_elasticities/Rédaction/tex/DP_baseline.pdf", replace
+	if "`s'"=="full" graph export "$dir/Git/trade_elasticities/Rédaction/DP_baseline.pdf", replace
 
 }
 
@@ -86,7 +86,7 @@ foreach s of local sample {
 
 grc1leg2 full.gph superbal.gph, ycommon xcommon title("The sample composition effect") cols(2) scheme(s1mono)
 graph export "sample_composition_effect_`1'.eps", replace
-graph export "$dir/Git/trade_elasticities/Rédaction/tex/sample_composition_effect_`1'.eps", replace
+graph export "$dir/Git/trade_elasticities/Rédaction/sample_composition_effect_`1'.eps", replace
 erase full.gph 
 erase superbal.gph 
 erase basic.dta
@@ -138,7 +138,7 @@ foreach s of local sample {
 }
 grc1leg2 full.gph superbal.gph, ycommon xcommon title("The product composition effect (world)") cols(2) scheme(s1mono)
 graph export "product_composition_effect_world_`1'.eps", replace
-graph export "$dir/Git/trade_elasticities/Rédaction/tex/product_composition_effect_world_`1'.eps", replace
+graph export "$dir/Git/trade_elasticities/Rédaction/product_composition_effect_world_`1'.eps", replace
 erase full.gph 
 erase superbal.gph 
 erase basic.dta
@@ -182,12 +182,12 @@ foreach s of local sample {
 	 (connected estim_`s' year, msize(vsmall)) ///
 	 /*(line `s' year, lcolor(red) lpattern(dash) ylabel(-.8(.1)-.4) ytick(-.8(.2)-.4)) */ ///
 	 (lfit estim_`s' year, lcolor(red) lpattern(dash)) ///
-	, legend(order(/*1*/ 2 4) /*label(1 "coef_estim")*/ ///
-	label(2 "confidence interval") label(4 "linear fit")) xtitle(year) ytitle(estimate of the distance elasticity) title("`stitle' sample") saving(`s') scheme(s1mono)
+	, legend(order(/*1*/ 1 3) /*label(1 "coef_estim")*/ ///
+	label(1 "confidence interval") label(3 "linear fit")) xtitle(year) ytitle(estimate of the distance elasticity) title("`stitle' sample") saving(`s') scheme(s1mono)
 }
 grc1leg2  full.gph superbal.gph, ycommon xcommon title("The product composition effect (country)") cols(2) scheme(s1mono)
 graph export "product_composition_effect_country_`1'.eps", replace
-graph export "$dir/Git/trade_elasticities/Rédaction/tex/product_composition_effect_country_`1'.eps", replace
+graph export "$dir/Git/trade_elasticities/Rédaction/product_composition_effect_country_`1'.eps", replace
 erase full.gph 
 erase superbal.gph 
 erase basic.dta
