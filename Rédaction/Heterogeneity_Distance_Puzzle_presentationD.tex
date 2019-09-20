@@ -16,8 +16,9 @@
 
 %\usetheme{Rochester}
 %\usetheme{Madrid}
-\usetheme{Goettingen}
+%\usetheme{Goettingen}
 %\usetheme{Singapore}
+\usetheme{default}
 
 \beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
 \begin{document}
@@ -42,53 +43,55 @@
 \begin{itemize}
 	\item The distance effect is increasing or stable through time in gravity models: Disdier  \&  Head, (2008), Head \& Mayer (2013)...
 	\begin{itemize}
-		\item That seems counter-intuitive ("Death of distance")
+		\item This seems counter-intuitive ("Death of distance")
 	\end{itemize}
-	\item Two answers in the literature:
+	\item Various answers in the literature (see Head \& Mayer (2013)):
 	\begin{itemize}
 		\item Problem with the log-linear estimation strategy?
 		\begin{itemize}
 			\item Not taking zeros into account + heteroskedasticity 
-			\item $\Rightarrow$ PPML estimates
+			\item $\Rightarrow$ PPML estimates (Santo Silva \& Tenreyro (2006), , Bosquet \& Boulhol (2015))
 		\end{itemize}
-	\item There is no real puzzle?
-	\begin{itemize}
-		\item Composition effect
-				%(Berthelon \& Freund (2008), Duranton \& Storper (2008))
-		\item Relative evolution of short-distance trade costs compared to long-distance trade costs
-		%(Santos Silva \& Tenreyro (2006), Bosquet \& Boulhol (2009))
-		\noteLA{Contribute to but do not remove it}
+		\item Composition effect (Larch et al. (2016))
+		\item Relative evolution of short-distance trade costs compared to long-distance trade costs (Buch \& al. (2004), Krautheim (2012))
+		\item Input-output linkage (Daudin et al. (2011))
+		\item Network : the distance coefficient does not depend on trade costs (Chaney (2018))
 	\end{itemize}
 \end{itemize}
-\noteLA{Say here: world may be getting smaller while at the same time the elasticity of trade to distance may be non-decreasing. This is where ambiguity in distance puzzle appears.}
-\item How do we contribute ?
+\end{frame}
+
+\begin{frame}[plain]\frametitle{How do we contribute?}
+	\noteLA{Say here: world may be getting smaller while at the same time the elasticity of trade to distance may be non-decreasing. This is where ambiguity in distance puzzle appears.}
 \begin{itemize}
+	\item Every theoretical fundation of the gravity equation delivers a relationship betwee the distance elasticity and a degree of structural heterogeneity in some model-specific structural dimension
+		\begin{itemize}
+			\item "Trade elasticity" (Arkolakis et al. (2012))
+		\end{itemize}
 	\item The distance coefficient is the product of:
 	\begin{enumerate}
 		\item The elasticity of distance to trade costs
 		\item The elasticity of trade to trade costs
 	\end{enumerate}
-	\item We document over 1962-2013 how the elasticity of trade to trade costs contributes to the paradox...
-	\begin{itemize}
-		\item Through the increasing substituability of the bundles shipped out by each country
-	\end{itemize}
-	%\item evolution relatively to non-distance related trade costs
-	%what matters is not level, but the elasticity; relative evolution distance and non-distance dependent trade costs: loading cost at ports vs. fuel
-	%(Hummels \& Schaur (2012), Feyrer (2009), Hummels (2007), Daudin(2003, 2005))
-	\vspace{0.3cm}
-\end{itemize}
+	\item Empirical evidence on the historical evolution of structural heterogeneity is notoriously scarce
+		\begin{itemize}
+			\item The only other try we know of is Berthelon \& Freund (2008) from the late 1980s to early 2000s
+		\end{itemize}
+	\item We document over 1962-2013 how the increasing substituability of the bundles shipped out by each country (Armington framework) contributes to the paradox
 \end{itemize}
 \end{frame}
+
+
 
 \begin{frame}[plain]\frametitle{Dispersion of the number of products exported by each country}
 \begin{figure}
 	\begin{center}
 		\setlength{\fboxrule}{1pt} %makes border lines thick
 		\setlength{\fboxsep}{.1in} %increases distance to border
-		\fbox{\includegraphics[width=\textwidth]{vioplot.pdf}}
+		\fbox{\includegraphics[trim = 0mm 0mm 0mm 0mm, clip, height=2.5in]{vioplot.pdf}}
 	\end{center}
 \end{figure}
 \end{frame}
+
 
 
 \begin{frame}[plain]\frametitle{Standard deviation in the number of products exported by each country }
@@ -96,51 +99,16 @@
 	\begin{center}
 		\setlength{\fboxrule}{1pt} %makes border lines thick
 		\setlength{\fboxsep}{.1in} %increases distance to border
-		\fbox{\includegraphics[width=\textwidth]{Fall_of_SD.pdf}}
+		\fbox{\includegraphics[trim = 0mm 0mm 0mm 0mm, clip, height=2.5in]{Fall_of_SD.pdf}}
 	\end{center}
 \end{figure}
 \end{frame}
 
-
-\begin{frame}[plain]\frametitle{Motivation}
-\vspace{0.3cm}
-\begin{itemize}
-\item The contribution:
-\vspace{0.2cm}
-\begin{itemize}
-\item take microfoundations of the gravity equation seriously
-\item to provide a direct explanation of the increasing distance elasticity of trade over long time period
-%1963-2009
-\end{itemize}
-\vspace{0.3cm}
-\item The trick? 
-\vspace{0.2cm}
-\begin{itemize}
-\item distance coefficient is a product of two elasticities:
-\begin{enumerate}
-\item elasticity of trade to trade costs (`heterogeneity')
-%this is our focus: heterogeneity parameter: this parameter could have increased precisely because the world is shrinking...will come back to this in part 2 of the talk; this is the important economic parameter: Arkolakis et al.: crucial parameter for welfare computations across models
-\item elasticity of trade costs to distance (`pop debate')
-%this is the parameter the pop debate is centered on: this is where `puzzle' comes from: idea that increasing elasticity of trade costs to distance would be somewhat puzzling in a world where we may think that advances in transport and communications technology have reduced the \%-increase in trade costs to a 1\% increase in bilateral distance
-\end{enumerate}
-\item focus on the parameter capturing heterogeneity
-%the trade elasticity ($\sigma$, $\theta$, $\gamma$)
-\item to refine understanding of how the world is shrinking 
-\vspace{0.3cm}
-%to document what is driving the distance puzzle
-%pop debate puzzle `solved': an increase in the elasticity of trade costs to distance could be puzzling, but there is no such thing in the data 
-\end{itemize}
-\vspace{0.3cm}
-\item The message?
-\begin{itemize}
-\item Not only... reduction in trade cost elasticity to distance
-\item But also... increasing similarity of countries \\
-\hspace{1.5cm} in a model-specific dimension
-%Evolution of heterogeneity parameter provides a direct explanation of the distance puzzle 
-%reinforced shrinking: not only world getting less sensitive to distance, but also world becoming more similar. In our case: in terms of exporter-bundles.
-\end{itemize}
-\end{itemize}
+\begin{frame}
+	\frametitle{Overview} 
+	\tableofcontents
 \end{frame}
+
 
 \begin{frame}[plain]\frametitle{Summary of results}
 \vspace{0.3cm}
