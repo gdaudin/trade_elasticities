@@ -179,9 +179,9 @@ graph twoway (spike nb_active year, lcolor(blue) lpattern(dot) ytitle("number pa
 graph twoway (spike nb_active year, lcolor(blue) lpattern(dot) xtitle("year" " ") ytitle( "# pairs (in thousand)" " ")) /*
 */ (line share_year year, lcolor(red) yaxis(2) r1title("share" " ")) /*
 */ (line share_period year, lcolor(blue) cmissing(n) yaxis(2)), /*
-*/ legend(order (2 1 3) label(1 "# active pairs") label(2 "share of potential pairs") label(3 "share of active pairs in subperiod")) /*
+*/ legend(row(3) order (1 2 3) label(1 "# active pairs") label(2 "share of active pairs (out of yearly potential pairs)") label(3 "share of active pairs (out of active pairs in subperiod)")) /*
 */ yscale(axis(1) range (0 30)) ylabel(0(5)30, axis(1)) yscale(axis(1) range (0 1)) ylabel(0(0.2)1, axis(2)) scheme(s1mono)
-graph export "$dir/Git/trade_elasticities/Rédaction/tex/part1_active_pairs.eps", as(eps) preview(on) replace
+graph export "$dir/Git/trade_elasticities/Rédaction/part1_active_pairs.eps", as(eps) preview(on) replace
 clear
 end
 active
