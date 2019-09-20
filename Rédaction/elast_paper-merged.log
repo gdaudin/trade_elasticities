@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.1.20)  19 SEP 2019 18:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.1.20)  20 SEP 2019 10:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1837,51 +1837,51 @@ LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <17.28> not available
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
 (Font)              scaled to size 17.28pt on input line 184.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 12.0pt on input line 192.
+(Font)              scaled to size 12.0pt on input line 191.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 8.8pt on input line 192.
+(Font)              scaled to size 8.8pt on input line 191.
 LaTeX Font Info:    Font shape `OT1/ntxtlf/m/n' will be
-(Font)              scaled to size 6.6pt on input line 192.
+(Font)              scaled to size 6.6pt on input line 191.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 192.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 191.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8.8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 192.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 191.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6.6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 192.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 191.
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/n' will be
-(Font)              scaled to size 8.8pt on input line 192.
+(Font)              scaled to size 8.8pt on input line 191.
 LaTeX Font Info:    Try loading font information for T1+ntxsups on input line 1
-92.
+91.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/newtx/t1ntxsups.fd
 File: t1ntxsups.fd 2015/01/17 v1.0
 )
 LaTeX Font Info:    Font shape `T1/ntxsups/m/n' will be
-(Font)              scaled to size 12.0pt on input line 192.
+(Font)              scaled to size 12.0pt on input line 191.
 LaTeX Font Info:    Font shape `T1/ntxsups/m/n' will be
-(Font)              scaled to size 10.0pt on input line 192.
+(Font)              scaled to size 10.0pt on input line 191.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 192--192
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 191--191
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 195--195
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 194--194
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 202--202
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 201--201
 [] [] 
  []
 
 <vioplot.pdf, id=112, 397.485pt x 289.08pt>
 File: vioplot.pdf Graphic file (type pdf)
  <use vioplot.pdf>
-Package pdftex.def Info: vioplot.pdf used on input line 209.
+Package pdftex.def Info: vioplot.pdf used on input line 208.
 (pdftex.def)             Requested size: 248.4275pt x 180.67499pt.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 216--216
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 215--215
 [] [] 
  []
 
@@ -1891,35 +1891,35 @@ Overfull \hbox (1.49994pt too wide) in paragraph at lines 216--216
 File: Fall_of_SD.pdf Graphic file (type pdf)
 
 <use Fall_of_SD.pdf>
-Package pdftex.def Info: Fall_of_SD.pdf used on input line 225.
+Package pdftex.def Info: Fall_of_SD.pdf used on input line 224.
 (pdftex.def)             Requested size: 248.4275pt x 180.67499pt.
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 239.
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 238.
 
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 14.4pt on input line 239.
+(Font)              scaled to size 14.4pt on input line 238.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 248--248
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 247--247
 [] [] 
  []
 
 [3 <./Fall_of_SD.pdf>]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 271--271
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 270--270
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 275--275
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 274--274
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 287--287
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 286--286
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 290--290
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 289--289
 [] [] 
  []
 
@@ -1928,76 +1928,69 @@ Underfull \vbox (badness 1527) has occurred while \output is active []
 
  [4]
 [5]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 385--385
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 384--384
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 390--390
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 389--389
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 405--405
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 404--404
 [] [] 
  []
 
 [6]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 425--425
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 424--424
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 471--471
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 470--470
+[] [] 
+ []
+
+[7]
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 493--493
 [] [] 
  []
 
 
-Underfull \vbox (badness 2837) has occurred while \output is active []
-
- [7]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 494--494
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 510--510
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 511--511
-[] [] 
- []
-
-
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 529--529
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 528--528
 [] [] 
  []
 
 [8]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 549--549
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 548--548
 [] [] 
  []
 
 <DP_baseline.pdf, id=392, 397.485pt x 289.08pt>
 File: DP_baseline.pdf Graphic file (type pdf)
  <use DP_baseline.pdf>
-Package pdftex.def Info: DP_baseline.pdf used on input line 560.
+Package pdftex.def Info: DP_baseline.pdf used on input line 559.
 (pdftex.def)             Requested size: 274.05266pt x 180.67499pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 569--569
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 568--568
 [] [] 
  []
 
 [9]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 591--591
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 590--590
 [] [] 
  []
 
-
-Underfull \vbox (badness 1275) has occurred while \output is active []
-
- [10 <./DP_baseline.pdf>]
 Package epstopdf Info: Source file: <part1_active_pairs.eps>
 (epstopdf)                    date: 2019-08-09 17:18:44
 (epstopdf)                    size: 1903797 bytes
@@ -2006,21 +1999,25 @@ Package epstopdf Info: Source file: <part1_active_pairs.eps>
 (epstopdf)                    size: 19700 bytes
 (epstopdf)             Command: <repstopdf --outfile=part1_active_pairs-eps-con
 verted-to.pdf part1_active_pairs.eps>
-(epstopdf)             \includegraphics on input line 600.
+(epstopdf)             \includegraphics on input line 599.
 Package epstopdf Info: Output file is already uptodate.
-
-<part1_active_pairs-eps-converted-to.pdf, id=446, 397.485pt x 289.08pt>
+<part1_active_pairs-eps-converted-to.pdf, id=426, 397.485pt x 289.08pt>
 File: part1_active_pairs-eps-converted-to.pdf Graphic file (type pdf)
 
 <use part1_active_pairs-eps-converted-to.pdf>
 Package pdftex.def Info: part1_active_pairs-eps-converted-to.pdf used on input 
-line 600.
+line 599.
 (pdftex.def)             Requested size: 248.4275pt x 180.67499pt.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 606--606
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 605--605
 [] [] 
  []
 
+[10 <./DP_baseline.pdf>]
 Package epstopdf Info: Source file: <sample_composition_effect_1962.eps>
 (epstopdf)                    date: 2019-08-09 17:18:44
 (epstopdf)                    size: 53505 bytes
@@ -2030,30 +2027,30 @@ ed-to.pdf>
 (epstopdf)                    size: 25484 bytes
 (epstopdf)             Command: <repstopdf --outfile=sample_composition_effect_
 1962-eps-converted-to.pdf sample_composition_effect_1962.eps>
-(epstopdf)             \includegraphics on input line 614.
+(epstopdf)             \includegraphics on input line 613.
 Package epstopdf Info: Output file is already uptodate.
 
-<sample_composition_effect_1962-eps-converted-to.pdf, id=449, 397.485pt x 289.0
+<sample_composition_effect_1962-eps-converted-to.pdf, id=450, 397.485pt x 289.0
 8pt>
 File: sample_composition_effect_1962-eps-converted-to.pdf Graphic file (type pd
 f)
  <use sample_composition_effect_1962-eps-converted-to.pdf>
 Package pdftex.def Info: sample_composition_effect_1962-eps-converted-to.pdf us
-ed on input line 614.
+ed on input line 613.
 (pdftex.def)             Requested size: 274.05266pt x 180.67499pt.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 618--618
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 617--617
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 621--621
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 620--620
 [] [] 
  []
 
 [11 <./sample_composition_effect_1962-eps-converted-to.pdf> <./part1_active_pai
 rs-eps-converted-to.pdf>]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 646--646
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 645--645
 [] [] 
  []
 
@@ -2067,19 +2064,21 @@ converted-to.pdf>
 (epstopdf)                    size: 24823 bytes
 (epstopdf)             Command: <repstopdf --outfile=product_composition_effect
 _world_1962-eps-converted-to.pdf product_composition_effect_world_1962.eps>
-(epstopdf)             \includegraphics on input line 664.
+(epstopdf)             \includegraphics on input line 663.
 Package epstopdf Info: Output file is already uptodate.
 
-<product_composition_effect_world_1962-eps-converted-to.pdf, id=477, 397.485pt 
+<product_composition_effect_world_1962-eps-converted-to.pdf, id=478, 397.485pt 
 x 289.08pt>
 File: product_composition_effect_world_1962-eps-converted-to.pdf Graphic file (
 type pdf)
  <use product_composition_effect_world_1962-eps-converted-to.pdf>
 Package pdftex.def Info: product_composition_effect_world_1962-eps-converted-to
-.pdf used on input line 664.
+.pdf used on input line 663.
 (pdftex.def)             Requested size: 274.05266pt x 180.67499pt.
 
-[12]
+Underfull \vbox (badness 2573) has occurred while \output is active []
+
+ [12]
 Package epstopdf Info: Source file: <product_composition_effect_country_1962.ep
 s>
 (epstopdf)                    date: 2019-08-09 17:18:44
@@ -2091,7 +2090,7 @@ s-converted-to.pdf>
 (epstopdf)             Command: <repstopdf --outfile=product_composition_effect
 _country_1962-eps-converted-to.pdf product_composition_effect_country_1962.eps>
 
-(epstopdf)             \includegraphics on input line 674.
+(epstopdf)             \includegraphics on input line 673.
 Package epstopdf Info: Output file is already uptodate.
 
 <product_composition_effect_country_1962-eps-converted-to.pdf, id=488, 397.485p
@@ -2101,58 +2100,63 @@ File: product_composition_effect_country_1962-eps-converted-to.pdf Graphic file
 
 <use product_composition_effect_country_1962-eps-converted-to.pdf>
 Package pdftex.def Info: product_composition_effect_country_1962-eps-converted-
-to.pdf used on input line 674.
+to.pdf used on input line 673.
 (pdftex.def)             Requested size: 285.0184pt x 187.90244pt.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 680--680
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 679--679
 [] [] 
  []
 
 [13 <./product_composition_effect_world_1962-eps-converted-to.pdf> <./product_c
 omposition_effect_country_1962-eps-converted-to.pdf>]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 885--885
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 884--884
 [] [] 
  []
 
 
-LaTeX Warning: Hyper reference `ref-003' on page 14 undefined on input line 887
+LaTeX Warning: Hyper reference `ref-003' on page 14 undefined on input line 886
 .
 
 [14]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 889.
+(hyperref)                removing `math shift' on input line 888.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\epsilon' on input line 889.
+(hyperref)                removing `\epsilon' on input line 888.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 889.
+(hyperref)                removing `math shift' on input line 888.
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 899--899
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 898--898
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 910--910
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 909--909
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 914--914
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 913--913
 [] [] 
  []
 
 [15]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 923--923
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 922--922
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 930--930
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 929--929
+[] [] 
+ []
+
+
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 938--938
 [] [] 
  []
 
@@ -2162,45 +2166,46 @@ Overfull \hbox (1.49994pt too wide) in paragraph at lines 939--939
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 940--940
-[] [] 
- []
+Underfull \vbox (badness 1259) has occurred while \output is active []
 
-[16]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 947--947
-[] [] 
- []
-
-
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 955--955
+ [16]
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 946--946
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 963--963
-[] [] 
- []
-
-[17]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 967--967
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 954--954
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 971--971
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 962--962
+[] [] 
+ []
+
+
+Underfull \vbox (badness 1024) has occurred while \output is active []
+
+ [17]
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 966--966
+[] [] 
+ []
+
+
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 970--970
 [] [] 
  []
 
 [18] [19]
 LaTeX Font Info:    Font shape `T1/ntxtlf/m/it' will be
-(Font)              scaled to size 10.0pt on input line 1041.
+(Font)              scaled to size 10.0pt on input line 1040.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1041--1041
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1040--1040
 [] [] 
  []
 
 [20]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1064--1064
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1063--1063
 [] [] 
  []
 
@@ -2209,25 +2214,25 @@ File: "1ere regression 3e partie_baseline".pdf Graphic file (type pdf)
 
 <use "1ere regression 3e partie_baseline".pdf>
 Package pdftex.def Info: "1ere regression 3e partie_baseline".pdf used on input
- line 1074.
+ line 1073.
 (pdftex.def)             Requested size: 268.30292pt x 195.12877pt.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1078--1078
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1077--1077
 [] [] 
  []
 
 [21 <./1ere regression 3e partie_baseline.pdf>]
 LaTeX Font Info:    Font shape `T1/ntxtlf/bx/n' in size <12> not available
-(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 1084
+(Font)              Font shape `T1/ntxtlf/b/n' tried instead on input line 1083
 .
 LaTeX Font Info:    Font shape `T1/ntxtlf/b/n' will be
-(Font)              scaled to size 12.0pt on input line 1084.
+(Font)              scaled to size 12.0pt on input line 1083.
 
 <Graph_missing_uv.pdf, id=735, 397.485pt x 289.08pt>
 File: Graph_missing_uv.pdf Graphic file (type pdf)
 
 <use Graph_missing_uv.pdf>
-Package pdftex.def Info: Graph_missing_uv.pdf used on input line 1094.
+Package pdftex.def Info: Graph_missing_uv.pdf used on input line 1093.
 (pdftex.def)             Requested size: 455.24411pt x 331.09846pt.
  [22 <./Graph_missing_uv.pdf>]
 <"1ere regression 3e partie_prix_calc".pdf, id=756, 397.485pt x 289.08pt>
@@ -2235,14 +2240,14 @@ File: "1ere regression 3e partie_prix_calc".pdf Graphic file (type pdf)
 
 <use "1ere regression 3e partie_prix_calc".pdf>
 Package pdftex.def Info: "1ere regression 3e partie_prix_calc".pdf used on inpu
-t line 1126.
+t line 1125.
 (pdftex.def)             Requested size: 455.24411pt x 331.09846pt.
  [23 <./1ere regression 3e partie_prix_calc.pdf>] <"graph_ztf".pdf, id=778, 397
 .485pt x 289.08pt>
 File: "graph_ztf".pdf Graphic file (type pdf)
 
 <use "graph_ztf".pdf>
-Package pdftex.def Info: "graph_ztf".pdf used on input line 1148.
+Package pdftex.def Info: "graph_ztf".pdf used on input line 1147.
 (pdftex.def)             Requested size: 455.24411pt x 331.09846pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -2253,7 +2258,7 @@ File: "1ere regression 3e partie_superbal".pdf Graphic file (type pdf)
 
 <use "1ere regression 3e partie_superbal".pdf>
 Package pdftex.def Info: "1ere regression 3e partie_superbal".pdf used on input
- line 1155.
+ line 1154.
 (pdftex.def)             Requested size: 455.24411pt x 331.09846pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -2264,28 +2269,28 @@ File: "1ere regression 3e partie_Baci".pdf Graphic file (type pdf)
 
 <use "1ere regression 3e partie_Baci".pdf>
 Package pdftex.def Info: "1ere regression 3e partie_Baci".pdf used on input lin
-e 1245.
+e 1244.
 (pdftex.def)             Requested size: 455.24411pt x 331.09846pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1252.
+(hyperref)                removing `math shift' on input line 1251.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\sigma' on input line 1252.
+(hyperref)                removing `\sigma' on input line 1251.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1252.
+(hyperref)                removing `math shift' on input line 1251.
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1259--1259
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1258--1258
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1263--1263
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1262--1262
 [] [] 
  []
 
@@ -2293,22 +2298,22 @@ Overfull \hbox (1.49994pt too wide) in paragraph at lines 1263--1263
 Underfull \vbox (badness 4819) has occurred while \output is active []
 
  [27 <./1ere regression 3e partie_Baci.pdf>]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1266--1266
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1265--1265
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1277--1277
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1276--1276
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1283--1283
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1282--1282
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1287--1287
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1286--1286
 [] [] 
  []
 
@@ -2316,7 +2321,7 @@ Overfull \hbox (1.49994pt too wide) in paragraph at lines 1287--1287
 Underfull \vbox (badness 2042) has occurred while \output is active []
 
  [28]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1302--1302
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1301--1301
 [] [] 
  []
 
@@ -2325,21 +2330,21 @@ Overfull \hbox (1.49994pt too wide) in paragraph at lines 1302--1302
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1325 \end{eqnarray}
+l.1324 \end{eqnarray}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{equation.3.7}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.1325 \end{eqnarray}
+l.1324 \end{eqnarray}
                      ] <firststage.pdf, id=882, 397.485pt x 289.08pt>
 File: firststage.pdf Graphic file (type pdf)
 
 <use firststage.pdf>
-Package pdftex.def Info: firststage.pdf used on input line 1332.
+Package pdftex.def Info: firststage.pdf used on input line 1331.
 (pdftex.def)             Requested size: 455.24411pt x 331.09846pt.
  [30 <./firststage.pdf>]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1349--1349
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1348--1348
 [] [] 
  []
 
@@ -2348,10 +2353,10 @@ File: "1ere regression 3e partie_instrumented".pdf Graphic file (type pdf)
 
 <use "1ere regression 3e partie_instrumented".pdf>
 Package pdftex.def Info: "1ere regression 3e partie_instrumented".pdf used on i
-nput line 1356.
+nput line 1355.
 (pdftex.def)             Requested size: 455.24411pt x 331.09846pt.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1361--1361
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1360--1360
 [] [] 
  []
 
@@ -2359,13 +2364,13 @@ Overfull \hbox (1.49994pt too wide) in paragraph at lines 1361--1361
 <"graph_rho".pdf, id=929, 397.485pt x 289.08pt>
 File: "graph_rho".pdf Graphic file (type pdf)
  <use "graph_rho".pdf>
-Package pdftex.def Info: "graph_rho".pdf used on input line 1427.
+Package pdftex.def Info: "graph_rho".pdf used on input line 1426.
 (pdftex.def)             Requested size: 455.24411pt x 331.09846pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [32]
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1442--1442
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1441--1441
 [] [] 
  []
 
@@ -2380,7 +2385,7 @@ ed-to.pdf>
 (epstopdf)                    size: 6322 bytes
 (epstopdf)             Command: <repstopdf --outfile=nb_years_pair_presence_196
 2_13-eps-converted-to.pdf nb_years_pair_presence_1962_13.eps>
-(epstopdf)             \includegraphics on input line 1511.
+(epstopdf)             \includegraphics on input line 1510.
 Package epstopdf Info: Output file is already uptodate.
 
 <nb_years_pair_presence_1962_13-eps-converted-to.pdf, id=990, 397.485pt x 289.0
@@ -2389,10 +2394,10 @@ File: nb_years_pair_presence_1962_13-eps-converted-to.pdf Graphic file (type pd
 f)
  <use nb_years_pair_presence_1962_13-eps-converted-to.pdf>
 Package pdftex.def Info: nb_years_pair_presence_1962_13-eps-converted-to.pdf us
-ed on input line 1511.
+ed on input line 1510.
 (pdftex.def)             Requested size: 269.17044pt x 180.67499pt.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1522--1522
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1521--1521
 [] [] 
  []
 
@@ -2407,7 +2412,7 @@ Package epstopdf Info: Source file: <trade_coverage_1962.eps>
 (epstopdf)                    size: 23684 bytes
 (epstopdf)             Command: <repstopdf --outfile=trade_coverage_1962-eps-co
 nverted-to.pdf trade_coverage_1962.eps>
-(epstopdf)             \includegraphics on input line 1536.
+(epstopdf)             \includegraphics on input line 1535.
 Package epstopdf Info: Output file is already uptodate.
 
 <trade_coverage_1962-eps-converted-to.pdf, id=1010, 397.485pt x 289.08pt>
@@ -2415,7 +2420,7 @@ File: trade_coverage_1962-eps-converted-to.pdf Graphic file (type pdf)
 
 <use trade_coverage_1962-eps-converted-to.pdf>
 Package pdftex.def Info: trade_coverage_1962-eps-converted-to.pdf used on input
- line 1536.
+ line 1535.
 (pdftex.def)             Requested size: 270.62167pt x 180.67499pt.
 Package epstopdf Info: Source file: <trade_coverage_1965.eps>
 (epstopdf)                    date: 2019-08-09 17:18:44
@@ -2425,7 +2430,7 @@ Package epstopdf Info: Source file: <trade_coverage_1965.eps>
 (epstopdf)                    size: 23718 bytes
 (epstopdf)             Command: <repstopdf --outfile=trade_coverage_1965-eps-co
 nverted-to.pdf trade_coverage_1965.eps>
-(epstopdf)             \includegraphics on input line 1545.
+(epstopdf)             \includegraphics on input line 1544.
 Package epstopdf Info: Output file is already uptodate.
 
 <trade_coverage_1965-eps-converted-to.pdf, id=1012, 397.485pt x 289.08pt>
@@ -2433,15 +2438,15 @@ File: trade_coverage_1965-eps-converted-to.pdf Graphic file (type pdf)
 
 <use trade_coverage_1965-eps-converted-to.pdf>
 Package pdftex.def Info: trade_coverage_1965-eps-converted-to.pdf used on input
- line 1545.
+ line 1544.
 (pdftex.def)             Requested size: 270.62167pt x 180.67499pt.
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1551--1551
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1550--1550
 [] [] 
  []
 
 
-Overfull \hbox (1.49994pt too wide) in paragraph at lines 1557--1557
+Overfull \hbox (1.49994pt too wide) in paragraph at lines 1556--1556
 [] [] 
  []
 
@@ -2456,7 +2461,7 @@ Package epstopdf Info: Source file: <recip_coverage_62_65.eps>
 (epstopdf)                    size: 16943 bytes
 (epstopdf)             Command: <repstopdf --outfile=recip_coverage_62_65-eps-c
 onverted-to.pdf recip_coverage_62_65.eps>
-(epstopdf)             \includegraphics on input line 1569.
+(epstopdf)             \includegraphics on input line 1568.
 Package epstopdf Info: Output file is already uptodate.
 
 <recip_coverage_62_65-eps-converted-to.pdf, id=1037, 397.485pt x 289.08pt>
@@ -2464,24 +2469,24 @@ File: recip_coverage_62_65-eps-converted-to.pdf Graphic file (type pdf)
 
 <use recip_coverage_62_65-eps-converted-to.pdf>
 Package pdftex.def Info: recip_coverage_62_65-eps-converted-to.pdf used on inpu
-t line 1569.
+t line 1568.
 (pdftex.def)             Requested size: 270.62167pt x 180.67499pt.
  [43 <./recip_coverage_62_65-eps-converted-to.pdf>]
-Overfull \hbox (64.41983pt too wide) in paragraph at lines 1594--1680
+Overfull \hbox (64.41983pt too wide) in paragraph at lines 1593--1679
 [][] 
  []
 
 
-Overfull \hbox (46.34787pt too wide) in paragraph at lines 1685--1773
+Overfull \hbox (46.34787pt too wide) in paragraph at lines 1684--1772
 [][] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1776.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1775.
 [44] [45] [46]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1776.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1775.
  (./elast_paper-merged.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1776.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1776.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1775.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1775.
 
 Package rerunfilecheck Info: File `elast_paper-merged.out' has not changed.
 (rerunfilecheck)             Checksum: 58B40687E531EA8246683602BDF6526E;4922.
@@ -2685,7 +2690,7 @@ ype1/public/txfonts/txsyb.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/p
 ublic/txfonts/txsyc.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/tim
 es/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a
 .pfb>
-Output written on elast_paper-merged.pdf (46 pages, 1025057 bytes).
+Output written on elast_paper-merged.pdf (46 pages, 1025003 bytes).
 PDF statistics:
  1183 PDF objects out of 1200 (max. 8388607)
  1044 compressed objects within 11 object streams

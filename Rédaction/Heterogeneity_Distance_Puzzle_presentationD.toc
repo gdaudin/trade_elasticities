@@ -1,0 +1,11 @@
+\beamer@endinputifotherversion {3.36pt}
+\beamer@sectionintoc {1}{The distance puzzle in our data}{8}{0}{1}
+\beamer@subsectionintoc {1}{1}{Benchmark estimation}{8}{0}{1}
+\beamer@subsectionintoc {1}{2}{Composition, sample, FTA effects}{11}{0}{1}
+\beamer@sectionintoc {2}{Interpreting properly the distance coefficient}{16}{0}{2}
+\beamer@subsectionintoc {2}{1}{The heterogeneity dimension in each model}{16}{0}{2}
+\beamer@subsectionintoc {2}{2}{The heterogeneity dimension captured in our data}{20}{0}{2}
+\beamer@sectionintoc {3}{Estimation strategy and results}{22}{0}{3}
+\beamer@subsectionintoc {3}{1}{Benchmark estimation}{22}{0}{3}
+\beamer@subsectionintoc {3}{2}{Robustness checks}{27}{0}{3}
+\beamer@sectionintoc {4}{Conclusion}{32}{0}{4}
