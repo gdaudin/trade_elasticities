@@ -2,7 +2,7 @@ This is BibTeX, Version 0.99d (TeX Live 2016)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: elast_paper-merged.aux
 The style file: chicago.bst
-Illegal, another \bibstyle command---line 217 of file elast_paper-merged.aux
+Illegal, another \bibstyle command---line 218 of file elast_paper-merged.aux
  : \bibstyle
  :          {chicago}
 I'm skipping whatever remains of this command
