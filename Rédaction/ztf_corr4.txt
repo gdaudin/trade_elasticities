@@ -1,0 +1,18 @@
+Proportion of zeros as a function of market share	
+	(1)
+VARIABLES	ln_ztfshare_4
+	
+ln_ms	-0.3908***
+	(0.028)
+year	-0.0028***
+	(0.000)
+interaction	0.0002***
+	(0.000)
+Constant	4.9450***
+	(0.274)
+	
+Observations	655979
+R-squared	0.311
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	
+The proportion of zeros is computed at the SITC 4-digit level.	

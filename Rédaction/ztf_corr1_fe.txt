@@ -1,0 +1,19 @@
+Proportion of zeros, with fixed effects	
+	(1)
+VARIABLES	ln_ztfshare_1
+	
+ln_ms	-1.6895***
+	(0.030)
+year	-0.0055***
+	(0.000)
+interaction	0.0008***
+	(0.000)
+Constant	9.0299***
+	(0.316)
+	
+Observations	584780
+R-squared	0.540
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	
+The proportion of zeros is computed at the SITC 1-digit level	
+destination fixed effects included.	

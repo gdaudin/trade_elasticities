@@ -1,0 +1,18 @@
+Proportion of zeros as a function of market share	
+	(1)
+VARIABLES	propor_comm_ssuv_agg1
+	
+real_ms	-7.474***
+	(1.053)
+year	-0.001***
+	(0.000)
+interaction	0.004***
+	(0.001)
+Constant	2.682***
+	(0.042)
+	
+Observations	657001
+R-squared	0.006
+Standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	
+The proportion of zeros is computed at the SITC 1-digit level.	

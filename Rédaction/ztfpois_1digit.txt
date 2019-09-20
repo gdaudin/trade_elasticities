@@ -1,0 +1,17 @@
+	Proportion of zeros as a function of market share				
+		(1)	(2)	(3)	(4)
+EQUATION	VARIABLES	propor_biens_sscommerce_1	propor_biens_sscommerce_1	propor_biens_sscommerce_1	propor_biens_sscommerce_1
+					
+propor_biens_sscommerce_1	ln_ms	-0.1222***	-1.1178***	-0.1348***	-1.3800***
+		(0.0002)	(0.0268)	(0.0002)	(0.026)
+	year	-0.0103***	-0.0055***	-0.0125***	-0.0065***
+		(0.0000)	(0.0001)	(0.0000)	(0.000)
+	interaction		0.0005***		0.0006***
+			(0.0000)		(0.000)
+	Constant	18.6511***	9.0486***	23.2635***	11.2598***
+		(0.0832)	(0.2930)	(0.0842)	(0.283)
+					
+	Observations	657001	657001	657001	657001
+	Robust standard errors in parentheses				
+	*** p<0.01, ** p<0.05, * p<0.1				
+	The proportion of zeros is computed at the SITC 1-digit level.				
