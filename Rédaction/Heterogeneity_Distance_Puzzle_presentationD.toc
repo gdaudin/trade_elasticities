@@ -2,10 +2,11 @@
 \beamer@sectionintoc {1}{The distance puzzle in our data}{9}{0}{1}
 \beamer@subsectionintoc {1}{1}{Benchmark estimation}{9}{0}{1}
 \beamer@subsectionintoc {1}{2}{Composition and sample effects}{12}{0}{1}
-\beamer@sectionintoc {2}{Interpreting properly the distance coefficient}{19}{0}{2}
-\beamer@subsectionintoc {2}{1}{The heterogeneity dimension in each model}{19}{0}{2}
-\beamer@subsectionintoc {2}{2}{The heterogeneity dimension captured in our data}{23}{0}{2}
-\beamer@sectionintoc {3}{Estimation strategy and results}{25}{0}{3}
-\beamer@subsectionintoc {3}{1}{Benchmark estimation}{25}{0}{3}
-\beamer@subsectionintoc {3}{2}{Robustness checks}{30}{0}{3}
-\beamer@sectionintoc {4}{Conclusion}{35}{0}{4}
+\beamer@subsectionintoc {1}{3}{Summing up: the robustness of the distance puzzle}{18}{0}{1}
+\beamer@sectionintoc {2}{Interpreting the distance coefficient}{19}{0}{2}
+\beamer@subsectionintoc {2}{1}{What does the trade elasticity actually measures?}{19}{0}{2}
+\beamer@subsectionintoc {2}{2}{What do we know about the evolution of the trade elasticity?}{23}{0}{2}
+\beamer@sectionintoc {3}{Estimation strategy and results}{28}{0}{3}
+\beamer@subsectionintoc {3}{1}{Benchmark estimation}{28}{0}{3}
+\beamer@subsectionintoc {3}{2}{Robustness checks}{33}{0}{3}
+\beamer@sectionintoc {4}{Conclusion}{38}{0}{4}
