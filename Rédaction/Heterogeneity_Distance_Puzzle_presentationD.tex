@@ -21,6 +21,14 @@
 \usetheme{default}
 
 \beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
+
+\addtobeamertemplate{navigation symbols}{}{%
+	\usebeamerfont{footline}%
+	\usebeamercolor[fg]{footline}%
+	\hspace{1em}%
+	\insertframenumber/\inserttotalframenumber
+}
+
 \begin{document}
 \title{Heterogeneity and the Distance Puzzle}  
 \author[Archanskaia and Daudin]{Archanskaia E.\inst{*} and Daudin G.\inst{**}}
@@ -321,7 +329,6 @@ Increase in absolute value of 18.2\%
 
 
 \begin{frame}[plain]\frametitle{Summary (PPML)}
-\subsection{Summing up: the robustness of the distance puzzle}\label{part1recap}
 \begin{table}[H]
 	\caption{Evolution of $\delta_t$: sample and composition effecs \label{tab:part1recap}}
 	\scriptsize
@@ -554,14 +561,13 @@ Changing notation to $\kappa_i=\gamma_i^{\sigma-1}$, the market share becomes, a
 %Measurement errors on a market share of 1\% cannot be the same in percentage points as measurement errors on a market share of 10\%.
 %We have to fit the following model to the data:
 \begin{eqnarray}
-\frac{{{X}_{ij}}}{{{Y}_{j}}} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }}.{{e}^{{{\varepsilon }_{i,j}}}}
+\frac{{{X}_{ij}}}{{{Y}_{j}}} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }}.{{e}^{{{\varepsilon }_{i,j}}}} \nonumber
 \end{eqnarray}
 
 %Notice that we only have non-zero observations, as ${{p}_{k,ij}}$ is only observed when there is a trade flow.
-We take logs to transform the errors into additive ones and estimate the following equation for each year with a non-linear least square procedure in STATA:
+We take logs to transform the errors into additive ones and estimate the following equation with a non-linear least square procedure year by year:
 \begin{eqnarray}
 \ln \left( \frac{{{X}_{ij}}}{{{Y}_{j}}} \right) & = & \ln {{\kappa }_{i}} +\ln \left( \sum\limits_{k=1}^{K}{\frac{{{Y}_{k,j}}}{{{Y}_{j}}}.}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }} \right) +{{\varepsilon }_{i,j}}
-\label{eqn:nlestimation}
 \end{eqnarray}
 
 This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
@@ -592,230 +598,350 @@ This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
 %\end{itemize}
 %\end{frame}
 
-\section{Estimation strategy and results}
+\section{Evolution of the Armington trade elasticity}
 \subsection{Benchmark estimation}
-\begin{frame}\frametitle{Dealing with missing unit values}
+
+\begin{frame}[plain]\frametitle{Results}
 \begin{itemize}
-\item Trade flow observed, but information on quantities missing
-\item On average, this is the case for 14\% of total trade
-\vspace{0.3cm}
-\item Use stepwise price imputation procedure
-\begin{itemize}
-\item construct relative prices at highest disaggregation level
-\item construct next level relative price as weighted average of observed relative prices
-\item destination-specific weights at each step
-\item repeat at each aggregation level
-\end{itemize}
-\vspace{0.3cm}
-\item assumption: missing unit values can be best approximated by observed prices for similar goods
+	\item Benchmark results: $|1-\sigma|$ has increased by 22\% from 1962 to 2013
+	\begin{itemize}
+		\item Point estimate in the low range $|1-\sigma|\in\left\{.4,.5\right\}$
+		\item For the US, Feenstra (2018) obtain a point estimate in the $\left\{0.5,3\right\}$ range, depending on the estimator used,
+		\item Imbs \& Méjan (2015) obtain a point estimate of $1-\sigma=-2$
+	\end{itemize}
+	\item Missing unit values: Trade flow observed, but information on quantities missing
+	\begin{itemize}
+		\item we use a stepwise precedure to evaluate missing unit values from similar products
+		\item $|1-\sigma|$ has increased by 35\% from 1962 to 2013
+	\end{itemize}
+	\item Zero trade flows: from 96.5\% to 91\%
+	\begin{itemize}
+		\item A priori not compatible with the Armington framework: we assume a statistical threshold
+		\item To test the robustness of the effect, we use the superbalanced sample: the share of zero trade flows is much smaller (but the rate of decline is similar)
+		\item $|1-\sigma|$ has increased by 69\% from 1962 to 2013
+	\end{itemize}
+	\item Bad data ? The increase is faster in BACI (1995-2006): +1.18\% a year instead of +.4\%
 \end{itemize}
 \end{frame}
 
-\begin{frame}[plain]\frametitle{Dealing with zero trade flows}
-\begin{itemize}
-\item Under model assumptions some trade would be observed in every sector between each pair
-\item Zero trade flows prevalent: from 86-90\% of possible observations at 4-digit level
-\item Assumption: statistical, not structural zeros linked to data collection thresholds
-\item Same stepwise procedure used for price imputation
-\item Corresponds to assumption that unobserved relative price equal to observed
-\item Problem: unobserved prices much higher than imputed prices
-%weighted average across goods
-\end{itemize}
+
+\begin{frame}[plain]\frametitle{Benchmark results}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"1ere regression 3e partie_baseline".pdf}}
+		\end{center}
+	\end{figure}
 \end{frame}
 
-\begin{frame}[plain]\frametitle{Proportion of zero trade flows as a function of market share}
-\begin{table}[H]
-%\caption {\textbf{Proportion of zero trade flows as a function of market share} \label{tab:ztf1pois}} 
-\begin{tabular}{lccc}
+\begin{frame}[plain]\frametitle{Trade with missing unit values}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{Graph_missing_uv.pdf}}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}[plain]\frametitle{Imputed unit values}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"1ere regression 3e partie_prix_calc".pdf}}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[plain]\frametitle{The prevalence of zero trade flows}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"graph_ztf".pdf}}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[plain]\frametitle{Regression using the superbalanced sample (testing for ztf)}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"1ere regression 3e partie_superbal"}}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[plain]\frametitle{Regression using BACI dataset}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"1ere regression 3e partie_Baci".pdf}}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+
+%\begin{frame}\frametitle{Zero trade flows}
+%\begin{itemize}
+%\item Trade flow observed, but information on quantities missing
+%\item On average, this is the case for 14\% of total trade
+%\vspace{0.3cm}
+%\item Use stepwise price imputation procedure
+%\begin{itemize}
+%\item construct relative prices at highest disaggregation level
+%\item construct next level relative price as weighted average of observed relative prices
+%\item destination-specific weights at each step
+%\item repeat at each aggregation level
+%\end{itemize}
+%\vspace{0.3cm}
+%\item assumption: missing unit values can be best approximated by observed prices for similar goods
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}[plain]\frametitle{Dealing with zero trade flows}
+%\begin{itemize}
+%\item Under model assumptions some trade would be observed in every sector between each pair
+%\item Zero trade flows prevalent: from 86-90\% of possible observations at 4-digit level
+%\item Assumption: statistical, not structural zeros linked to data collection thresholds
+%\item Same stepwise procedure used for price imputation
+%\item Corresponds to assumption that unobserved relative price equal to observed
+%\item Problem: unobserved prices much higher than imputed prices
+%%weighted average across goods
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}[plain]\frametitle{Proportion of zero trade flows as a function of market share}
+%\begin{table}[H]
+%%\caption {\textbf{Proportion of zero trade flows as a function of market share} \label{tab:ztf1pois}} 
+%\begin{tabular}{lccc}
+%%\hline
+%%\multicolumn{3}{l}{\textbf{depvar:}} \\
+%\multicolumn{3}{l}{Share of ZTF \if 0 (Destination fixed effects included)\fi } \\
+%%\hline
+%% &  & (1) & (2) \\
 %\hline
-%\multicolumn{3}{l}{\textbf{depvar:}} \\
-\multicolumn{3}{l}{Share of ZTF \if 0 (Destination fixed effects included)\fi } \\
-%\hline
-% &  & (1) & (2) \\
-\hline
- &  &  & \\
- & ms & -0.0427\textbf{***} & -0.2573\textbf{***} \\
- &  &  (0.0001) & (0.013) \\
-\vspace{2pt} \\
- & year & -0.0033\textbf{***} & -0.0024\textbf{***} \\
- &  &  (0.0000) & (0.000) \\
-\vspace{2pt} \\
- & $ms*year$ & & 0.0001\textbf{***} \\
- &   &  & (0.000) \\
-\vspace{2pt} \\
- & constant & 6.0976\textbf{***} & 4.2515\textbf{***} \\
- &  & (0.0366) & (0.134) \\
- &  &  &\\
-\hline
- & Observations & 657001 & 657001 \\ 
-%\hline
+% &  &  & \\
+% & ms & -0.0427\textbf{***} & -0.2573\textbf{***} \\
+% &  &  (0.0001) & (0.013) \\
 %\vspace{2pt} \\
-%\multicolumn{7}{l}{\begin{footnotesize}Notes: The share of ZTF is computed at the SITC 4-digit level. The estimation is conducted in PPML\end{footnotesize}} \\
-%\multicolumn{7}{l}{\begin{footnotesize}in order to include observations where ztf=0. The log of the market share is used in the estimation.\end{footnotesize}} \\ 
-%\multicolumn{7}{l}{\begin{footnotesize}Destination fixed effects are included in (3) and (4). Robust standard errors are in parentheses. *** p$<$0.01.\end{footnotesize}} \\
-\end{tabular}
-\end{table}
-\end{frame}
+% & year & -0.0033\textbf{***} & -0.0024\textbf{***} \\
+% &  &  (0.0000) & (0.000) \\
+%\vspace{2pt} \\
+% & $ms*year$ & & 0.0001\textbf{***} \\
+% &   &  & (0.000) \\
+%\vspace{2pt} \\
+% & constant & 6.0976\textbf{***} & 4.2515\textbf{***} \\
+% &  & (0.0366) & (0.134) \\
+% &  &  &\\
+%\hline
+% & Observations & 657001 & 657001 \\ 
+%%\hline
+%%\vspace{2pt} \\
+%%\multicolumn{7}{l}{\begin{footnotesize}Notes: The share of ZTF is computed at the SITC 4-digit level. The estimation is conducted in PPML\end{footnotesize}} \\
+%%\multicolumn{7}{l}{\begin{footnotesize}in order to include observations where ztf=0. The log of the market share is used in the estimation.\end{footnotesize}} \\ 
+%%\multicolumn{7}{l}{\begin{footnotesize}Destination fixed effects are included in (3) and (4). Robust standard errors are in parentheses. *** p$<$0.01.\end{footnotesize}} \\
+%\end{tabular}
+%\end{table}
+%\end{frame}
+%
+%\begin{frame}[plain]\frametitle{Overestimation bias}
+%\begin{itemize}
+%\item Underestimation factor not constant across exporters 
+%\begin{itemize}
+%\item share of ztf decreasing in market share
+%\item reduction in share of ztf proceeds at quicker pace for small exporters
+%%coefficient for the interaction term for the market share and year is significant and positive
+%\end{itemize}
+%\item Relative price underestimated by more for small exporters
+%\item For given distribution of market shares, true underlying distribution of prices is greater than observed distribution
+%\item Estimated parameter overestimates the true substitutability parameter
+%\item But less so overtime
+%\item If estimated elasticity increases, this is a lower bound on true parameter evolution
+%\end{itemize}
+%\end{frame}
+%%Table \ref{tab:zdesc4} presents the predicted share of ztf for four types of exporters in 1962 and 2009. For a very small exporter with .02\% market share, the initial share of ztf is predicted to be .95, and it is reduced to .83 by 2009, i.e. a 12 percentage point decrease. Consider a relatively big exporter, with a 10\% market share: its share of ztf is reduced from .72 to .65, a 7 percentage point decrease. As the gap between the share of ztf for big and small exporters is reduced overtime, the overestimation bias of $\widetilde{\sigma}$ is progressively reduced.
+%\if 0
+%\begin{frame}[plain]\frametitle{Results}
+%\begin{figure}[h!]
+%\begin{center}
+%\setlength{\fboxrule}{1pt} %makes border lines thick
+%\setlength{\fboxsep}{.1in} %increases distance to border
+%\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm,clip,height=2.6in]{elast_real_0digit.eps}}
+%\end{center}
+%\caption{Estimated $(1-\widetilde{\sigma})$ \if 0 {, stepwise construction of the relative price} \fi \label{fig:elastreal0}}
+%\end{figure}
+%\end{frame}
+%\fi
+%%Figure \ref{fig:elastreal0} presents the results on the evolution of $(1-\widetilde{\sigma})$ obtained when (\ref{eqn:15}) is estimated on annual crossections of the COMTRADE dataset. The absolute value of trade elasticity has increased by 33\% from 1962 to 2009. This corresponds to an annual increase of .6\% per year.\footnote{The coefficient of the geometric fit is significant at 1\% level.} 
+%\begin{frame}[plain]\frametitle{Results}
+%\begin{figure}[h!]
+%\begin{center}
+%\setlength{\fboxrule}{1pt} %makes border lines thick
+%\setlength{\fboxsep}{.1in} %increases distance to border
+%%\fbox{\includegraphics[0 trim = 0mm 0mm 0mm 9.5mm,clip,height=2.6in]{elast_bench.eps}}
+%\fbox{\includegraphics[height=2.5in]{elast_bench.eps}}
+%\end{center}
+%%\caption{Estimated $(1-\widetilde{\sigma})$ \label{fig:elastreal0}}
+%\end{figure}
+%\begin{itemize}
+%\item 33\% increase in parameter 1962-2009
+%\item corresponds to annual increase of .6\% per year 
+%\end{itemize}
+%\end{frame}
 
-\begin{frame}[plain]\frametitle{Overestimation bias}
-\begin{itemize}
-\item Underestimation factor not constant across exporters 
-\begin{itemize}
-\item share of ztf decreasing in market share
-\item reduction in share of ztf proceeds at quicker pace for small exporters
-%coefficient for the interaction term for the market share and year is significant and positive
-\end{itemize}
-\item Relative price underestimated by more for small exporters
-\item For given distribution of market shares, true underlying distribution of prices is greater than observed distribution
-\item Estimated parameter overestimates the true substitutability parameter
-\item But less so overtime
-\item If estimated elasticity increases, this is a lower bound on true parameter evolution
-\end{itemize}
-\end{frame}
-%Table \ref{tab:zdesc4} presents the predicted share of ztf for four types of exporters in 1962 and 2009. For a very small exporter with .02\% market share, the initial share of ztf is predicted to be .95, and it is reduced to .83 by 2009, i.e. a 12 percentage point decrease. Consider a relatively big exporter, with a 10\% market share: its share of ztf is reduced from .72 to .65, a 7 percentage point decrease. As the gap between the share of ztf for big and small exporters is reduced overtime, the overestimation bias of $\widetilde{\sigma}$ is progressively reduced.
-\if 0
-\begin{frame}[plain]\frametitle{Results}
-\begin{figure}[h!]
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm,clip,height=2.6in]{elast_real_0digit.eps}}
-\end{center}
-\caption{Estimated $(1-\widetilde{\sigma})$ \if 0 {, stepwise construction of the relative price} \fi \label{fig:elastreal0}}
-\end{figure}
-\end{frame}
-\fi
-%Figure \ref{fig:elastreal0} presents the results on the evolution of $(1-\widetilde{\sigma})$ obtained when (\ref{eqn:15}) is estimated on annual crossections of the COMTRADE dataset. The absolute value of trade elasticity has increased by 33\% from 1962 to 2009. This corresponds to an annual increase of .6\% per year.\footnote{The coefficient of the geometric fit is significant at 1\% level.} 
-\begin{frame}[plain]\frametitle{Results}
-\begin{figure}[h!]
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-%\fbox{\includegraphics[0 trim = 0mm 0mm 0mm 9.5mm,clip,height=2.6in]{elast_bench.eps}}
-\fbox{\includegraphics[height=2.5in]{elast_bench.eps}}
-\end{center}
-%\caption{Estimated $(1-\widetilde{\sigma})$ \label{fig:elastreal0}}
-\end{figure}
-\begin{itemize}
-\item 33\% increase in parameter 1962-2009
-\item corresponds to annual increase of .6\% per year 
-\end{itemize}
-\end{frame}
-
-\subsection{Robustness checks}
-\begin{frame}[plain]\frametitle{Changing the dataset: BACI}
-\begin{figure}[h!]
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[height=2.5in]{elast_baci_1995_2009.eps}}
-\end{center}
-\caption{Estimated $(1-\widetilde{\sigma})$, BACI database \label{fig:baci}}
-\end{figure}
-\end{frame}
-%why baci? HS-1992 6-digit disaggregation level for 1995-2009; improved quality of relative prices of product bundles: reduced number of missing unit values (1-3\% total trade); stable share of ztf
+\subsection{Endogeneity}
+%\begin{frame}[plain]\frametitle{Changing the dataset: BACI}
+%\begin{figure}[h!]
+%\begin{center}
+%\setlength{\fboxrule}{1pt} %makes border lines thick
+%\setlength{\fboxsep}{.1in} %increases distance to border
+%\fbox{\includegraphics[height=2.5in]{elast_baci_1995_2009.eps}}
+%\end{center}
+%\caption{Estimated $(1-\widetilde{\sigma})$, BACI database \label{fig:baci}}
+%\end{figure}
+%\end{frame}
+%%why baci? HS-1992 6-digit disaggregation level for 1995-2009; improved quality of relative prices of product bundles: reduced number of missing unit values (1-3\% total trade); stable share of ztf
 
 \begin{frame}[plain]\frametitle{Instrumenting: motivation}
 \vspace{0.3cm}
 \begin{itemize}
-\item Results subject to caution?
-\begin{itemize}
-\item attenuation bias (if supply schedules not horizontal) 
-\item matters not only for level, but for evolution (Feenstra(1994))
+	\item Unobserved demand shocks will result in increase in prices and quantities
+	\begin{itemize}
+		\item attenuation bias
+		\item matters not only for level, but also for evolution (Feenstra(1994))
 %estimated coefficient suffers from attenuation bias due to not controlling for potentially positive and finite supply elasticities
-\end{itemize}
-\vspace{0.3cm}
-\item Objective: capture exporter-specific shocks to the price of the composite good which are not demand-driven
+	\end{itemize}
+	\item Objective: capture exporter-specific shocks to the price of the composite good which are not demand-driven
 %such as exogenous shocks to the price of inputs
-\vspace{0.3cm}
-\item Indicator: GDP price level (Penn World Tables: 189 countries, 1950-2009)
+	\begin{itemize}
+		\item GDP price level (Penn World Tables 9.0: 180 countries, 1950-2014)
+		\item investment price level 
+		\item price evolution in other markets
+	\end{itemize}
+	\item We instrument the evolution of cif unit prices by the evolution of GDP prices, investment prices and prices in other markets
+	\begin{itemize}
+		\item with varying number of lags
+		\item we cannot produce the usual statistic tests
+		\item there is a lot of noise...
+		\item Still, in the second stage, between 75 and 81\% increase
+	\end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[plain]\frametitle{Instrumenting: procedure}
-\vspace{0.3cm}
-\begin{itemize}
-\item compute relative prices for exporter-specific composite goods 
-%in each destination 
-\item compute evolution of GDP price levels of trading partners, weighted by market shares (common currency)
-%this amounts to computing the evolution of the relevant real exchange rate for each specific bilateral trade relation.
-\item compute hypothetical relative price in $t$ for each exporter as:
-\begin{itemize}
-\item product of its relative price in $(t-s)$
-\item evolution of its GDP price level between $t$ and $(t-s)$ relatively to all other partners
-\end{itemize}
-\item predict relative price of each exporter in $t$: regress observed relative price on hypothetical relative price.
-\item Idea: get an instrumented relative price which depends on past relative price and relative evolution of GDP price level.
-\item Estimate market share equation using instrumented relative prices
-%s is number of lags
-\end{itemize}
+\begin{frame}[plain]\frametitle{Instrumented regressions}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[height=2.5in]{"1ere regression 3e partie_common_axis_all_instr".pdf}}
+		\end{center}
+	\end{figure}
 \end{frame}
 
-\begin{frame}[plain]\frametitle{Instrumenting: one lag}
-\begin{figure}[h!]
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[height=2.5in]{elast_instr_1lag_v7.eps}}
-\end{center}
-%\caption{Estimated $(1-\widetilde{\sigma})$, instrumented relative price of composite good, 1 lag \label{fig:instr1}}
-\end{figure}
-\begin{itemize}
-\item reassuring: level of parameter increases by 9\%
-\item results on evolution hold: 13\% increase
-\end{itemize}
-\end{frame}
-%It could be argued that allowing for just one lag inadequately captures the temporal relationship between shocks to inputs' prices and their pass-through to the price of exported output. Indeed, if prices are relatively persistent, the instrumenting procedure would amount to little more than replacing observed prices in $t$ with lagged observed prices in $(t-1)$. We therefore also estimate (\ref{eqn:15}) using as instrument the evolution of each exporter's GDP price level relatively to all other trading partners in the destination between $(t-s)$ and $t$ where $s=1,...,10$.
-
-\begin{frame}[plain]\frametitle{Increasing the number of lags}
-\begin{figure}[h!]
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[height=2.5in]{elast_l1_l10.eps}}
-\end{center}
-%\caption{Estimated $(1-\widetilde{\sigma})$, instrumented relative price of composite good \label{fig:instr3}}
-\end{figure}
-\begin{itemize}
-\item level increases with number of lags: 22\% for 10 lags
-\item results on evolution hold: 23\% increase in 1972-2009 
-%(20\% for 1 lag)
-\end{itemize}
-\end{frame}
-%say: level becomes more stable as we increase nb of lags, and level increases; slope preserved
-
-\if 0
-\begin{frame}[plain]\frametitle{Increasing the number of lags}
-\begin{figure}[h!]
-\begin{center}
-\setlength{\fboxrule}{1pt} %makes border lines thick
-\setlength{\fboxsep}{.1in} %increases distance to border
-\fbox{\includegraphics[height=2.5in]{elast_instr_3_5lag_v7.eps}}
-\end{center}
-%\caption{Estimated $(1-\widetilde{\sigma})$, instrumented relative price of composite good \label{fig:instr2}}
-\end{figure}
-\begin{itemize}
-\item level increases with number of lags: 20\% for 5 lags
-\item results on evolution hold: 18\% increase in 1967-2009
-\end{itemize}
-\end{frame}
-\fi
+%
+%\begin{frame}[plain]\frametitle{Instrumenting: procedure}
+%\vspace{0.3cm}
+%\begin{itemize}
+%\item compute relative prices for exporter-specific composite goods 
+%%in each destination 
+%\item compute evolution of GDP price levels of trading partners, weighted by market shares (common currency)
+%%this amounts to computing the evolution of the relevant real exchange rate for each specific bilateral trade relation.
+%\item compute hypothetical relative price in $t$ for each exporter as:
+%\begin{itemize}
+%\item product of its relative price in $(t-s)$
+%\item evolution of its GDP price level between $t$ and $(t-s)$ relatively to all other partners
+%\end{itemize}
+%\item predict relative price of each exporter in $t$: regress observed relative price on hypothetical relative price.
+%\item Idea: get an instrumented relative price which depends on past relative price and relative evolution of GDP price level.
+%\item Estimate market share equation using instrumented relative prices
+%%s is number of lags
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}[plain]\frametitle{Instrumenting: one lag}
+%\begin{figure}[h!]
+%\begin{center}
+%\setlength{\fboxrule}{1pt} %makes border lines thick
+%\setlength{\fboxsep}{.1in} %increases distance to border
+%\fbox{\includegraphics[height=2.5in]{elast_instr_1lag_v7.eps}}
+%\end{center}
+%%\caption{Estimated $(1-\widetilde{\sigma})$, instrumented relative price of composite good, 1 lag \label{fig:instr1}}
+%\end{figure}
+%\begin{itemize}
+%\item reassuring: level of parameter increases by 9\%
+%\item results on evolution hold: 13\% increase
+%\end{itemize}
+%\end{frame}
+%%It could be argued that allowing for just one lag inadequately captures the temporal relationship between shocks to inputs' prices and their pass-through to the price of exported output. Indeed, if prices are relatively persistent, the instrumenting procedure would amount to little more than replacing observed prices in $t$ with lagged observed prices in $(t-1)$. We therefore also estimate (\ref{eqn:15}) using as instrument the evolution of each exporter's GDP price level relatively to all other trading partners in the destination between $(t-s)$ and $t$ where $s=1,...,10$.
+%
+%\begin{frame}[plain]\frametitle{Increasing the number of lags}
+%\begin{figure}[h!]
+%\begin{center}
+%\setlength{\fboxrule}{1pt} %makes border lines thick
+%\setlength{\fboxsep}{.1in} %increases distance to border
+%\fbox{\includegraphics[height=2.5in]{elast_l1_l10.eps}}
+%\end{center}
+%%\caption{Estimated $(1-\widetilde{\sigma})$, instrumented relative price of composite good \label{fig:instr3}}
+%\end{figure}
+%\begin{itemize}
+%\item level increases with number of lags: 22\% for 10 lags
+%\item results on evolution hold: 23\% increase in 1972-2009 
+%%(20\% for 1 lag)
+%\end{itemize}
+%\end{frame}
+%%say: level becomes more stable as we increase nb of lags, and level increases; slope preserved
+%
+%\if 0
+%\begin{frame}[plain]\frametitle{Increasing the number of lags}
+%\begin{figure}[h!]
+%\begin{center}
+%\setlength{\fboxrule}{1pt} %makes border lines thick
+%\setlength{\fboxsep}{.1in} %increases distance to border
+%\fbox{\includegraphics[height=2.5in]{elast_instr_3_5lag_v7.eps}}
+%\end{center}
+%%\caption{Estimated $(1-\widetilde{\sigma})$, instrumented relative price of composite good \label{fig:instr2}}
+%\end{figure}
+%\begin{itemize}
+%\item level increases with number of lags: 20\% for 5 lags
+%\item results on evolution hold: 18\% increase in 1967-2009
+%\end{itemize}
+%\end{frame}
+%\fi
 
 \section{Conclusion}
 \begin{frame}\frametitle{Is there a distance puzzle left?}
 \begin{itemize}
-\item empirical evidence on 13\% increase in substitutability parameter
-\item this is aggregate trade elasticity in Armington framework
-\item combining with 7\% increase in distance elasticity
-\item provides a direct explanation of the distance puzzle
-\item economic interpretation of increased perceived substitutability of product bundles?
-\begin{itemize}
-\item increasing similarity in set of traded goods across countries
-\item composition effects (changes in range or shares of traded goods)
+\item What do we have?
+	\begin{itemize}
+	\item Empirical evidence on 22 to 81\% increase in substitutability parameter
+	\item This is aggregate trade elasticity in Armington framework
+	\item Combined with a 4.5 to 31\% increase in distance elasticity
+	\item Provides a direct explanation of the distance puzzle
+	\end{itemize}
+\item What is going on?
+	\begin{itemize}
+	\item Perceived increasing similarity in the country-specific bundles
+	\item Because of the declining importance of location-specific primary products?
+	\item Because of the geographical dispersion of development?
+	\end{itemize}
 \end{itemize}
-\item Not done: separate out net effect of increased perceived similarity
-\item Not feasible? parameter estimated on aggregate data is not a weighted average of sectoral parameters
-\end{itemize}
+\end{frame}
+
+
+\begin{frame}[plain]\frametitle{About FTA}
+	\begin{figure}[h!]
+		\begin{center}
+			\setlength{\fboxrule}{1pt} %makes border lines thick
+			\setlength{\fboxsep}{.1in} %increases distance to border
+			\fbox{\includegraphics[height=2.5in]{"fta_proximity".pdf}}
+		\end{center}
+	\end{figure}
 \end{frame}
 
 \end{document}

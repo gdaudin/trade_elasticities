@@ -21,8 +21,11 @@ if strmatch("`c(username)'","*daudin*")==1 {
 	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
 	global dirgit "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/Git/"
 	cd "$dir/Résultats/Troisième partie/"
-
+	display "blink"
 }
+
+pwd
+
 
 
 if "`c(hostname)'" =="ECONCES1" {
@@ -51,7 +54,14 @@ capture program drop pour_graph_regression_3e_partie
 program pour_graph_regression_3e_partie
 syntax anything(name=sample)
 
+local sample_for_name=subinstr("`sample'"," ","_",.)	
+if strpos("`sample'","1")!=0 local nbr_of_lag="One lag" 
+if strpos("`sample'","2")!=0 local nbr_of_lag="Two lags" 
+if strpos("`sample'","3")!=0 local nbr_of_lag="Three lags"
+
+
 ** baseline
+pwd
 use "Résultats 1ere regression 3e partie_`sample'.dta", clear
 
 generate one_minus_sigma = 1-sigma_est
@@ -97,17 +107,19 @@ twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth
 	*/ legend(order (1 3) label(1 "confidence interval" ) label( 3 "linear fit")) scheme(s1mono)
 *NB*adjusted for directory on different computers
 if "`c(username)'" !="archael" {
-	graph export "$dirgit/trade_elasticities/Rédaction/tex/1ere regression 3e partie_`sample'.pdf", replace
+	graph export "$dirgit/trade_elasticities/Rédaction/1ere regression 3e partie_`sample'.pdf", replace
 }
-graph export "1ere regression 3e partie_`sample'.pdf", replace
+graph export "$dirgit/trade_elasticities/Rédaction/1ere regression 3e partie_`sample'.pdf", replace
 
+drop if one_minus_sigma <=-1
 
-twoway   (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) ///
+twoway (rarea cl_elast cu_elast year, fintensity(inten20) lpattern(dot) lwidth(thin)) ///
 	(connected one_minus_sigma year, msize(vsmall)) ////
 	 (lfit one_minus_sigma year), ///
 	legend(order (1 3) label(1 "confidence interval" ) label( 3 "linear fit")) ///
-	scheme(s1mono) yscale(range(-1.5 0)) ylabel(-1.5 (0.3) 0)
-graph export "1ere regression 3e partie_common_axis_`sample'.pdf", replace
+	scheme(s1mono) yscale(range(-1 0)) ylabel(-1 (0.3) 0) ///
+	name(`sample_for_name') title("`nbr_of_lag'")
+graph export "$dirgit/trade_elasticities/Rédaction/1ere regression 3e partie_common_axis_`sample'.pdf", replace
 
 
 
@@ -124,6 +136,13 @@ end
 
 *NB*adjusted for change in order of instruments
 pour_graph_regression_3e_partie instrumented_uv gdpo om_1lag
+pour_graph_regression_3e_partie instrumented_uv gdpo om_2lag
+pour_graph_regression_3e_partie instrumented_uv gdpo om_3lag
+
+graph combine instrumented_uv_gdpo_om_1lag instrumented_uv_gdpo_om_2lag instrumented_uv_gdpo_om_3lag, scheme(s1mono)
+graph export "$dirgit/trade_elasticities/Rédaction/1ere regression 3e partie_common_axis_all_instr.pdf", replace
+
+
 /*
 pour_graph_regression_3e_partie instrumented_om_1lag
 pour_graph_regression_3e_partie instrumented_gdpo_1lag
