@@ -6,6 +6,6 @@
 \beamer@subsectionintoc {2}{1}{What does the trade elasticity actually measures?}{19}{0}{2}
 \beamer@subsectionintoc {2}{2}{What do we know about the evolution of the trade elasticity?}{23}{0}{2}
 \beamer@sectionintoc {3}{Evolution of the Armington trade elasticity}{28}{0}{3}
-\beamer@subsectionintoc {3}{1}{Benchmark estimation}{28}{0}{3}
+\beamer@subsectionintoc {3}{1}{Benchmark and robustness estimation}{28}{0}{3}
 \beamer@subsectionintoc {3}{2}{Endogeneity}{35}{0}{3}
 \beamer@sectionintoc {4}{Conclusion}{37}{0}{4}

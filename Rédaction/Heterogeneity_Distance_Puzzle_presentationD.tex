@@ -71,7 +71,7 @@
 \begin{frame}[plain]\frametitle{How do we contribute?}
 	\noteLA{Say here: world may be getting smaller while at the same time the elasticity of trade to distance may be non-decreasing. This is where ambiguity in distance puzzle appears.}
 \begin{itemize}
-	\item Every theoretical fundation of the gravity equation delivers a relationship betwee the distance elasticity and a degree of structural heterogeneity in some model-specific structural dimension
+	\item Every theoretical fundation of the gravity equation delivers a relationship between the distance elasticity and a degree of structural heterogeneity in some model-specific structural dimension
 		\begin{itemize}
 			\item "Trade elasticity" (Arkolakis et al. (2012))
 		\end{itemize}
@@ -84,7 +84,7 @@
 		\begin{itemize}
 			\item The only other try we know of is Berthelon \& Freund (2008) from the late 1980s to early 2000s
 		\end{itemize}
-	\item We document over 1962-2013 how the increasing substituability of the bundles shipped out by each country (Armington framework) contributes to the paradox
+	\item We document over 1962-2013 how the increasing substituability of the bundles shipped out by each country contributes to the paradox in the Armington framework
 \end{itemize}
 \end{frame}
 
@@ -121,36 +121,21 @@
 \begin{frame}[plain]\frametitle{Summary of results}
 \vspace{0.3cm}
 \begin{itemize}
-\item Robustness of distance puzzle in 1962-2013: increase in distance coefficient 
+\item Robustness of distance puzzle in 1962-2013: increase in distance coefficient between +5\% and +31\%
 %Working with COMTRADE bilateral trade data at the 4-digit level 
-\begin{itemize}
-\item +5\% controlling for estimation strategy
-\item +31\% controlling for composition and sample effects
-\end{itemize}
 \vspace{0.3cm}
-\item Evolution of heterogeneity parameter:
-\begin{itemize}
-\item ??\% increase in 1963-2013 (??\% in 1970-2013)
-\item this estimate is likely to be a lower bound 
-\end{itemize}
+\item Evolution of heterogeneity parameter:increase between +22\% and +81\%
 \vspace{0.3cm}
 \item Elasticity of trade costs to distance has not increased
-\begin{itemize}
-\item ???\% decrease in 1963-2013
-%depending on whether we work with evolution of ratio or with ratio of trends 
-\item ??\% decrease in 1970-2013
-%in our data: the increase in the distance elasticity mainly driven by 62-70 period; since 70s distance elasticity flat
-%this is also caveat of what we do: magnitude of results (their statistical robustness) is period-sensitive, but the direction of the change is robust to the time period
-\end{itemize}
 \vspace{0.3cm}
 \item Which dimension of increased country similarity? 
-\begin{itemize}
-\item Result obtained within the Armington framework 
-\vspace{0.3cm}
-\item Increased substitutability of traded product bundles 
+	\begin{itemize}
+	\item Result obtained within the Armington framework 
+	\item Increased substitutability of country-specific product bundles 
+	\end{itemize}
 %Reduced heterogeneity means increased substitutability of exporter-specific product bundles
 \end{itemize}
-\end{itemize}
+
 \end{frame}
 %motivation of presenting results for 1970-2009: period in which air transportation has become an important transport means in trade
 %message in one sentence: evolution of heterogeneity parameter provides direct explanation of increase distance elasticity of trade while composition and sample effects deepen the distance puzzle (composition: consistent with increasing share of manuf goods in trade (commodities and reference priced goods are more substitutable); sample: consistent with idea that countries which are stable trade partners may have witnessed relatively more similarity of export bundles than if all changes in sample of trading pairs allowed). Notice that cumulated effect composition and sample still at +14\% which means that stable partners are maybe also those which have experienced less changes in terms of composition of traded goods (manuf already in 62, and therefore no additional kick from composition effects). Thus, our analysis of composition and sample effects does tell a convincing story about world trade patterns: for unstable partners, more heterogeneity in bundles but stronger increase in share of manuf overtime; for stable partners, less movement in share of manuf but more movement in terms of reduced heterogeneity of exchanged varieties in manuf. 
@@ -165,19 +150,19 @@
 \subsection{Benchmark estimation}
 \begin{frame}\frametitle{Estimation procedure (1)}
 \begin{itemize}
-	\item run gravity equations (obviously)
+	\item We run gravity equations (obviously)
 	\begin{itemize}
 		\item COMTRADE data, 1962-2009 STIC 4 digits (1962-2009 )
 		\item cross section, no panel
 		\item focus on evolution of distance elasticity overtime
-		\item using the PPML estimator (consistency \& efficiency)
+		\item using the PPML estimator (for consistency \& efficiency)
 	\end{itemize}
 \item Microfounded gravity equation (Anderson \& Wincoop (2003)):
 \begin{eqnarray}
 X_{ij,t} & = & \left(\frac{Y_{i,t}Y_{j,t}}{Y_t}\right)\left(\frac{\tau_{ij,t}}{\Pi_{i,t}P_{j,t}}\right)^{\epsilon_t} \nonumber
 \end{eqnarray}
 %where the above formula is the standard gravity equation which can be derived across frameworks
-\item heterogeneity parameter: $\epsilon_t$: $1-\sigma_{t}$ in Armington (sector or firm productivity heterogeneity in the frameworke respectively of Eaton \& Kortum and Melitz)
+\item heterogeneity parameter: $\epsilon_t$: $1-\sigma_{t}$ in Armington (sector or firm productivity heterogeneity in the frameworks respectively of Eaton \& Kortum and Melitz/Chaney)
 %$X_{ij,t}$ is the value of goods from country $i$ consumed in country $j$ in year $t$, i.e. bilateral imports at cif prices. Imports are a function of the nominal income of each trading partner $Y_{ij,t}$ and $Y_{j,t}$, of world income $Y_t$, of bilateral trade costs $\tau_{ij,t}$, and of inward and outward multilateral trade resistance terms $\Pi_{i,t}$, $P_{j,t}$. 
 \end{itemize}
 \end{frame}
@@ -188,10 +173,9 @@ X_{ij,t} & = & \left(\frac{Y_{i,t}Y_{j,t}}{Y_t}\right)\left(\frac{\tau_{ij,t}}{\
 	\begin{itemize}
 	\item distance parameter: $\eth_{ij}$
 	\item time-invariant cost vector of controls (adjacency,...): $Z_{ij}$
-	\item time-varying cost vector of controls (policy: FTAs,...): $S_{ijt}$
+	\item time-varying cost vector of controls (same country, colonial status,...): $S_{ijt}$
 	\item unobserved bilateral trade cost component assumed to have mean zero conditional on the observables: $\nu_{ijt}$ 
 	%potentially time-varying, therefore includes same country, colonial linkages, so on
-
 \begin{gather}
 \tau_{ijt}=\exp\left\{\rho_t\ln{\eth_{ij}}+{Z_{ij}}\zeta_{t}+{S_{ijt}}\varsigma_{t}+\nu_{ijt}\right\} \nonumber
 \end{gather}
@@ -226,7 +210,7 @@ X_{ij,t}=\exp{\left(\xi_t-\delta_{t}\ln{\eth_{ij}}+{Z_{ij}}\tilde{\zeta_{t}}+{S_
 \end{figure}
 %\vspace{0.3cm}
 %8\% increase in distance elasticity
-Increase in absolute value of 4.5\% : basically stable
+Increase in absolute value of 4.5\%
 \end{frame}
 
 \subsection{Composition and sample effects}
@@ -378,7 +362,7 @@ Increase in absolute value of 18.2\%
 \item The distance coefficient is the elasticity of trade to distance
 \begin{itemize}
 \item Trivial: the whole point of log-linear equations
-\item Still the case in the Poisson specification
+\item Still the case in the PPML specification
 \end{itemize}
 \vspace{0.3cm}
 \item It is a product of two coefficients:
@@ -394,54 +378,56 @@ Increase in absolute value of 18.2\%
 
 \begin{frame}[plain]\frametitle{Short incursion in microfoundations (1)}
 \begin{itemize}
-\item The gravity equation can be justified by three canonical families of theories: (see Head \&Meyer(2014) )
+\item The gravity equation can be justified by three canonical families of theories: (see Head \& Meyer(2014) )
 \item Ricardian framework (Eaton \& Kortum (2002))
-\\ Homogeneous goods
-\\ Shop around the world for lowest cost supplier (intersectoral productivity heterogeneity)
+	\begin{itemize}
+	\item Homogeneous goods
+	\item Shop around the world for lowest cost supplier (intersectoral productivity heterogeneity)
+	\end{itemize}
 \item Heterogeneous firms framework: (Melitz (2003),  Chaney (2008))
-\\ Trade because all firms produce different varieties
-\\ A subset of firms enters export markets (intrasectoral productivity heterogeneity)
-\vspace{0.3cm}
+	\begin{itemize}
+	\item Trade because all firms produce different varieties
+	\item A subset of firms enters export markets (intrasectoral productivity heterogeneity)
+	\end{itemize}
 \item Armington framework (Anderson and Wincoop (2003))
-\\ Trade because consumers value variety 
-\\ Country-specific goods (heterogeneity: degree of substitutability between bundles)
+	\begin{itemize}
+	\item Trade because consumers value variety 
+	\item Country-specific goods (heterogeneity: degree of substitutability between bundles)
+	\end{itemize}
 %\vspace{0.3cm}
 %\item Consequences for the elasticity of trade to trade costs?
 \end{itemize}
 \end{frame}
 %All theoretical frameworks used to derive the gravity equation are characterized by a common feature: the elasticity of trade flows to trade costs, the `trade elasticity', is decreasing in the degree of heterogeneity observed in a single dimension, and it is this dimension which is framework-specific. In the Ricardian framework, heterogeneity is intra-country and inter-sector: it measures the degree of dispersion in production efficiency within countries across goods, with the dispersion parameter assumed common across countries and sectors. In the Armington framework, the dimension of heterogeneity is the flipside of the Ricardian framework. Heterogeneity is inter-country and intra-sector, and corresponds to the parameter which measures the degree of perceived substitutability of country-specific varieties of each good. In the monopolistic competition framework with firm heterogeneity, the dimension of heterogeneity is intra-country and intra-sector. It is captured by the parameter which measures the degree of dispersion in firm productivity within a given sector, and this parameter is assumed common to all countries.
 \begin{frame}[plain]\frametitle{Short incursion in microfoundations (2)}
-\vspace{.3cm}
 \begin{itemize}
 \item Ricardian framework: 
-\begin{itemize}
-\item Distance coefficient: $\rho\theta$
-\item $\theta$ captures intersectoral productivity dispersion
-\item if sectors have similar productivity \\ $\rightarrow$ small differences in variable costs have a large effect on trade flows
-\\ $\rightarrow$ high elasticity of trade to trade costs
-\end{itemize}
-\vspace{.3cm}
+	\begin{itemize}
+	\item Distance coefficient: $\rho\theta$
+	\item $\theta$ captures intersectoral productivity dispersion
+	\item if sectors have similar productivity \\ $\rightarrow$ small differences in variable costs have a large effect on trade flows
+	\\ $\rightarrow$ high elasticity of trade to trade costs
+	\end{itemize}
 \item Monopolistic competition between heterogeneous firms:
-\begin{itemize}
-%\item assume fixed costs of trade are not distance-dependent
-\item Distance coefficient: $\rho\gamma$
-\item $\gamma$ captures productivity dispersion across firms (parameter of Pareto)
-\item if distribution decays swiftly, higher probability that productivity cut-off for exporting is close to the mass of firms \\ $\rightarrow$  small differences in variable costs have large effect on entry 
-\\ $\rightarrow$ high elasticity of trade to trade costs
-\end{itemize}
+	\begin{itemize}
+	%\item assume fixed costs of trade are not distance-dependent
+	\item Distance coefficient: $\rho\gamma$
+	\item $\gamma$ captures productivity dispersion across firms (parameter of Pareto)
+	\item if distribution decays swiftly, higher probability that productivity cut-off for exporting is close to the mass of firms \\ $\rightarrow$  small differences in variable costs have large effect on entry 
+	\\ $\rightarrow$ high elasticity of trade to trade costs
+	\end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[plain]\frametitle{Short incursion in microfoundations (3)}
 \begin{itemize}
 \item Armington framework
-\begin{itemize}
-\item Distance coefficent:  $\rho(1-\sigma)$
-\item $\sigma$ captures degree of similarity between country-specific product bundles
-\item if the set of goods produced by different countries is similar \\ $\rightarrow$ high Armington elasticity 
-\\ $\rightarrow$ high elasticity of trade to trade costs
-\end{itemize}
-\vspace{0.3cm}
+	\begin{itemize}
+	\item Distance coefficent:  $\rho(1-\sigma)$
+	\item $\sigma$ captures degree of similarity between country-specific product bundles
+	\item if the set of goods produced by different countries is similar \\ $\rightarrow$ high Armington elasticity 
+	\\ $\rightarrow$ high elasticity of trade to trade costs
+	\end{itemize}
 \item In all cases: elasticity of trade flows to trade costs is inversely related to heterogeneity 
 \end{itemize}
 \end{frame}
@@ -477,9 +463,11 @@ Increase in absolute value of 18.2\%
 		\item Our method
 		\begin{itemize}
 			\item Measure the evolution of Armington elasticites
-			\item Its irrelevance in the Meltiz and Eaton \& Kortum framework is linked to the specific distribution functon of productivity 
+			\begin{itemize}
+				\item (Its irrelevance in the Meltiz and Eaton \& Kortum framework is linked to the specific distribution functon of productivity)
+			\end{itemize}
 			\item uses cif unit values and bilateral trade flows to estimate the trade elasticity
-			\item we need a measure of the aggregate level: that cannot be generally mimicked by a theoretically grounded weighted average of sector-specifie trade elasticities (Imbs \& Méjean (2015)). So we assume they are all the same and work on agregrate data
+			\item we need a measure of the aggregate level: that cannot be generally mimicked by a theoretically grounded weighted average of sector-specifie trade elasticities. So we assume they are all the same and work on agregrate data (Imbs \& Mejean (2015)).
 		\end{itemize}
 	\end{itemize}
 \end{frame}	
@@ -509,26 +497,25 @@ Increase in absolute value of 18.2\%
 
 \begin{frame}[plain]\frametitle{Our equation (1)}
 \begin{itemize}
-	\item One-good Armington framework. ${X}_{ij}$ is the cif value of the exports from $i$ to $j$ are:
-	\[{{X}_{ij}}={{\left( \frac{{{P}_{ij}}}{{{P}_{j}}} \right)}^{1-\sigma}}{{Y}_{j}}\]
-	${{P}_{ij}}$ is the cif price and ${{P}_{j}}$ is the price index in the destination and ${{Y}_{j}}$ total import demand in the destination.
-	The exponent $\left( 1-\sigma \right)$ is the trade elasticity
+%	\item One-good Armington framework. ${X}_{ij}$ is the cif value of the exports from $i$ to $j$:
+%	\[{{X}_{ij}}={{\left( \frac{{{P}_{ij}}}{{{P}_{j}}} \right)}^{1-\sigma}}{{Y}_{j}}\]
+%	${{P}_{ij}}$ is the cif price and ${{P}_{j}}$ is the price index in the destination and ${{Y}_{j}}$ total import demand in the destination.
+%	The exponent $\left( 1-\sigma \right)$ is the trade elasticity
 	\item Aggregate exports are the sum of imports from each sector $k$ where a sector corresponds to a SITC 4-digit category: ${{X}_{ij}}=\sum\limits_{k}{{{X}_{k,ij}}}$.
 	Sectoral demand in country  in sector  for imported goods is given by: 
 	\[\begin{array}{*{35}{l}}
 	{{Y}_{k,j}} & = & {{\left( \frac{{{P}_{k,j}}}{{{\beta }_{k}}{{P}_{j}}} \right)}^{1-\sigma }}{{Y}_{j}}  \\
 	\end{array}\]
-	Where ${{P}_{k,j}}$ and ${{P}_{j}}$ are price indexes, ${{\beta }_{k}}>0$ is a sector-specific preference parameter, ${{Y}_{j}}$ is total demand for imported goods, $\sigma >1$ is the elasticity of substitution between sectors.
+	Where ${{P}_{k,j}}$ and ${{P}_{j}}$ are price indexes, ${{\beta }_{k}}>0$ is a sector-specific preference parameter, ${{Y}_{j}}$ is total demand for imported goods, $\sigma >1$ is the elasticity of substitution between sectors, and the exponent $\left( 1-\sigma \right)$ is the trade elasticity
+	\item Each country exports a specific national variety. Preferences within each sector $k$ between national varieties are assumed well represented by a CES utility function with the same $\sigma $ parameter as the intersectoral CES utility function.
 \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}[plain]\frametitle{Our equation (2)}
-
-Each country exports a specific national variety.
-Preferences within each sector $k$ between national varieties are assumed well represented by a CES utility function with the same $\sigma $ parameter as the intersectoral CES utility function.
-Intrasectoral demand for varieties exported by $i$ in $j$ in sector $k$ is: 
+\begin{itemize}
+\item Intrasectoral demand for varieties exported by $i$ in $j$ in sector $k$ is: 
 \[\begin{array}{*{35}{l}}
 {{X}_{k,ij}} & = & {{\left( \frac{{{p}_{k,ij}}}{{{\gamma }_{i}}{{P}_{k,j}}} \right)}^{1-\sigma }}{{Y}_{k,j}}  \\
 \end{array}\]
@@ -536,22 +523,23 @@ Where ${{\gamma }_{i}}>0$ is a origin-country-specific preference parameter and 
 \[\begin{array}{*{35}{l}}
 {{P}_{k,j}} & = & {{\left[ \sum\limits_{i\ne j}{{{\left( \frac{{{p}_{k,ij}}}{{{\gamma }_{i}}} \right)}^{1-\sigma }}} \right]}^{1/(1-\sigma )}}  \\
 \end{array}\]
-Defining $\frac{{{Y}_{k,j}}}{{{Y}_{j}}}={{\omega }_{k,j}}$, we get: 
+\item Defining $\frac{{{Y}_{k,j}}}{{{Y}_{j}}}={{\omega }_{k,j}}$, we get: 
 \[\begin{array}{*{35}{l}}
 \frac{{{X}_{k,ij}}}{{{Y}_{j}}} & = & {{\omega }_{k,j}}{{\left( \frac{{{p}_{k,ij}}}{{{\gamma }_{i}}{{P}_{k,j}}} \right)}^{1-\sigma }}  \\
 \end{array}\]
-
+\item Summing over all SITC 4-digit sectors: 
+\[\begin{array}{*{35}{l}}
+\sum\limits_{k=1}^{K}{\frac{{{X}_{k,ij}}}{{{Y}_{j}}}}=\frac{{{X}_{ij}}}{{{Y}_{j}}} & = & \gamma _{i}^{\sigma -1}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}{{\left[ \frac{{{p}_{k,ij}}}{{{P}_{k,j}}} \right]}^{1-\sigma }}  \\
+\end{array}\]
+\end{itemize}
 \end{frame}
 
 
 
 \begin{frame}[plain]\frametitle{Our equation (3)}
 
-Summing over all SITC 4-digit sectors: 
-\[\begin{array}{*{35}{l}}
-\sum\limits_{k=1}^{K}{\frac{{{X}_{k,ij}}}{{{Y}_{j}}}}=\frac{{{X}_{ij}}}{{{Y}_{j}}} & = & \gamma _{i}^{\sigma -1}\sum\limits_{k=1}^{K}{{{\omega }_{k,j}}}{{\left[ \frac{{{p}_{k,ij}}}{{{P}_{k,j}}} \right]}^{1-\sigma }}  \\
-\end{array}\]
-Changing notation to $\kappa_i=\gamma_i^{\sigma-1}$, the market share becomes, assuming multiplicative errors of measurement:
+\begin{itemize}
+\item Changing notation to $\kappa_i=\gamma_i^{\sigma-1}$, the market share becomes, assuming multiplicative errors of measurement:
 
 %\begin{eqnarray}
 %\frac{{X}_{ij}}{Y_j} & = & {{\kappa }_{i}}\sum\limits_{k=1}^{K}{{{\omega %}_{k,j}}}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma %}}  
@@ -565,13 +553,13 @@ Changing notation to $\kappa_i=\gamma_i^{\sigma-1}$, the market share becomes, a
 \end{eqnarray}
 
 %Notice that we only have non-zero observations, as ${{p}_{k,ij}}$ is only observed when there is a trade flow.
-We take logs to transform the errors into additive ones and estimate the following equation with a non-linear least square procedure year by year:
+\item We take logs to transform the errors into additive ones and estimate the following equation with a non-linear least square procedure year by year:
 \begin{eqnarray}
 \ln \left( \frac{{{X}_{ij}}}{{{Y}_{j}}} \right) & = & \ln {{\kappa }_{i}} +\ln \left( \sum\limits_{k=1}^{K}{\frac{{{Y}_{k,j}}}{{{Y}_{j}}}.}\frac{p_{k,ij}^{1-\sigma }}{\sum\limits_{l\ne j}{{{\kappa }_{l}}}p_{k,lj}^{1-\sigma }} \right) +{{\varepsilon }_{i,j}}
 \end{eqnarray}
 
-This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
-
+\item This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
+\end{itemize}
 \end{frame}
 
 
@@ -599,7 +587,7 @@ This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
 %\end{frame}
 
 \section{Evolution of the Armington trade elasticity}
-\subsection{Benchmark estimation}
+\subsection{Benchmark and robustness estimation}
 
 \begin{frame}[plain]\frametitle{Results}
 \begin{itemize}
@@ -607,20 +595,20 @@ This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
 	\begin{itemize}
 		\item Point estimate in the low range $|1-\sigma|\in\left\{.4,.5\right\}$
 		\item For the US, Feenstra (2018) obtain a point estimate in the $\left\{0.5,3\right\}$ range, depending on the estimator used,
-		\item Imbs \& Méjan (2015) obtain a point estimate of $1-\sigma=-2$
+		\item Imbs \& Mejean (2015) obtain a point estimate of $1-\sigma=-2$
 	\end{itemize}
-	\item Missing unit values: Trade flow observed, but information on quantities missing
+	\item Missing unit values: Trade flow observed, but no information on unit prices 
 	\begin{itemize}
 		\item we use a stepwise precedure to evaluate missing unit values from similar products
 		\item $|1-\sigma|$ has increased by 35\% from 1962 to 2013
 	\end{itemize}
 	\item Zero trade flows: from 96.5\% to 91\%
 	\begin{itemize}
-		\item A priori not compatible with the Armington framework: we assume a statistical threshold
-		\item To test the robustness of the effect, we use the superbalanced sample: the share of zero trade flows is much smaller (but the rate of decline is similar)
+		\item A priori not compatible with the Armington framework: we assume a statistical collection threshold
+		\item To test the robustness of our result, we use the superbalanced sample: the share of zero trade flows is much smaller (but the rate of decline is similar)
 		\item $|1-\sigma|$ has increased by 69\% from 1962 to 2013
 	\end{itemize}
-	\item Bad data ? The increase is faster in BACI (1995-2006): +1.18\% a year instead of +.4\%
+	\item Bad data ? The increase is faster in BACI (1995-2016): +1.18\% a year instead of +.4\%
 \end{itemize}
 \end{frame}
 
@@ -640,7 +628,7 @@ This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
 		\begin{center}
 			\setlength{\fboxrule}{1pt} %makes border lines thick
 			\setlength{\fboxsep}{.1in} %increases distance to border
-			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{Graph_missing_uv.pdf}}
+			\fbox{\includegraphics[clip,height=2.5in]{Graph_missing_uv.pdf}}
 		\end{center}
 	\end{figure}
 \end{frame}
@@ -651,7 +639,7 @@ This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
 		\begin{center}
 			\setlength{\fboxrule}{1pt} %makes border lines thick
 			\setlength{\fboxsep}{.1in} %increases distance to border
-			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"1ere regression 3e partie_prix_calc".pdf}}
+			\fbox{\includegraphics[clip,height=2.5in]{"1ere regression 3e partie_prix_calc".pdf}}
 		\end{center}
 	\end{figure}
 \end{frame}
@@ -661,7 +649,7 @@ This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
 		\begin{center}
 			\setlength{\fboxrule}{1pt} %makes border lines thick
 			\setlength{\fboxsep}{.1in} %increases distance to border
-			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"graph_ztf".pdf}}
+			\fbox{\includegraphics[clip,height=2.5in]{"graph_ztf".pdf}}
 		\end{center}
 	\end{figure}
 \end{frame}
@@ -671,7 +659,7 @@ This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
 		\begin{center}
 			\setlength{\fboxrule}{1pt} %makes border lines thick
 			\setlength{\fboxsep}{.1in} %increases distance to border
-			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"1ere regression 3e partie_superbal"}}
+			\fbox{\includegraphics[height=2.5in]{"1ere regression 3e partie_superbal"}}
 		\end{center}
 	\end{figure}
 \end{frame}
@@ -681,7 +669,7 @@ This approach yields annual estimates of ${{\kappa }_{i}}$ and $\sigma $.
 		\begin{center}
 			\setlength{\fboxrule}{1pt} %makes border lines thick
 			\setlength{\fboxsep}{.1in} %increases distance to border
-			\fbox{\includegraphics[trim = 0mm 0mm 0mm 9.5mm, clip,height=2.5in]{"1ere regression 3e partie_Baci".pdf}}
+			\fbox{\includegraphics[clip,height=2.5in]{"1ere regression 3e partie_Baci".pdf}}
 		\end{center}
 	\end{figure}
 \end{frame}
