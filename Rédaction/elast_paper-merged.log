@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.1.20)  20 SEP 2019 18:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.1.20)  25 SEP 2019 11:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2506,7 +2506,7 @@ LaTeX Warning: There were undefined references.
 Here is how much of TeX's memory you used:
  25934 strings out of 493014
  412040 string characters out of 6133351
- 561205 words of memory out of 5000000
+ 561828 words of memory out of 5000000
  28670 multiletter control sequences out of 15000+600000
  142660 words of font info for 276 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -2694,7 +2694,7 @@ ype1/public/txfonts/txsyb.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/p
 ublic/txfonts/txsyc.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/tim
 es/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a
 .pfb>
-Output written on elast_paper-merged.pdf (46 pages, 1025167 bytes).
+Output written on elast_paper-merged.pdf (46 pages, 1025699 bytes).
 PDF statistics:
  1183 PDF objects out of 1200 (max. 8388607)
  1044 compressed objects within 11 object streams
