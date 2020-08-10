@@ -1,12 +1,13 @@
-This is BibTeX, Version 0.99d (TeX Live 2016)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: elast_paper-merged.aux
 The style file: chicago.bst
-Illegal, another \bibstyle command---line 218 of file elast_paper-merged.aux
+Illegal, another \bibstyle command---line 220 of file elast_paper-merged.aux
  : \bibstyle
  :          {chicago}
 I'm skipping whatever remains of this command
 Database file #1: Armington_biblio_inbibtex.bib
+Warning--I didn't find a database entry for "Ackerberg2005"
 Warning--no number and no volume in Allen2019
 Warning--page numbers missing in Allen2019
 Warning--empty institution in Andrews2016
@@ -28,45 +29,45 @@ Warning--page numbers missing in Noguera2012
 Warning--no volume for Reinert1991
 Warning--page numbers missing in Reinert1991
 Warning--page numbers missing in Simonovska2014
-You've used 66 entries,
+You've used 67 entries,
             2861 wiz_defined-function locations,
-            1040 strings with 15184 characters,
-and the built_in function-call counts, 44376 in all, are:
-= -- 3713
-> -- 3176
+            1048 strings with 15370 characters,
+and the built_in function-call counts, 45023 in all, are:
+= -- 3756
+> -- 3237
 < -- 5
-+ -- 960
-- -- 1114
-* -- 3997
-:= -- 8134
-add.period$ -- 201
-call.type$ -- 66
-change.case$ -- 463
-chr.to.int$ -- 66
-cite$ -- 87
-duplicate$ -- 1169
-empty$ -- 2717
-format.name$ -- 1294
-if$ -- 8224
++ -- 978
+- -- 1132
+* -- 4060
+:= -- 8259
+add.period$ -- 204
+call.type$ -- 67
+change.case$ -- 470
+chr.to.int$ -- 67
+cite$ -- 88
+duplicate$ -- 1187
+empty$ -- 2753
+format.name$ -- 1316
+if$ -- 8342
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 68
-newline$ -- 334
-num.names$ -- 660
-pop$ -- 291
+missing$ -- 70
+newline$ -- 339
+num.names$ -- 670
+pop$ -- 300
 preamble$ -- 1
-purify$ -- 863
+purify$ -- 877
 quote$ -- 0
-skip$ -- 1272
+skip$ -- 1290
 stack$ -- 0
-substring$ -- 2313
-swap$ -- 377
+substring$ -- 2333
+swap$ -- 382
 text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 1280
+type$ -- 1290
 warning$ -- 21
-while$ -- 633
+while$ -- 639
 width$ -- 0
-write$ -- 871
+write$ -- 884
 (There was 1 error message)
