@@ -27,7 +27,7 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 
 }
 
@@ -44,8 +44,8 @@ if "`c(hostname)'" =="LAmacbook.local" {
 }
 
 import delimited "$dir/Data/Baci/country_code_baci92.csv",  encoding(UTF-8) clear varname(1) stringcols(_all)
-save "$dir/Data/Baci/country_code_baci92.dta", replace
-cd "$dir/Data/Baci"
+save "$dir/Data/baci/country_code_baci92.dta", replace
+cd "$dir/Data/baci"
 
 
 ****************************************
@@ -63,6 +63,11 @@ program prepar
 args year
 
 insheet using "$dir/Data/Baci/baci92_`year'.csv", clear
+
+display "`year' -- missing at 6 digits"
+mdesc
+
+
 drop if hs6==.
 drop if v==.
 replace q=. if q<0 
@@ -86,7 +91,6 @@ replace product=product_str
 drop product_str
 label var product "In hs4"
 collapse (sum) v q, by(t product i j)
-
 
 *****************
 **compute unit_value per product (based only on trade_value for non_zero quantity)
@@ -140,9 +144,35 @@ label var iso_d "Variable name for convenience. This is not an iso code"
 
 rename t year
 
+
+
+
+
 save "$dir/Data/For Third Part/prepar_baci_`year'.dta", replace
 clear
 end
+
+
+capture program drop ztf
+program ztf
+args year
+
+
+use "$dir/Data/For Third Part/prepar_baci_`year'.dta", clear
+
+
+quietly tab product
+local nbr_prod=r(r)
+quietly tab iso_o
+local nbr_origin=r(r)
+quietly tab iso_d
+local nbr_dest=r(r)
+
+display "`year' -- ztf" 
+display %9.2f 1-_N/(`nbr_prod'*(`nbr_origin'-1)*`nbr_dest')
+
+end
+
 
 
 /*
@@ -346,10 +376,15 @@ end
 *prepar 1995
 
 *countries_baci
-
+/*
 foreach i of numlist 1995(1)2016 {
 	prepar `i' 
 }
+*/
+foreach i of numlist 1995(1)2016 {
+	ztf `i' 
+}
+
 
 /*
 

@@ -1,0 +1,17 @@
+	Proportion of zeros as a function of market share in BACI				
+		(1)	(2)	(3)	(4)
+EQUATION	VARIABLES	propor_sscommerce_4	propor_sscommerce_4	propor_sscommerce_4	propor_sscommerce_4
+					
+propor_sscommerce_4	ln_ms	-0.0333***	0.0336	-0.0397***	-0.2272**
+		(0.0002)	(0.1013)	(0.0002)	(0.092)
+	year	-0.0024***	-0.0027***	-0.0033***	-0.0025***
+		(0.0001)	(0.0005)	(0.0001)	(0.000)
+	interaction		-0.0000		0.0001**
+			(0.0001)		(0.000)
+	Constant	4.3950***	4.9867***	6.3311***	4.6746***
+		(0.2538)	(1.0953)	(0.2351)	(0.975)
+					
+	Observations	99569	99569	99569	99569
+	Robust standard errors in parentheses				
+	*** p<0.01, ** p<0.05, * p<0.1				
+	The proportion of zeros is computed at the SITC 4-digit level.				

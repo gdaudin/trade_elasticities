@@ -12,3 +12,23 @@
 *.gz(busy)
 
 Rédaction/tex/elast_paper-merged.pdf
+*.log
+elast_paper-merged.log
+*.gz
+/Rédaction/elast_paper-merged.synctex.gz
+/Rédaction/Heterogeneity_Distance_Puzzle_presentationD.log
+/Rédaction/elast_paper-merged.aux
+
+Rédaction/elast_paper-merged.pdf
+
+Rédaction/elast_paper-merged.pdf
+
+Rédaction/elast_paper-merged.pdf
+
+*.bbl
+
+*.blg
+
+Rédaction/elast_paper-merged.bbl
+
+Rédaction/elast_paper-merged.blg

@@ -1,3 +1,4 @@
+*Dec 2018 version: cosmetic changes to $dir
 *Sept 12 version: should work on both computers and use cepii names
 
 **This file works with data extracted from UN COMTRADE via WITS interface (bulk download procedure)
@@ -24,17 +25,22 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 	cd "$dir/Data/COMTRADE_2015_lite"
 
 }
-
 
 if "`c(hostname)'" =="ECONCES1" {
 *	global dir "/Users/liza/Documents/LIZA_WORK"
 *	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015"
 	global dir "Y:\ELAST_NONLIN"
 	cd "$dir"
+}
+
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 }
 
 
@@ -53,20 +59,26 @@ set more off
 *cd "$dir\SITC_Rev1_wits_bulk\wits_june_2011"
 
 clear
-*delete previously constructed files if rerun:
-capture erase cov_per_year.dta
-capture erase cov_per_year_pair.dta
+
 
 
 foreach i of numlist 1962(1)2013 {
 	display "--cov_per_year--------`i'---------------------"
 if strmatch("`c(username)'","*daudin*")==1 {
 	use "$dir/Data/COMTRADE_2015_lite/cepii-4D-`i'.dta", clear
-	cd "~/Documents/Recherche/OFCE Substitution Elasticities/Résultats/Première partie/Coverage"
+	cd "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/Résultats/Première partie/Coverage"
 }
 if "`c(hostname)'" =="ECONCES1"  {
 	use cepii-4D-`i', clear
 }	
+if "`c(hostname)'" =="LAmacbook.local"  {
+	use cepii-4D-`i', clear
+}	
+
+*delete previously constructed files if rerun:
+capture erase cov_per_year.dta
+capture erase cov_per_year_pair.dta
+
 drop iso_o iso_d
 rename cepii_o iso_o 
 rename cepii_d iso_d	
@@ -128,7 +140,8 @@ drop if iso_o==iso_d
 	save cov_per_year, replace
 	clear
 }
-**comparison cov_per_year_pair: list pairs per year, total trade per pair, share of trade with uv per pair (I do not take unattributed when some attributed and some not)
+**comparison cov_per_year_pair: list pairs per year, total trade per pair, share of trade with uv per pair 
+* (I do not take unattributed when some attributed and some not)
 
 
 foreach i of numlist 1962(1)2013 {
@@ -140,6 +153,10 @@ if strmatch("`c(username)'","*daudin*")==1 {
 if "`c(hostname)'" =="ECONCES1"  {
 	use cepii-4D-`i', clear
 }	
+if "`c(hostname)'" =="LAmacbook.local"  {
+	use cepii-4D-`i', clear
+}	
+
 drop iso_o iso_d
 rename cepii_o iso_o 
 rename cepii_d iso_d	

@@ -1,3 +1,4 @@
+*Dec 2018 adjustment: cosmetic changes to $dir
 *This file most heavily revised on Sept 12; 2016:
 *corrects for errors in construction of superbalanced sample
 *adds construction of balanced sample
@@ -26,7 +27,7 @@ set more off
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 	cd "$dir/Data/COMTRADE_2015_lite"
 
 }
@@ -39,6 +40,11 @@ if "`c(hostname)'" =="ECONCES1" {
 	cd "$dir"
 }
 
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+}
 
 *********************************
 *1*create balanced and superbalanced samples for set of years: 
@@ -50,6 +56,8 @@ capture program drop superbal
 program superbal
 **redef_full_pair_tot_trade file has total trade by pair redefined to have SUN, DEU, CSH
 if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+if strmatch("`c(hostname)'","LAmacbook.local")==1 cd"$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
+
 use cov_per_year_pair, clear
 	
 
@@ -76,14 +84,15 @@ rename test_rep nb_years
 bys iso_o iso_d : keep if _n==1
 drop year tot_pair
 
-histogram nb_years, width(5) xtitle("Number of years") title("Pair presence in `1'-2013") fract 
-graph export nb_years_pair_presence_`1'_13.eps, replace
+histogram nb_years, width(5) xtitle("Number of years") title("Pair presence in `1'-2013") fract  scheme(s1mono)
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/nb_years_pair_presence_`1'_13.eps", replace
 
 *--------------------------------------------------------------------------------
 **construct superbalanced sample defined from some year `1' until 2013**
 **defined as the set of all pairs which trade both ways in each year of the sample
 
 if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+if strmatch("`c(hostname)'","LAmacbook.local")==1 cd"$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 use cov_per_year_pair, clear
 	
 local 2=`1'-1
@@ -133,6 +142,7 @@ saveold balanced_`1'_13, version(12) replace
 preserve
 *keep iso_o iso_d
 if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+if strmatch("`c(hostname)'","LAmacbook.local")==1 cd"$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 save list_stable_`1'_13, replace
 *use list_stable_`1'_13, clear
 rename iso_o partner
@@ -149,7 +159,7 @@ erase list_stable_`1'_13.dta
 **create file for regressions:
 use superbal_`1'_13, clear
 keep iso_o iso_d
-saveold superbal_list_`1', version(12) replace
+save superbal_list_`1', replace
 
 end
 
@@ -173,8 +183,9 @@ end
 *********************************
 capture program drop square
 program square
-*local 1 1965
+
 if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+if strmatch("`c(hostname)'","LAmacbook.local")==1 cd"$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 use superbal_`1'_13, clear
 keep iso_o iso_d 
 fillin iso_o iso_d
@@ -361,7 +372,7 @@ save sq_`1', replace
 keep iso_d sq_1
 drop if sq_1==.
 drop sq_1
-saveold sq_list_`1', version(12) replace
+save sq_list_`1', replace
 *erase sq_`1'.dta
 end
 
@@ -388,7 +399,7 @@ end
 capture program drop cover
 program cover
 if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
-
+if strmatch("`c(hostname)'","LAmacbook.local")==1 cd"$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 use cov_per_year_pair, clear
 	
 local source o d
@@ -461,9 +472,9 @@ twoway (connected cov_bal_to_full year, ytitle("Share of total trade", axis(1)) 
 */(spike tot_full year, lcolor(gs4) lpattern(shortdash) yaxis(2) ytitle("Trillions of USD", axis(2)) yscale(titlegap(medsmall) axis(2)) ylabel(0(2.5)15, angle(horizontal) grid glwidth(vthin) glcolor(bluishgray) axis(2))) , /*
 */title("Trade coverage: stable pairs")/* 
 */legend(label(1 "Balanced") label(2 "Superbalanced") label(3 "Square") label(4 "Trade in full sample [right scale]")) /*
-*/ yscale(axis(2) range (0 15)) ylabel(0(3)15, axis(2)) yscale(axis(2) range (0 1)) ylabel(0(0.2)1, axis(1))
+*/ yscale(axis(2) range (0 15)) ylabel(0(3)15, axis(2)) yscale(axis(2) range (0 1)) ylabel(0(0.2)1, axis(1)) scheme(s1mono)
 
-graph export trade_coverage_`1'.eps, replace
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/trade_coverage_`1'.eps", replace
 clear
 erase coverage.dta
 end
@@ -481,6 +492,7 @@ capture program drop recip
 program recip
 
 if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+if strmatch("`c(hostname)'","LAmacbook.local")==1 cd"$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 use cov_per_year_pair, clear
 
 *local 1 1962
@@ -514,7 +526,7 @@ joinby iso_o iso_d using recip`2', unmatched(none)
 collapse (sum) recip_`1'=tot_pair,by(year)
 replace recip_`1'=recip_`1'*10^(-9)
 merge 1:1 year using coverage_`1', update replace nogen norep
-saveold coverage_`1', version(12) replace
+save coverage_`1', replace
 clear
 end
 
@@ -530,6 +542,7 @@ capture program drop annual
 program annual
 
 if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+if strmatch("`c(hostname)'","LAmacbook.local")==1 cd"$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 use cov_per_year_pair, clear
 	
 keep iso_o iso_d tot_pair year
@@ -551,6 +564,7 @@ save recip, replace
 erase tmp_switch.dta
 
 if strmatch("`c(username)'","*daudin*")==1 cd "$dir/Résultats/Première partie/Coverage/"
+if strmatch("`c(hostname)'","LAmacbook.local")==1 cd"$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013_in2018"
 use cov_per_year_pair, clear
 	
 drop share_uv
@@ -560,7 +574,7 @@ joinby iso_o iso_d year using recip, unmatched(none)
 collapse (sum) recip=tot_pair,by(year)
 replace recip=recip*10^(-9)
 merge 1:1 year using coverage_1962, update replace nogen norep
-saveold coverage_1962, version(12) replace
+save coverage_1962, replace
 
 *graph for paper on reciprocal trade
 *add info on recip65:
@@ -574,8 +588,8 @@ twoway (connected cov_recip62 year, ytitle("Coverage reciprocal trade") ylabel(.
 */ (connected cov_recip65 year, ytitle("Coverage reciprocal trade") ylabel(.4(.1)1, angle(horizontal) grid glwidth(vthin) glcolor(bluishgray)) lcolor(red) lwidth(medium) msymbol(point) mcolor(red)) /*
 */ (connected cov_recipannual year, lpattern(solid) lcolor(black) lwidth(medthick) msymbol(point) mcolor(black)), /*
 */title("Reciprocal trade share")/* 
-*/legend(label(1 "Reciprocal 1962") label(2 "Reciprocal 1965") label(3 "Reciprocal annual"))
-graph export recip_coverage_62_65.eps, replace
+*/legend(label(1 "Reciprocal 1962") label(2 "Reciprocal 1965") label(3 "Reciprocal annual")) scheme(s1mono)
+graph export "$dir/Git/trade_elasticities/Rédaction/tex/recip_coverage_62_65.eps", replace
 end
 *RUN PROGRAM
 *annual
@@ -590,3 +604,4 @@ foreach y of local year {
 	cover `y'
 	recip `y'
 }
+annual

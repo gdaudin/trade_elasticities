@@ -1,3 +1,13 @@
+*Aug 2019 adjusts $dir and checks that at least 3 suppliers per product and 50 products per destination
+
+*Note1: at no point in second stage do we check that at least 3 (5?) suppliers per product, and at least 50 (?) products per destination
+* destination-supplier selection to be inserted for all second stage variants? [here inserted before running instrumented specification]
+
+*Note 2: we crop unit values in non instrumented specifications, before running first stage, but not before running second stage
+* this means that for instrumented data, we only do cropping on pre-estimation of first stage sample: ok?
+
+*Dec 2018 adjusts $dir 
+
 *22/01/2013 Guillaume Daudin
 *v2 : 14/08/2013
 *v3 : 27/08/2014
@@ -8,8 +18,6 @@
 *À partir de "Calcul ms et estimationsv2.do"
 
 *A FAIRE : vérifier s'il n'y a pas une erreur dans le calcul des prix relatifs (niveau 4, 3, 2...)
-*METTRE DES EFFETS FIXES EXPORTATEURS
-
 
 
 ****************************************
@@ -19,52 +27,132 @@ clear all
 set mem 2g
 set matsize 800
 set more off
-*on my laptop:
-*global dir "G:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*at OFCE:
-global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*at ScPo:
-*global dir "E:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
-*cd "$dir\SITC_Rev1_adv_query_2011"
-*GD
-global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
-cd "$dir"
 
+display "`c(username)'"
+display "`c(hostname)'"
+if strmatch("`c(username)'","*daudin*")==1 {
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local/"
+	cd "$dir"
+
+}
+if "`c(hostname)'" =="ECONCES1" {
+	global dir "/Users/liza/Documents/LIZA_WORK"
+	cd "$dir/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/sitcrev1_4dgt_light_1962_2013"
+}
+
+*for laptop Liza
+if "`c(hostname)'" =="LAmacbook.local" {
+	global dir "/Users/liza/Documents/LIZA_WORK/GUILLAUME_DAUDIN/COMTRADE_Stata_data/SITC_Rev1_adv_query_2015/"
+	cd "$dir/sitcrev1_4dgt_light_1962_2013_in2018"
+}
+
+*for office laptop
+if "`c(username)'" =="archael" {
+	global dir "P:\ECFIN Public\Orbis\sitc"
+	global dirgit "P:\ECFIN Public\Orbis\sitc"
+	cd "P:\ECFIN Public\Orbis\sitc"
+}
 
 ****************************************************************************************************************************************************************
 capture log using "logs/`c(current_time)' `c(current_date)'"
-timer clear 1
-timer on 1
+*timer clear 1
+*timer on 1
 
 
 
 ****************************************
-*Calcul market share et prix
+*Preparation des données
 ****************************************
 
 *"prep_`type'_`year'.dta" files store for each sample 
-capture program drop calc_ms
-program calc_ms
+capture program drop prepar_data
+program prepar_data
 args sample year
-*e.g. calc_ms prepar_cepii 1970
+*e.g. calc_ms prepar_cepii 1970 instrumented...
 
 
 *capture erase "$dir/ms"
 
 display "`year'"
 
+if strmatch("`c(username)'","*daudin*")==1 {
 /*On va chercher les données*/
-use "$dir/Data/For Third Part/`sample'_`year'", clear
-drop if iso_o==iso_d
-drop if value_`year'==0
+
+
+	if "`sample'" == "prepar_cepii" | "`sample'" == "prepar_baci" use "$dir/Data/For Third Part/`sample'_`year'", clear
+	if "`sample'" == "prepar_cepii_superbal" {
+		use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+		merge m:1 iso_o iso_d using "$dir/Résultats/Première partie/Coverage/superbal_list_1962.dta", keep(match)
+	}	
+
+	if "`sample'" == "instrumented" {
+	local instrument $instrument
+	local lag $lag
+*NB* name of file adjusted to run on revised version of first stage
+	*	use "$dir/Résultats/Troisième partie/first_stage_gdpo om uv_`year'", clear
+		use "$dir/Résultats/Troisième partie/first_stage_uv gdpo om_`year'", clear
+	*	rename value value_`year'
+		local instrument = subinstr("`instrument'"," ","_",.)
+		gen uv_`year'=exp(ln_uv_`instrument'_`lag'lag) /*C'est ici qu'on choisi le prix instrumenté qu'on utilise pour de vrai*/
+*NB* This line suppressed: repeats what is already done 2 lines above?
+	*		local instrument = subinstr("`instrument'"," ","_",.)
+	}
+
+
+
+	if "`sample'" == "prepar_cepii_calc" {
+		use "$dir/Résultats/Troisième partie/Prix calculés/Prix calculés par stepwise_cepii_`year'.dta", clear
+		replace uv_`year' = rel_price
+		label var uv_`year' "Attention il s'agit des prix relatifs calculés"
+	}
+}
+
+
+
+
+if strmatch("`c(hostname)'","LAmacbook.local")==1 | | "`c(username)'" =="archael" {
+/*On va chercher les données*/
+	if "`sample'" == "prepar_cepii" | "`sample'" == "prepar_baci" use "`sample'_`year'", clear
+	if "`sample'" == "prepar_cepii_superbal" {
+		use "prepar_cepii_`year'", clear
+		merge m:1 iso_o iso_d using "superbal_list_1962.dta", keep(match)
+	}	
+		
+	if "`sample'" == "instrumented" {
+		local instrument $instrument
+		local lag $lag
+		use "first_stage_uv gdpo om_`year'", clear
+*NB*    suppress next line: no such file exists (maybe previous version?)
+*		use "$dir/Résultats/Troisième partie/first_stage_`year'", clear
+*		rename value value_`year'
+		local instrument = subinstr("`instrument'"," ","_",.)
+*C'est ici qu'on choisit le prix instrumenté qu'on utilise dans second stage*
+*huge variability in instrumented uv; but much less than in raw uv, for nearly same median
+		gen double uv_`year'=exp(ln_uv_`instrument'_`lag'lag) 
+*NB* This line suppressed: repeats what is already done 2 lines above?
+*		local instrument = subinstr("`instrument'"," ","_",.)
+	}
+	
+*NB* adjusted to run on Liza laptop (pour faire tourner prix imputes, sans instrumentation)
+	if "`sample'" == "prepar_cepii_calc" {
+		use "Prix calculés par stepwise_cepii_`year'.dta"", clear
+		replace uv_`year' = rel_price
+		label var uv_`year' "Attention il s'agit des prix relatifs calculés"
+	}
+}
+
+	drop if iso_o==iso_d
+	
+
 
 *keep if iso_d=="USA"
 
 /*Pour pouvoir jouer avec plus tard*/
-tostring product, gen(sitc4) usedisplayformat
+	capture drop sitc4
+	capture drop prod_unit
 
-
-generate prod_unit = sitc4+"_"+qty_unit
+	tostring product, gen(sitc4) usedisplayformat
+	generate prod_unit = sitc4+"_"+qty_unit
 
 
 *****Fillin : pas indispensable ici ?
@@ -78,12 +166,65 @@ drop _fillin tot_fillin
 */
 
 *bys iso_d iso_o : egen uv_presente = total(uv_`year')
-generate uv_presente= uv_`year'
-drop if uv_presente==0
+	capture drop uv_presente
+	generate uv_presente= uv_`year'
+	
+	
+	
+	
+if "`sample'" != "instrumented" {
+	*******Pour restreindre 
+
+	drop if value_<=0
+
+	***********MS
+		*****On enlève quand la part dans le commerce mondiale est inférieure à 1 pour mille
+	
+	capture drop tot_import tot_import_export tot_export tot_trade ms_pays lnms_pays ms_tot tot_import_secteur ms_secteur
+	
+	
+	*Par pays expt chez un import
+	rename value_`year' value
+	bys iso_o : egen tot_export = total(value)
+	egen tot_trade = total(value)
+	generate ms_tot = tot_export/tot_trade
+	drop if ms_tot < (1/1000)
 
 
+	****UV trop faibles ou fortes
+	
+	*************************
+	drop if uv_presente<=0 | uv_presente==.
+	
+	bys prod_unit iso_d: egen c_95_uv = pctile(uv_presente),p(95)
+	bys prod_unit iso_d: egen c_05_uv = pctile(uv_presente),p(05)
+	bys prod_unit iso_d: egen c_50_uv = pctile(uv_presente),p(50)
+	drop if uv_presente < c_05_uv | uv_presente > c_95_uv
+	drop if uv_presente < c_50_uv/100 | uv_presente > c_50_uv*100
+}	
 
+
+*NB* inserted here: selection on destinations: at least 3 suppliers per product (10-20,mil such obs) and 50 products per destination (few such dest)
+*NOTICE: this is implemented for instrumented specification in August 2019; but was not used in all other regressions (!)
+*TO AVOID CONFUSION: written as if this selection only required for instrumented data
+	if "`sample'" == "instrumented" {
+		drop if uv_presente>=. | uv_presente<=0
+		bysort iso_d prod_unit: gen nb_obs=_N
+		drop if nb_obs<3
+		preserve
+		bysort iso_d prod_unit: drop if _n!=1
+		bysort iso_d: gen nb=_N
+		by iso_d, sort: drop if _n!=1
+		keep iso_d nb
+		drop if nb<50
+		save tmp, replace
+		restore
+		joinby iso_d using tmp, unmatched(none)
+		erase tmp.dta
+	}
 save "$dir/temp_`year'", replace
+
+
 end 
 
 
@@ -100,7 +241,8 @@ end
 program nlnonlin
 	version 12
 	su group_iso_o, meanonly	
-	local nbr_iso_o=r(max)
+		local nbr_iso_o=r(max)
+		display "`nbr_iso_o'"
 	local nbr_var=`nbr_iso_o'+2
 	syntax varlist (min=`nbr_var' max=`nbr_var') if [iweight], at(name)
 	local lnms_pays : word 1 of `varlist'
@@ -116,7 +258,7 @@ program nlnonlin
 	generate double `sigma' = exp(`lnsigmaminus1')+1
 	
 	tempvar fe_iso_o
-*	generate double `fe_iso_o' =1 if iso_o_1==1
+*	generate double `fe_iso_o' =1 if iso_o_1==1g
 	generate double `fe_iso_o' =.
 	
 	local n=2
@@ -147,6 +289,7 @@ program nlnonlin
 	generate double `sect_share_pond'= ms_secteur * `prix_rel'^(1-`sigma')
 
 */
+*	assert uv_presente<.
 	generate double `sect_share_pond'= ms_secteur *(uv_presente)^(1-`sigma')/ `blouk'
 	*collapse (sum) `sum'=`sect_share_pond',by (iso_d iso_o* `lnms_pays' `fe_iso_o')
 	
@@ -178,48 +321,20 @@ capture program drop reg_nlin
 program reg_nlin
 	args year
 *exemple : reg_nlin 2009
-timer clear 2
-timer on 2
+timer clear 1
+timer on 1
  
-	use "$dir/temp_`year'", clear
-	
-	***Pour restreindre
-	*keep if substr(prod_unit,1,1)=="0"
-	*************************
-	
-	bys prod_unit iso_d: egen c_95_uv = pctile(uv_presente),p(95)
-	bys prod_unit iso_d: egen c_05_uv = pctile(uv_presente),p(05)
-	bys prod_unit iso_d: egen c_50_uv = pctile(uv_presente),p(50)
-	drop if uv_presente < c_05_uv | uv_presente > c_95_uv
-	drop if uv_presente < c_50_uv/100 | uv_presente > c_50_uv*100
+*NB* adjusted here: always same directory used
+use "$dir/temp_`year'", clear
 	
 	
-	***Pour faire un plus petit sample
-	*En ne gardant que 10 ou 20% des produits et des pays
-/*	local limite 50
-	bys prod_unit : egen total_product = total(value_`year')
-	bys iso_d : egen total_iso_d = total(value_`year')
-	bys iso_o : egen total_iso_o = total(value_`year')
+*********Calcul des ms définitifs
 	
-	egen threshold_product = pctile (total_product),p(`limite')
-	egen threshold_iso_d = pctile (total_iso_d),p(`limite')
-	egen threshold_iso_o = pctile (total_iso_o),p(`limite')
+	capture drop tot_export tot_trade ms_tot
+*for instrumented files: additional variables already defined
+	capture drop tot_import tot_import_export ms_pays lnms_pays tot_import_secteur ms_secteur
 	
-	
-	drop if total_iso_d <= threshold_iso_d
-	drop if total_iso_o <= threshold_iso_o
-	drop if total_product <= threshold_product
-	
-	drop total_product total_iso_d total_iso_o  threshold_product threshold_iso_d threshold_iso_o 
-	
-	codebook prod_unit iso_o iso_d
-	
-*/
-	
-	
-	*****Calcul des ms
 	*Par pays expt chez un import
-	rename value_`year' value
 	bys iso_d : egen tot_import=total(value)
 	bys iso_d iso_o : egen tot_import_export = total(value)
 	bys iso_o : egen tot_export = total(value)
@@ -231,18 +346,12 @@ timer on 2
 	*Par exportateur dans de commerce mondial
 	generate ms_tot = tot_export/tot_trade
 
-	*On enlève les tout petits exportateurs
-	drop if ms_tot < (1/1000)
-	drop tot_import tot_trade
-	bys iso_d : egen tot_import=total(value)
-	egen tot_trade = total(value)
-	replace ms_tot = tot_export/tot_trade
-	
-
 
 	*Par secteur chez un importateur
 	bys iso_d prod_unit : egen tot_import_secteur = total(value)
 	generate ms_secteur = tot_import_secteur / tot_import
+	
+	drop if uv_presente>=.
 
 	
 	
@@ -250,7 +359,9 @@ timer on 2
 	quietly tabulate iso_o, gen(iso_o_)
 	su group_iso_o, meanonly	
 		local nbr_iso_o=r(max)
+		display "`nbr_iso_o'"
 	egen group_prod=group(prod_unit)
+	
 	
 	
 	local startlnsigmaminus1 2
@@ -276,14 +387,16 @@ timer on 2
 
 	
 display "`initial_iso_o'"
+capture drop weight
 gen weight=0
 bys iso_d iso_o	: replace weight = 1/_N
-*Cela de manière 
+
 	
 *	nl nonlin @ ms_pays prix_rel_5 ms_secteur_5 `liste_variables_iso_o', eps(1e-3) iterate(100) parameters(sigma `liste_parametres_iso_o' ) initial(sigma 1.5 `initial_iso_o')
 	display "nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=value], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')"
 *	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o', iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
-	nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=weight], iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
+	capture noisily nl nonlin @ lnms_pays uv_presente `liste_variables_iso_o' [iweight=weight], ///
+			iterate(100) parameters(lnsigmaminus1 `liste_parametres_iso_o' ) initial(lnsigmaminus1 `startlnsigmaminus1' `initial_iso_o')
 	
 	
 	
@@ -306,18 +419,21 @@ bys iso_d iso_o	: replace weight = 1/_N
 	generate date = "`c(current_time)' `c(current_date)'"
 	
 	
-	timer off 2
-	timer list 2
+	timer off 1
+	timer list 1
 	generate time=r(t2)
 	generate ordinateur="Lysandre"
 	drop iso_o_*
-		
+
+*NB*adjusted: same directory for all computers
 	save "$dir/temp_`year'_result", replace
 	keep if _n==1
 	keep rc converge R2 sigma_est ecart_type_lnsigmaminus1 year ordinateur date time
 	append using "$dir/temp_result"
 	save "$dir/temp_result", replace
-	
+
+
+		
 
 	
 end
@@ -329,39 +445,131 @@ end
 
 *blouk
 
-*********************************Lancer les programmes pour cepii
+/*
+****************************************************************************
+*******************************Lancer les programmes sur le superbal
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1962(1)2013 {
+	display "`year'"
+	display
+	prepar_data prepar_cepii_superbal `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_superbal", replace
+
+*/
+
+
+*******************************Lancer les programmes pour baci
 /*
 clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 2008(2)2008 {
+foreach year of num 1995(1)2016 {
 	display "`year'"
 	display
-	calc_ms prepar_cepii `year'
+	prepar_data prepar_baci `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
 }
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_Baci", replace
 */
-*******************************Lancer les programmes pour baci
 
+
+
+*********************************Lancer les programmes pour sitc (COMTRADE)
+/*
 clear
 set obs 1
 gen year=.
 capture save "$dir/temp_result"
-foreach year of num 1995(2)2016 {
+foreach year of num 1962(1)2013 {
 	display "`year'"
 	display
-	calc_ms prepar_baci `year'
+	prepar_data prepar_cepii `year'
 	reg_nlin `year'
 *	erase "$dir/temp_`year'_result.dta"
 	erase "$dir/temp_`year'.dta"
 }
-	
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_baseline", replace
+
+
+log close
+
+*/
+****************************************************************************
+*******************************Lancer les programmes sur le prix_calc
+/*
+clear
+set obs 1
+gen year=.
+capture save "$dir/temp_result"
+foreach year of num 1962(1)2013 {
+	display "`year'"
+	display
+	prepar_data prepar_cepii_calc `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result", clear
+save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_prix_calc", replace
+
+*/
+****************************************************************************
+*******************************Lancer les programmes sur les données instrumentées
+clear
+set obs 1
+gen year=.
+*NB* erreur corrigee ici: capture save (!) not "capture drop" file
+capture save "$dir/temp_result.dta"
+
+*NB* order of instruments adjusted so that runs on revised version of first stage 
+*!* remember to change list of years if lag 2 or 3 used!
+*global instrument gdpo
+global instrument uv gdpo om
+global lag 1
+* ou gdp ou i...
+foreach year of num 1963(1)2013 {
+*foreach year of num 2013 {
+	display "`year'"
+	display
+	prepar_data  instrumented `year'
+	reg_nlin `year'
+*	erase "$dir/temp_`year'_result.dta"
+	erase "$dir/temp_`year'.dta"
+}
+use "$dir/temp_result.dta", clear
+*NB*adjusted here to save results in correct directory on different computers
+if strmatch("`c(username)'","*daudin*")==1 {
+	save "$dir/Résultats/Troisième partie/Résultats 1ere regression 3e partie_instrumented_${instrument}_${lag}lag", replace
+}
+else {
+		save "Résultats 1ere regression 3e partie_instrumented_${instrument}_${lag}lag", replace
+}
+
+capture log close
+****************************************************************************
+
+
+
+
+/*
+
 
 *twoway (line coef_sigma year, sort) (qfit coef_sigma year, sort)
 *twoway (line coef_sigma year, sort) (lfit coef_sigma year, sort)
+
 
 
 timer off 1
@@ -370,6 +578,6 @@ timer list 1
 
 log close	
 
-
+*/
 
 

@@ -1,0 +1,19 @@
+Proportion of zeros, with fixed effects	
+	(1)
+VARIABLES	propor_comm_ssuv_agg1
+	
+real_ms	-4.240***
+	(0.933)
+year	-0.001***
+	(0.000)
+interaction	0.002***
+	(0.000)
+Constant	1.306***
+	(0.191)
+	
+Observations	657001
+R-squared	0.224
+Standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	
+The proportion of zeros is computed at the SITC 1-digit level	
+destination and destination-year fixed effects included.	

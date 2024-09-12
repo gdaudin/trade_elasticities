@@ -1,0 +1,16 @@
+	Proportion of zeros as a function of market share				
+		(1)	(2)	(3)	(4)
+EQUATION	VARIABLES	propor_biens_sscommerce_4	propor_biens_sscommerce_4	propor_biens_sscommerce_4	propor_biens_sscommerce_4
+					
+propor_biens_sscommerce_4	ln_ms	-0.0401***	-0.2446***	-0.0427***	-0.2573***
+		(0.0001)	(0.0134)	(0.0001)	(0.013)
+	year	-0.0029***	-0.0020***	-0.0033***	-0.0024***
+		(0.0000)	(0.0001)	(0.0000)	(0.000)
+	interaction		0.0001***		0.0001***
+			(0.0000)		(0.000)
+	Constant	5.3474***	3.5852***	6.0976***	4.2515***
+		(0.0335)	(0.1372)	(0.0366)	(0.134)
+					
+	Observations	657001	657001	657001	657001
+	Robust standard errors in parentheses				
+	*** p<0.01, ** p<0.05, * p<0.1				

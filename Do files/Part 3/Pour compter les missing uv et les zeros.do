@@ -19,7 +19,7 @@ global dir "F:\LIZA_WORK\GUILLAUME_DAUDIN\COMTRADE_Stata_data"
 
 display "`c(username)'"
 if strmatch("`c(username)'","*daudin*")==1 {
-	global dir "~/Documents/Recherche/OFCE Substitution Elasticities local"
+	global dir "~/Documents/Recherche/2007 OFCE Substitution Elasticities local"
 	cd "$dir/Data/For Third Part/"
 
 }
@@ -171,7 +171,52 @@ foreach agg of numlist 5(-1)1 {
 }
 end
 
+capture program drop compter_zeros_bis
+program compter_zeros_bis
+args year sample
+if "`sample'" == "baseline" use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+
+if "`sample'" == "superbal" {
+		use "$dir/Data/For Third Part/prepar_cepii_`year'", clear
+		quietly merge m:1 iso_o iso_d using "$dir/Résultats/Première partie/Coverage/superbal_list_1962.dta", keep(match)
+}	
+
+quietly tab product
+local nbr_prod=r(r)
+quietly tab iso_o
+local nbr_origin=r(r)
+quietly tab iso_d
+local nbr_dest=r(r)
+
+display "`year' -- `sample' -- ztf" 
+display %9.3f 1-_N/(`nbr_prod'*(`nbr_origin'-1)*`nbr_dest')
+
+gen share_of_ztf = 1-_N/(`nbr_prod'*(`nbr_origin'-1)*`nbr_dest')
+gen sample ="`sample'"
+keep year sample share_of_ztf 
+keep if _n==1
+capture append using "$dir/Résultats/Troisième partie/zéros/Nbredzerosbis.dta"
+save "$dir/Résultats/Troisième partie/zéros/Nbredzerosbis.dta", replace
+
+end
+
+
+
+
+
 *********************************
+
+capture erase "$dir/Résultats/Troisième partie/zéros/Nbredzerosbis.dta"
+
+*foreach year of num 1962 (1) 1964 {
+foreach year of num 1962(1)2013 {
+	
+	compter_zeros_bis `year' baseline
+	compter_zeros_bis `year' superbal
+	
+}
+
+
 
 *foreach year of num 1962 (1) 1964 {
 foreach year of num 1962(1)2013 {
@@ -184,6 +229,8 @@ foreach year of num 1962(1)2013 {
 	erase   "$dir/Résultats/Troisième partie/zéros/Nbrdezeros_`year'.dta"
 	
 }
+
+
 
 ************EXEMPLE REGRESSION:
 gen real_ms=commerce_paire/commerce_destination
